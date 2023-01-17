@@ -6,4 +6,4 @@ Week 1: Assignment 1 and 2
 ###Assignement 1
 -Module A) Installation
 
--Module B) Simulatio
+-Module B) Simulation
