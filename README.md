@@ -15,3 +15,6 @@ https://www.reddit.com/r/ludobots/comments/10epiqa/assignment_1_module_c_onelink
 ###Assignment 2
 
 -Module D) Manylinks
+
+Monolith: https://imgur.com/jaG5RaQ
+
