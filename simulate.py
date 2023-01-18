@@ -9,9 +9,10 @@ p.setGravity(0, 0, -9.8)  # Set gravity downward gravitational pull
 
 p.loadURDF("plane.urdf")
 
+robotID = p.loadURDF("body.urdf")
+
 p.loadSDF("world.sdf")
 
-robotID = p.loadURDF("body.urdf")
 
 for i in range(20000):
     p.stepSimulation()
