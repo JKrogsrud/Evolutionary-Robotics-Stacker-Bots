@@ -9,7 +9,7 @@ p.setGravity(0, 0, -9.8)  # Set gravity downward gravitational pull
 
 p.loadURDF("plane.urdf")
 
-p.loadSDF("box.sdf")
+p.loadSDF("boxes.sdf")
 
 for i in range(1000):
     p.stepSimulation()
