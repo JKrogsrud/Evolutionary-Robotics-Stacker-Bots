@@ -14,9 +14,11 @@ x = 0
 y = 0
 z = 0.5
 
-# Creates a cube and sends it to box. Units are in meters.
-pyrosim.Send_Cube(name='box', pos=[x, y, z], size=[length, width, height])
+num_blocks = 10
 
-pyrosim.Send_Cube(name='box2', pos=[x, y, z], size=[length, width, height])
+for i in range(num_blocks):
+    # Creates a cube and sends it to box. Units are in meters.
+    pyrosim.Send_Cube(name='box', pos=[x, y, z + i], size=[length*(.9**i), width*(.9**i), height])
+
 
 pyrosim.End()  # Close sdf file
