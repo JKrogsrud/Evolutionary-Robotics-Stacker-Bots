@@ -18,3 +18,7 @@ https://www.reddit.com/r/ludobots/comments/10epiqa/assignment_1_module_c_onelink
 
 Monolith: https://imgur.com/jaG5RaQ
 
+Stacked Boxes: https://imgur.com/TGZkUjq
+
+-Module E)
+

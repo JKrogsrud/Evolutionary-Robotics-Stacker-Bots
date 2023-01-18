@@ -11,7 +11,7 @@ p.loadURDF("plane.urdf")
 
 p.loadSDF("boxes.sdf")
 
-for i in range(10000):
+for i in range(20000):
     p.stepSimulation()
     time.sleep(1/120)
     print(i)
