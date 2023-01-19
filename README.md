@@ -20,5 +20,10 @@ Monolith: https://imgur.com/jaG5RaQ
 
 Stacked Boxes: https://imgur.com/TGZkUjq
 
--Module E)
+Reddit Post: https://www.reddit.com/r/ludobots/comments/10g6p5o/cs206_module_d_manylinks/
 
+-Module E) Joints
+
+Caterpillar: https://youtu.be/OnAczD4qVCM
+
+Reddit Post: https://www.reddit.com/r/ludobots/comments/10g6qbr/cs206_module_e_joints/
