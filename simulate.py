@@ -4,9 +4,9 @@ import pybullet_data
 
 import pyrosim.pyrosim as pyrosim
 
-import numpy  # For arrays to store sensor values
+import numpy as np  # For arrays to store sensor values
 
-import random # For randomized Motor control
+import random  # For randomized Motor control
 
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Location for many built-in files
@@ -22,8 +22,15 @@ p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotID)  # Extra little work to have sensors set up for this robot
 # Would need to iterate through an array of robots if you wanted a swarm
 
-backLegSensorValues = numpy.zeros(2000)
-frontLegSensorValues = numpy.zeros(2000)
+backLegSensorValues = np.zeros(1000)
+frontLegSensorValues = np.zeros(1000)
+
+x = np.linspace(start=0, stop=2*np.pi, num=1000)
+
+targetAnglesBack = np.sin(x)*np.pi/4
+targetAnglesFront = np.sin(x)*np.pi/4
+
+np.save('data/targetAngles.npy', targetAnglesBack)
 
 for i in range(2000):
     p.stepSimulation()
@@ -31,16 +38,16 @@ for i in range(2000):
     pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
                                 jointName="Torso_BackLeg",
                                 controlMode=p.POSITION_CONTROL,
-                                targetPosition=random.random()*numpy.pi - numpy.pi/2,
+                                targetPosition=targetAnglesBack[i % 2000],
                                 maxForce=100)
     frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
     pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
                                 jointName="Torso_FrontLeg",
                                 controlMode=p.POSITION_CONTROL,
-                                targetPosition=random.random()*numpy.pi - numpy.pi/2,
+                                targetPosition=targetAnglesFront[i % 2000],
                                 maxForce=100)
     time.sleep(1/60)
 
-numpy.save('./data/backLegSensorValues.npy', backLegSensorValues)
-numpy.save('./data/FrontLegSensorValues.npy', frontLegSensorValues)
+np.save('./data/backLegSensorValues.npy', backLegSensorValues)
+np.save('./data/FrontLegSensorValues.npy', frontLegSensorValues)
 p.disconnect()
