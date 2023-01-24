@@ -20,15 +20,19 @@ p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotID)  # Extra little work to have sensors set up for this robot
 # Would need to iterate through an array of robots if you wanted a swarm
 
-backLegSensorValues = numpy.zeros(200)
-frontLegSensorValues = numpy.zeros(200)
+backLegSensorValues = numpy.zeros(2000)
+frontLegSensorValues = numpy.zeros(2000)
 
-for i in range(200):
+for i in range(2000):
     p.stepSimulation()
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
+    pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
+                                jointName="Torso_BackLeg",
+                                controlMode=p.POSITION_CONTROL,
+                                targetPosition=0.0,
+                                maxForce=500)
     frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
     time.sleep(1/60)
-    #print(i)
 
 numpy.save('./data/backLegSensorValues.npy', backLegSensorValues)
 numpy.save('./data/FrontLegSensorValues.npy', frontLegSensorValues)
