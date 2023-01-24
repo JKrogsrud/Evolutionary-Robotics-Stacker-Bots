@@ -6,6 +6,8 @@ import pyrosim.pyrosim as pyrosim
 
 import numpy  # For arrays to store sensor values
 
+import random # For randomized Motor control
+
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Location for many built-in files
 
@@ -29,9 +31,14 @@ for i in range(2000):
     pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
                                 jointName="Torso_BackLeg",
                                 controlMode=p.POSITION_CONTROL,
-                                targetPosition=0.0,
-                                maxForce=500)
+                                targetPosition=random.random()*numpy.pi - numpy.pi/2,
+                                maxForce=100)
     frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
+    pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
+                                jointName="Torso_FrontLeg",
+                                controlMode=p.POSITION_CONTROL,
+                                targetPosition=random.random()*numpy.pi - numpy.pi/2,
+                                maxForce=100)
     time.sleep(1/60)
 
 numpy.save('./data/backLegSensorValues.npy', backLegSensorValues)
