@@ -47,4 +47,4 @@ Module G) Motors
 
     Runner: https://youtu.be/CcfteVqXbjs
 
-    Reddit Post
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/10kd8rv/cs206_module_g_motors/
