@@ -1,29 +1,44 @@
 This repository contains all work from Jared Krogsrud for the UVM class CS206: Evolutionary robotics.
 
-##CS206 Assignment Log
+## CS206 Assignment Log
 
-Week 1: Assignment 1 and 2
-###Assignement 1
--Module A) Installation
+### Assignement 1
+Module A) Installation
 
--Module B) Simulation
-https://www.reddit.com/r/ludobots/comments/10en9gr/my_submission_for_assignment_1_module_b/
+Module B) Simulation
 
--Module C) Onelink
-https://www.reddit.com/r/ludobots/comments/10epiqa/assignment_1_module_c_onelink/
+    https://www.reddit.com/r/ludobots/comments/10en9gr/my_submission_for_assignment_1_module_b/
 
-###Assignment 2
+Module C) Onelink
 
--Module D) Manylinks
+    https://www.reddit.com/r/ludobots/comments/10epiqa/assignment_1_module_c_onelink/
 
-Monolith: https://imgur.com/jaG5RaQ
+### Assignment 2
 
-Stacked Boxes: https://imgur.com/TGZkUjq
+Module D) Manylinks
 
-Reddit Post: https://www.reddit.com/r/ludobots/comments/10g6p5o/cs206_module_d_manylinks/
+    Monolith: https://imgur.com/jaG5RaQ
 
--Module E) Joints
+    Stacked Boxes: https://imgur.com/TGZkUjq
 
-Caterpillar: https://youtu.be/OnAczD4qVCM
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/10g6p5o/cs206_module_d_manylinks/
 
-Reddit Post: https://www.reddit.com/r/ludobots/comments/10g6qbr/cs206_module_e_joints/
+Module E) Joints
+
+    Caterpillar: https://youtu.be/OnAczD4qVCM
+
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/10g6qbr/cs206_module_e_joints/
+
+### Assignment 3
+
+Module F) Sensors
+
+    Back Sensor: https://youtu.be/OPbWV_eQpK8
+
+    Sensor Graph: https://imgur.com/bV1pGcX
+
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/10jqxdc/cs206_module_f_sensors/
+
+### Assignment 4
+
+Module G) Motors
