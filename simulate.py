@@ -6,7 +6,9 @@ import numpy as np  # For arrays to store sensor values
 import random  # For randomized Motor control
 import constants as c  # File in which we store many of the constants we are using
 
-pass
+"""Class Imports"""
+from simulation import SIMULATION
+simulation = SIMULATION()
 
 # physicsClient = p.connect(p.GUI)
 # p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Location for many built-in files
