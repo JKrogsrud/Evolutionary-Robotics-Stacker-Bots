@@ -10,12 +10,7 @@ import constants as c  # File in which we store many of the constants we are usi
 from simulation import SIMULATION
 simulation = SIMULATION()
 
-# physicsClient = p.connect(p.GUI)
-# p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Location for many built-in files
-#
-# # Set Gravity
-# p.setGravity(c.X_GRAV, c.Y_GRAV, c.Z_GRAV)  # Set gravity downward gravitational pull
-#
+
 # p.loadURDF(c.PLANE)
 # robotID = p.loadURDF(c.BOT_1)
 # p.loadSDF(c.WORLD)
@@ -36,8 +31,9 @@ simulation = SIMULATION()
 # np.save('data/targetAnglesBack.npy', targetAnglesBack)
 # np.save('data/targetAnglesFront.npy', targetAnglesFront)
 #
-# for i in range(c.SIM_LEN):
+for i in range(c.SIM_LEN):
 #     p.stepSimulation()
+    time.sleep(c.SLEEP_TIME)
 #     #backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
 #     pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
 #                                 jointName="Torso_BackLeg",
