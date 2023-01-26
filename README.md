@@ -48,3 +48,9 @@ Module G) Motors
     Runner: https://youtu.be/CcfteVqXbjs
 
     Reddit Post: https://www.reddit.com/r/ludobots/comments/10kd8rv/cs206_module_g_motors/
+
+### Assignment 5
+
+Module H) Refactoring
+
+    A Nice Run and Hop: https://youtu.be/lRpZzttzQls
