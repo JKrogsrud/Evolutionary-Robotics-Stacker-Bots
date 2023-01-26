@@ -1,6 +1,7 @@
 import pybullet as p
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
+import time
 
 # My own created classes
 from world import WORLD
@@ -18,6 +19,14 @@ class SIMULATION:
         self.world = WORLD()
         self.robot = ROBOT()
 
-        pyrosim.Prepare_To_Simulate(self.world.worldID)
-        pyrosim.Prepare_To_Simulate(self.world.planeID)
-        pyrosim.Prepare_To_Simulate(self.robot.robotID)
+    def run(self):
+        for t in range(c.SIM_LEN):
+            p.stepSimulation()
+            time.sleep(c.SLEEP_TIME)
+            # print("Iteration: " + str(t))
+            self.robot.Sense(t)
+            self.robot.Act(t)
+
+    def __del__(self):
+        # self.robot.Save_Values()
+        p.disconnect()

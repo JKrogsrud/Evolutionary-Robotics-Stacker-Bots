@@ -3,11 +3,6 @@ import numpy as np
 """SIMULATION CONSTANTS"""
 SLEEP_TIME = 1/240
 
-"""ROBOT, PLANE and WORLD filenames"""
-PLANE = "plane.urdf"
-BOT_1 = "body.urdf"
-WORLD = "world.sdf"
-
 """DATA COLLECTION"""
 SIM_LEN = 5000
 
@@ -26,10 +21,11 @@ FRAMES = 1000
 BACK_AMP = 4 * np.pi / 16
 BACK_FREQ = 6.1
 BACK_PHASE = -4 * np.pi / 16
-BACK_FORCE = 100
 
 # Front Leg Values
 FRONT_AMP = 3 * np.pi / 16
 FRONT_FREQ = 6.1
 FRONT_PHASE = 0
-FRONT_FORCE = 100
+
+# Motor Force
+MAX_FORCE = 100

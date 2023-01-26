@@ -1,10 +1,46 @@
 import pybullet as p
+import pyrosim.pyrosim as pyrosim
 import constants as c
+
+from sensor import SENSOR
+from motor import MOTOR
 
 class ROBOT:
 
     def __init__(self):
-        self.sensors = {}
-        self.motors = {}
-        self.robotID = p.loadURDF(c.BOT_1)
+        self.robotID = p.loadURDF("body.urdf")
 
+        pyrosim.Prepare_To_Simulate(self.robotID)
+
+        self.Prepare_To_Sense()
+        self.Prepare_To_Act()
+
+    def Prepare_To_Sense(self):
+
+        self.sensors = {}
+
+        for linkName in pyrosim.linkNamesToIndices:  # This is created after Prepare_To_Simulate
+            self.sensors[linkName] = SENSOR(linkName)
+
+    def Sense(self, t):
+        for sensor in self.sensors:
+            self.sensors[sensor].Get_Value(t)
+
+    def Prepare_To_Act(self):
+
+        self.motors = {}
+
+        for jointName in pyrosim.jointNamesToIndices:
+            self.motors[jointName] = MOTOR(jointName)
+
+    def Act(self, t):
+
+        for motor in self.motors:
+            self.motors[motor].Set_Value(self.robotID, t)
+
+    def Save_Values(self):
+
+        for sensor in self.sensors:
+            self.sensors[sensor].Save_Values()
+        for motor in self.motors:
+            self.motors[motor].Save_Values()
