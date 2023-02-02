@@ -54,3 +54,7 @@ Module G) Motors
 Module H) Refactoring
 
     A Nice Run and Hop: https://youtu.be/lRpZzttzQls
+
+### Assignment 6
+
+Module I) 
