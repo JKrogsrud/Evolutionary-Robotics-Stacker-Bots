@@ -22,7 +22,7 @@ NNDF_FILETYPE   = 2
 
 # global availableLinkIndex
 
-# global linkNamesToIndices
+global linkNamesToIndices
 
 def End():
 

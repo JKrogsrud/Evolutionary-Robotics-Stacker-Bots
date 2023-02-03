@@ -55,6 +55,12 @@ Module H) Refactoring
 
     A Nice Run and Hop: https://youtu.be/lRpZzttzQls
 
+    Reddit post: https://www.reddit.com/r/ludobots/comments/10str4v/cs206_module_h_refactoring/
+
 ### Assignment 6
 
 Module I) 
+
+    One Hop: https://youtu.be/WYL4xibk1bM
+
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/10stpgs/cs206_module_i_neurons/

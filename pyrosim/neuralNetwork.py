@@ -31,10 +31,29 @@ class NEURAL_NETWORK:
     def Update(self):
 
         for neuron in self.neurons:
-            print("Neuron: " + str(neuron))
+            if self.neurons[neuron].Is_Sensor_Neuron():
+                self.neurons[neuron].Update_Sensor_Neuron()
+            else:
+                self.neurons[neuron].Update_Hidden_Or_Motor_Neuron()
+
 
         for synapse in self.synapses:
-            print("Synapse: "+ str(synapse))
+            print("Synapse: " + str(synapse))
+
+    def Get_Neuron_Names(self):
+        neuronNameList = []
+        for neuron in self.neurons:
+            neuronNameList.append(neuron)
+        return neuronNameList
+
+    def Get_Value_Of(self, neuronName):
+        return self.neurons[neuronName].Get_Value()
+
+    def Get_Motor_Neurons_Joint(self, neuronName):
+        return self.neurons[neuronName].Get_Joint_Name()
+
+    def Is_Motor_Neuron(self, neuronName):
+        return self.neurons[neuronName].Is_Motor_Neuron()
 # ---------------- Private methods --------------------------------------
 
     def Add_Neuron_According_To(self,line):
