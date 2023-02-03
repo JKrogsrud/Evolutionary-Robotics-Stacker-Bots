@@ -4,7 +4,7 @@ from pyrosim.synapse import SYNAPSE
 
 class NEURAL_NETWORK: 
 
-    def __init__(self,nndfFileName):
+    def __init__(self, nndfFileName):
 
         self.neurons = {}
 
@@ -28,6 +28,13 @@ class NEURAL_NETWORK:
 
         print("")
 
+    def Update(self):
+
+        for neuron in self.neurons:
+            print("Neuron: " + str(neuron))
+
+        for synapse in self.synapses:
+            print("Synapse: "+ str(synapse))
 # ---------------- Private methods --------------------------------------
 
     def Add_Neuron_According_To(self,line):

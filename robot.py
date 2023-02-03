@@ -36,6 +36,7 @@ class ROBOT:
             self.motors[jointName] = MOTOR(jointName)
 
     def Think(self):
+        self.nn.Update()
         self.nn.Print()
 
     def Act(self, t):
