@@ -59,8 +59,18 @@ Module H) Refactoring
 
 ### Assignment 6
 
-Module I) 
+Module I) Neurons
 
     One Hop: https://youtu.be/WYL4xibk1bM
 
     Reddit Post: https://www.reddit.com/r/ludobots/comments/10stpgs/cs206_module_i_neurons/
+
+### Assignment 7
+
+Module J) Synapses
+
+Module K) Random Search
+
+### Assignment 8
+
+Module L) Hill Climber
