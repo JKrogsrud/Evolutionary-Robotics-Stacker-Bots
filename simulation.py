@@ -6,6 +6,8 @@ import time
 # My own created classes
 from world import WORLD
 from robot import ROBOT
+import generate
+
 import constants as c  # File in which we store many of the constants we are using
 
 
@@ -23,10 +25,9 @@ class SIMULATION:
         for t in range(c.SIM_LEN):
             p.stepSimulation()
             time.sleep(c.SLEEP_TIME)
-            # print("Iteration: " + str(t))
-            self.robot.Sense(t)
+            self.robot.Sense()
             self.robot.Think()
-            self.robot.Act(t)
+            self.robot.Act()
 
     def __del__(self):
         # self.robot.Save_Values()
