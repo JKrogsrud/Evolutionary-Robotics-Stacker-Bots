@@ -3,6 +3,7 @@
 # read and simulate this file
 
 import pyrosim.pyrosim as pyrosim
+import random
 
 
 def create_world():
@@ -45,14 +46,9 @@ def Generate_Brain():
     pyrosim.Send_Motor_Neuron(name=3, jointName="Torso_BackLeg")
     pyrosim.Send_Motor_Neuron(name=4, jointName="Torso_FrontLeg")
 
-    pyrosim.Send_Synapse(sourceNeuronName=0, targetNeuronName=3, weight=1.75)
-    pyrosim.Send_Synapse(sourceNeuronName=1, targetNeuronName=3, weight=-1.55)
-
-    pyrosim.Send_Synapse(sourceNeuronName=0, targetNeuronName=4, weight=0.25)
-    pyrosim.Send_Synapse(sourceNeuronName=2, targetNeuronName=4, weight=.95)
-
-    # pyrosim.Send_Synapse(sourceNeuronName=1, targetNeuronName=2, weight=-1.0)
-
+    for sensor_name in range(3):
+        for motor in range(3, 5):
+            pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=random.random() % 1)
     pyrosim.End()  # Close sdf file
 
 

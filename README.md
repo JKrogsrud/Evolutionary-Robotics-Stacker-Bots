@@ -69,7 +69,13 @@ Module I) Neurons
 
 Module J) Synapses
 
+    Backward Shuffle: https://youtu.be/KbunXhhinfk
+    
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/10w7wxf/cs206_module_j_synapses/
+
 Module K) Random Search
+
+    
 
 ### Assignment 8
 
