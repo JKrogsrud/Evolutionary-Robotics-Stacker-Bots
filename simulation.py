@@ -6,7 +6,7 @@ import time
 # My own created classes
 from world import WORLD
 from robot import ROBOT
-import generate
+# import generate # uncomment if you want to run generate automatically before simulate
 
 import constants as c  # File in which we store many of the constants we are using
 

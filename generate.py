@@ -48,7 +48,7 @@ def Generate_Brain():
 
     for sensor_name in range(3):
         for motor in range(3, 5):
-            pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=random.random() % 1)
+            pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=(random.random() % 2) - 1)
     pyrosim.End()  # Close sdf file
 
 

@@ -4,7 +4,7 @@ import numpy as np
 SLEEP_TIME = 1/240
 
 """DATA COLLECTION"""
-SIM_LEN = 5000
+SIM_LEN = 1000
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -15,7 +15,7 @@ Z_GRAV = -9.8
 BOT CONSTANTS
 """
 # Frame repetition
-FRAMES = 1000
+FRAMES = 1500
 
 # Back Leg values
 BACK_AMP = 4 * np.pi / 16
