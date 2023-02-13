@@ -13,6 +13,8 @@ import constants as c  # File in which we store many of the constants we are usi
 
 class SIMULATION:
     def __init__(self, directOrGUI):
+        self.directOrGui = directOrGUI
+
         if (directOrGUI == "DIRECT"):
             self.physicsClient = p.connect(p.DIRECT)
         else:
@@ -26,7 +28,8 @@ class SIMULATION:
     def run(self):
         for t in range(c.SIM_LEN):
             p.stepSimulation()
-            #time.sleep(c.SLEEP_TIME)
+            if self.directOrGui == "GUI":
+                time.sleep(c.SLEEP_TIME)
             self.robot.Sense()
             self.robot.Think()
             self.robot.Act()

@@ -75,8 +75,13 @@ Module J) Synapses
 
 Module K) Random Search
 
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/10wc4pa/cs206_module_k_random_search/
     
 
 ### Assignment 8
 
 Module L) Hill Climber
+
+    Progress: https://youtu.be/G3meO7Eh09o
+
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/111nfa9/cs206_module_l_hillclimber/
