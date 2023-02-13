@@ -1,7 +1,7 @@
 import numpy as np
 
 """SIMULATION CONSTANTS"""
-SLEEP_TIME = 1/240
+SLEEP_TIME = 1/100000
 
 """DATA COLLECTION"""
 SIM_LEN = 5000
@@ -33,4 +33,4 @@ MAX_FORCE = 100
 """
 Evolution Constants
 """
-numberOfGenerations = 2
+numberOfGenerations = 25

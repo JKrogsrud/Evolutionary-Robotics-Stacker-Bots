@@ -8,5 +8,3 @@ from hillclimber import HILLCLIMBER
 hc = HILLCLIMBER()
 
 hc.Evolve()
-
-os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py')

@@ -9,9 +9,12 @@ class SOLUTION:
         self.weights = 2*np.random.rand(3, 2)-1
 
     def Evaluate(self):
+
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
+
+        os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py')
 
         file = open("fitness.txt", "r")
         self.fitness = float(file.read())
