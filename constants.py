@@ -29,3 +29,8 @@ FRONT_PHASE = 0
 
 # Motor Force
 MAX_FORCE = 100
+
+"""
+Evolution Constants
+"""
+numberOfGenerations = 2
