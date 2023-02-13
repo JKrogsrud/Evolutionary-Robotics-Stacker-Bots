@@ -5,3 +5,5 @@ simulation = SIMULATION()
 
 simulation.run()
 
+simulation.Get_Fitness()
+

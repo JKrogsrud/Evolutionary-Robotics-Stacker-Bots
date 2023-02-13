@@ -6,4 +6,4 @@ class HILLCLIMBER:
         pass
 
     def Evolve(self):
-        pass
+        self.parent.Evaluate()

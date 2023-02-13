@@ -54,3 +54,13 @@ class ROBOT:
             self.sensors[sensor].Save_Values()
         for motor in self.motors:
             self.motors[motor].Save_Values()
+
+
+    def Get_Fitness(self):
+        stateOfLinkZero = p.getLinkState(self.robotID, 0)
+        positionOfLinkZero = stateOfLinkZero[0]
+        xCoordinateLinkZero = positionOfLinkZero[0]
+
+        f = open("fitness.txt", "w")
+        f.write(str(xCoordinateLinkZero))
+

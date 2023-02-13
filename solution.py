@@ -1,12 +1,20 @@
 import numpy as np
 import pyrosim.pyrosim as pyrosim
+import os
 
 class SOLUTION:
     def __init__(self):
         self.weights = 2*np.random.rand(3, 2)-1
 
     def Evaluate(self):
-        pass
+        self.Create_World()
+        self.Create_Body()
+        self.Create_Brain()
+
+        file = open("fitness.txt", "r")
+        self.fitness = float(file.read())
+        file.close()
+
 
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")  # Creates file where world info will be stored
