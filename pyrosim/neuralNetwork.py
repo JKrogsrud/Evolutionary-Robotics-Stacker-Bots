@@ -100,7 +100,7 @@ class NEURAL_NETWORK:
 
     def Print_Hidden_Neuron_Values(self):
 
-        print("hidden neuron values: " , end = "" )
+        #print("hidden neuron values: " , end = "" )
 
         for neuronName in sorted(self.neurons):
 

@@ -8,17 +8,19 @@ class SOLUTION:
     def __init__(self):
         self.weights = 2*np.random.rand(3, 2)-1
 
-    def Evaluate(self):
+    def Evaluate(self, DirectOrGUI):
 
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
 
-        os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py')
+        os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py' + ' ' + DirectOrGUI)
 
         file = open("fitness.txt", "r")
         self.fitness = float(file.read())
         file.close()
+
+
 
     def Mutate(self):
         randomRow = random.randint(0, 2)

@@ -33,4 +33,4 @@ MAX_FORCE = 100
 """
 Evolution Constants
 """
-numberOfGenerations = 25
+numberOfGenerations = 10

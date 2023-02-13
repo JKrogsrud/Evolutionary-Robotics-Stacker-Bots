@@ -12,9 +12,11 @@ import constants as c  # File in which we store many of the constants we are usi
 
 
 class SIMULATION:
-    def __init__(self):
-
-        self.physicsClient = p.connect(p.GUI)
+    def __init__(self, directOrGUI):
+        if (directOrGUI == "DIRECT"):
+            self.physicsClient = p.connect(p.DIRECT)
+        else:
+            self.physicsClient = p.connect(p.GUI)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Location for many built-in files
         p.setGravity(c.X_GRAV, c.Y_GRAV, c.Z_GRAV)
 
