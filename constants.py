@@ -34,3 +34,4 @@ MAX_FORCE = 100
 Evolution Constants
 """
 numberOfGenerations = 10
+populationSize = 2

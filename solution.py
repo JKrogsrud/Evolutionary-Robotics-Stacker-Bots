@@ -5,7 +5,8 @@ import pyrosim.pyrosim as pyrosim
 import os
 
 class SOLUTION:
-    def __init__(self):
+    def __init__(self, nextAvailableID):
+        self.myID = nextAvailableID
         self.weights = 2*np.random.rand(3, 2)-1
 
     def Evaluate(self, DirectOrGUI):
@@ -14,7 +15,11 @@ class SOLUTION:
         self.Create_Body()
         self.Create_Brain()
 
-        os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py' + ' ' + DirectOrGUI)
+        # os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py' +
+        #           ' ' + DirectOrGUI)
+
+        os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
+                  'simulate.py' + ' ' + DirectOrGUI + ' ' + str(self.myID))
 
         file = open("fitness.txt", "r")
         self.fitness = float(file.read())
@@ -57,7 +62,7 @@ class SOLUTION:
         pyrosim.End()  # Close sdf file
 
     def Create_Brain(self):
-        pyrosim.Start_URDF("brain.nndf")
+        pyrosim.Start_URDF("brain" + str(self.myID) + ".nndf")
 
         pyrosim.Send_Sensor_Neuron(name=0, linkName="Torso")
         pyrosim.Send_Sensor_Neuron(name=1, linkName="BackLeg")
@@ -72,3 +77,6 @@ class SOLUTION:
                                      targetNeuronName=currentColumn+3,
                                      weight=self.weights[currentRow][currentColumn])
         pyrosim.End()  # Close sdf file
+
+    def Set_ID(self, newID):
+        self.myID = newID

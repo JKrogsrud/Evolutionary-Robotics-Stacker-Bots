@@ -12,7 +12,7 @@ import constants as c  # File in which we store many of the constants we are usi
 
 
 class SIMULATION:
-    def __init__(self, directOrGUI):
+    def __init__(self, directOrGUI, solutionID):
         self.directOrGui = directOrGUI
 
         if (directOrGUI == "DIRECT"):
@@ -23,7 +23,7 @@ class SIMULATION:
         p.setGravity(c.X_GRAV, c.Y_GRAV, c.Z_GRAV)
 
         self.world = WORLD()
-        self.robot = ROBOT()
+        self.robot = ROBOT(solutionID)
 
     def run(self):
         for t in range(c.SIM_LEN):
