@@ -10,14 +10,16 @@ from motor import MOTOR
 class ROBOT:
 
     def __init__(self, solutionID):
+        self.solutionID = solutionID
         self.robotID = p.loadURDF("body.urdf")
-        self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
+        self.nn = NEURAL_NETWORK("brain" + str(self.solutionID) + ".nndf")
+
+        os.system("del brain" + str(self.solutionID) + ".nndf")
 
         pyrosim.Prepare_To_Simulate(self.robotID)
 
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
-        os.system("rm brain" + str(solutionID) + ".nndf")
 
     def Prepare_To_Sense(self):
 
@@ -63,7 +65,9 @@ class ROBOT:
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateLinkZero = positionOfLinkZero[0]
 
-        f = open("fitness.txt", "w")
+        f = open("tmp" + str(self.solutionID) + ".txt", "w")
         f.write(str(xCoordinateLinkZero))
         f.close()
+
+        os.rename("tmp"+ str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
 

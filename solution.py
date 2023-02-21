@@ -3,6 +3,7 @@ import random
 import numpy as np
 import pyrosim.pyrosim as pyrosim
 import os
+import time
 
 class SOLUTION:
     def __init__(self, nextAvailableID):
@@ -21,11 +22,33 @@ class SOLUTION:
         os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
                   'simulate.py' + ' ' + DirectOrGUI + ' ' + str(self.myID))
 
-        file = open("fitness.txt", "r")
+
+        while not os.path.exists("fitness" + str(self.myID) + ".txt"):
+            time.sleep(0.01)
+
+        file = open("fitness" + str(self.myID) + ".txt", "r")
         self.fitness = float(file.read())
         file.close()
+        print(self.fitness)
 
+    def Start_Simulation(self, DirectOrGUI):
+        self.Create_World()
+        self.Create_Body()
+        self.Create_Brain()
 
+        os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
+                  'simulate.py' + ' ' + DirectOrGUI + ' ' + str(self.myID))
+
+    def Wait_For_Simulation_To_End(self):
+
+        while not os.path.exists("fitness" + str(self.myID) + ".txt"):
+            time.sleep(0.01)
+
+        file = open("fitness" + str(self.myID) + ".txt", "r")
+        self.fitness = float(file.read())
+        file.close()
+        os.system("del fitness" + str(self.myID) + ".txt")
+        print(self.fitness)
 
     def Mutate(self):
         randomRow = random.randint(0, 2)
