@@ -16,21 +16,18 @@ class PARALLEL_HILLCLIMBER:
 
 
     def Evolve(self):
-        for parent in self.parents:
-            self.parents[parent].Start_Simulation('DIRECT')
-        print("----")
-        for parent in self.parents:
-            self.parents[parent].Wait_For_Simulation_To_End()
+        self.Evaluate(self.parents)
         for currentGeneration in range(numberOfGenerations):
             self.Evolve_For_One_Generation()
 
     def Evolve_For_One_Generation(self):
         self.Spawn()
-        # self.Mutate()
-        # self.child.Evaluate('DIRECT')
-        # self.Print()
-        # self.Select()
-        pass
+        self.Mutate()
+        self.Evaluate(self.children)
+        print("---")
+        self.Print()
+        print("---")
+        self.Select()
 
 
     def Spawn(self):
@@ -42,17 +39,37 @@ class PARALLEL_HILLCLIMBER:
 
 
     def Mutate(self):
-        self.child.Mutate()
+        for child in self.children:
+            self.children[child].Mutate()
 
     def Select(self):
-        if self.parent.fitness > self.child.fitness:
-            self.parent = self.child
+        # if self.parent.fitness > self.child.fitness:
+        #     self.parent = self.child
+        for parent in self.parents:
+            if self.parents[parent].fitness > self.children[parent].fitness:
+                self.parents[parent] = self.children[parent]
 
     def Print(self):
-        print("")
-        print("Parent: " + str(self.parent.fitness) + " Child: " + str(self.child.fitness))
-        print("")
+        for parent in self.parents:
+            print("Parent " + str(parent) + "'s fitness:" + str(self.parents[parent].fitness) +
+                  ", Child: " + str(self.children[parent].fitness))
 
     def Show_Best(self):
         # self.parent.Evaluate('GUI')
-        pass
+        min_fit = 999
+        fittest_parent = None
+        for parent in self.parents:
+            if fittest_parent is None:
+                fittest_parent = parent
+                min_fit = self.parents[parent].fitness
+            else:
+                if self.parents[parent].fitness < min_fit:
+                    fittest_parent = parent
+                    min_fit = self.parents[parent].fitness
+        self.parents[fittest_parent].Start_Simulation('GUI')
+
+    def Evaluate(self, solutions):
+        for solution in solutions:
+            solutions[solution].Start_Simulation('DIRECT')
+        for solution in solutions:
+            solutions[solution].Wait_For_Simulation_To_End()

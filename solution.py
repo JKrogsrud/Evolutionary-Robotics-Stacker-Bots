@@ -10,26 +10,26 @@ class SOLUTION:
         self.myID = nextAvailableID
         self.weights = 2*np.random.rand(3, 2)-1
 
-    def Evaluate(self, DirectOrGUI):
-
-        self.Create_World()
-        self.Create_Body()
-        self.Create_Brain()
-
-        # os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py' +
-        #           ' ' + DirectOrGUI)
-
-        os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
-                  'simulate.py' + ' ' + DirectOrGUI + ' ' + str(self.myID))
-
-
-        while not os.path.exists("fitness" + str(self.myID) + ".txt"):
-            time.sleep(0.01)
-
-        file = open("fitness" + str(self.myID) + ".txt", "r")
-        self.fitness = float(file.read())
-        file.close()
-        print(self.fitness)
+    # def Evaluate(self, DirectOrGUI):
+    #
+    #     self.Create_World()
+    #     self.Create_Body()
+    #     self.Create_Brain()
+    #
+    #     # os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py' +
+    #     #           ' ' + DirectOrGUI)
+    #
+    #     os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
+    #               'simulate.py' + ' ' + DirectOrGUI + ' ' + str(self.myID))
+    #
+    #
+    #     while not os.path.exists("fitness" + str(self.myID) + ".txt"):
+    #         time.sleep(0.01)
+    #
+    #     file = open("fitness" + str(self.myID) + ".txt", "r")
+    #     self.fitness = float(file.read())
+    #     file.close()
+    #     print(self.fitness)
 
     def Start_Simulation(self, DirectOrGUI):
         self.Create_World()
@@ -48,7 +48,6 @@ class SOLUTION:
         self.fitness = float(file.read())
         file.close()
         os.system("del fitness" + str(self.myID) + ".txt")
-        print(self.fitness)
 
     def Mutate(self):
         randomRow = random.randint(0, 2)

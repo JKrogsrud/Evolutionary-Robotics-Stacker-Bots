@@ -85,3 +85,11 @@ Module L) Hill Climber
     Progress: https://youtu.be/G3meO7Eh09o
 
     Reddit Post: https://www.reddit.com/r/ludobots/comments/111nfa9/cs206_module_l_hillclimber/
+
+### Assignment 9
+
+Module M) Paralell Hillclimber
+
+    Best Lil Guy: https://youtu.be/e5AIgTce8Hg
+
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/118f4tj/cs206_module_m_parallel_hillclimbers/
