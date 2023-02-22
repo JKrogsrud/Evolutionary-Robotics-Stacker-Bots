@@ -97,4 +97,7 @@ Module M) Paralell Hillclimber
 ### Assignment 10
 
 Module N) Quadraped
-    4x4
+    
+    Hop Along: https://youtu.be/-nH8UapANpY
+
+    Reddit Post: https://www.reddit.com/r/ludobots/comments/119flv3/cs206_module_n_quadruped/

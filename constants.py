@@ -30,6 +30,13 @@ FRONT_PHASE = 0
 # Motor Force
 MAX_FORCE = 100
 
+# Joint Restrictions
+motorJointRange = 0.4
+
+# Neural Network
+numSensorNeurons = 9
+numMotorNeurons = 8
+
 """
 Evolution Constants
 """
