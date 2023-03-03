@@ -23,17 +23,18 @@ def create_world():
 
 
 def Generate_Body():
-    pyrosim.Start_URDF("body.urdf")
-
-    pyrosim.Send_Cube(name='Torso', pos=[1.5, 0, 1.5], size=[1, 1, 1])
-    pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", type="revolute",
-                       position=[1, 0, 1])
-    pyrosim.Send_Cube(name='BackLeg', pos=[-0.5, 0, -0.5], size=[1, 1, 1])
-    pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", type="revolute",
-                       position=[2, 0, 1])
-    pyrosim.Send_Cube(name='FrontLeg', pos=[0.5, 0, -0.5], size=[1, 1, 1])
-
-    pyrosim.End()  # Close sdf file
+    # pyrosim.Start_URDF("body.urdf")
+    #
+    # pyrosim.Send_Cube(name='Torso', pos=[1.5, 0, 1.5], size=[1, 1, 1])
+    # pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", type="revolute",
+    #                    position=[1, 0, 1])
+    # pyrosim.Send_Cube(name='BackLeg', pos=[-0.5, 0, -0.5], size=[1, 1, 1])
+    # pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", type="revolute",
+    #                    position=[2, 0, 1])
+    # pyrosim.Send_Cube(name='FrontLeg', pos=[0.5, 0, -0.5], size=[1, 1, 1])
+    #
+    # pyrosim.End()  # Close sdf file
+    pyrosim.Start_URDF("bodyA_1.urdf")
 
 
 def Generate_Brain():
@@ -55,4 +56,4 @@ def Generate_Brain():
 
 create_world()
 Generate_Body()
-Generate_Brain()
+# Generate_Brain()

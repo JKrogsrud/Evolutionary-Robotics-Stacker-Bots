@@ -1,7 +1,7 @@
 import numpy as np
 
 """SIMULATION CONSTANTS"""
-SLEEP_TIME = 1/1000
+SLEEP_TIME = 1/5000
 
 """DATA COLLECTION"""
 SIM_LEN = 2500
@@ -42,3 +42,8 @@ Evolution Constants
 """
 numberOfGenerations = 10
 populationSize = 10
+
+"""
+Body experimentation
+"""
+bodytype = "A_1"

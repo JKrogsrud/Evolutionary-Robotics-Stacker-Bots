@@ -12,27 +12,28 @@ import constants as c  # File in which we store many of the constants we are usi
 
 
 class SIMULATION:
-    def __init__(self, directOrGUI, solutionID):
+    def __init__(self, directOrGUI, solutionID, bodyType):
         self.directOrGui = directOrGUI
 
         if (directOrGUI == "DIRECT"):
             self.physicsClient = p.connect(p.DIRECT)
         else:
             self.physicsClient = p.connect(p.GUI)
+
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # Location for many built-in files
         p.setGravity(c.X_GRAV, c.Y_GRAV, c.Z_GRAV)
 
         self.world = WORLD()
-        self.robot = ROBOT(solutionID)
+        self.robot = ROBOT(solutionID, bodyType)
 
     def run(self):
         for t in range(c.SIM_LEN):
             p.stepSimulation()
             if self.directOrGui == "GUI":
                 time.sleep(c.SLEEP_TIME)
-            self.robot.Sense()
-            self.robot.Think()
-            self.robot.Act()
+            # self.robot.Sense()
+            # self.robot.Think()
+            # self.robot.Act()
 
     def __del__(self):
         # self.robot.Save_Values()

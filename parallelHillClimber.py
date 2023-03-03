@@ -5,20 +5,29 @@ from constants import *
 import copy as cp
 class PARALLEL_HILLCLIMBER:
 
-    def __init__(self):
+    def __init__(self, bodyType):
+
         os.system("del brain*.nndf")
         os.system("del fitness*.nndf")
-        self.parents = {}
+        # self.parents = {}
         self.nextAvailableID = 0
-        for parent in range(populationSize):
-            self.parents[parent] = SOLUTION(self.nextAvailableID)
-            self.nextAvailableID += 1
+
+        # for parent in range(populationSize):
+        #     self.parents[parent] = SOLUTION(self.nextAvailableID)
+        #     self.nextAvailableID += 1
+
+        # For creation of a single body
+        self.solution = SOLUTION(self.nextAvailableID, bodyType=bodyType)
+
 
 
     def Evolve(self):
-        self.Evaluate(self.parents)
-        for currentGeneration in range(numberOfGenerations):
-            self.Evolve_For_One_Generation()
+
+        self.Evaluate(self.solution)
+
+        # self.Evaluate(self.parents)
+        # for currentGeneration in range(numberOfGenerations):
+        #     self.Evolve_For_One_Generation()
 
     def Evolve_For_One_Generation(self):
         self.Spawn()
@@ -69,7 +78,10 @@ class PARALLEL_HILLCLIMBER:
         self.parents[fittest_parent].Start_Simulation('GUI')
 
     def Evaluate(self, solutions):
-        for solution in solutions:
-            solutions[solution].Start_Simulation('DIRECT')
-        for solution in solutions:
-            solutions[solution].Wait_For_Simulation_To_End()
+
+        self.solution.Start_Simulation('GUI')
+
+        # for solution in solutions:
+        #     solutions[solution].Start_Simulation('DIRECT')
+        # for solution in solutions:
+        #     solutions[solution].Wait_For_Simulation_To_End()

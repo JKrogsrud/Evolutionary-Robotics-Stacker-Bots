@@ -9,17 +9,18 @@ from motor import MOTOR
 
 class ROBOT:
 
-    def __init__(self, solutionID):
-        self.solutionID = solutionID
-        self.robotID = p.loadURDF("body.urdf")
-        self.nn = NEURAL_NETWORK("brain" + str(self.solutionID) + ".nndf")
+    def __init__(self, solutionID, bodytype):
 
-        os.system("del brain" + str(self.solutionID) + ".nndf")
+        self.solutionID = solutionID
+        self.robotID = p.loadURDF("body_" + bodytype + ".urdf")
+        #self.nn = NEURAL_NETWORK("brain" + str(self.solutionID) + ".nndf")
+
+        #os.system("del brain" + str(self.solutionID) + ".nndf")
 
         pyrosim.Prepare_To_Simulate(self.robotID)
 
-        self.Prepare_To_Sense()
-        self.Prepare_To_Act()
+        # self.Prepare_To_Sense()
+        # self.Prepare_To_Act()
 
     def Prepare_To_Sense(self):
 
@@ -59,14 +60,15 @@ class ROBOT:
         for motor in self.motors:
             self.motors[motor].Save_Values()
 
-
     def Get_Fitness(self):
-        stateOfLinkZero = p.getLinkState(self.robotID, 0)
-        positionOfLinkZero = stateOfLinkZero[0]
-        xCoordinateLinkZero = positionOfLinkZero[0]
+
+        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotID)
+        basePosition = basePositionAndOrientation[0]
+        xPosition = basePosition[0]
+
 
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
-        f.write(str(xCoordinateLinkZero))
+        f.write(str(xPosition))
         f.close()
 
         os.rename("tmp"+ str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
