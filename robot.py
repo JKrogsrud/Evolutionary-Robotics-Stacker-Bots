@@ -9,10 +9,12 @@ from motor import MOTOR
 
 class ROBOT:
 
-    def __init__(self, solutionID, bodytype):
-
+    def __init__(self, solutionID, bodytype, botNum):
+        self.bodyType = bodytype
+        self.botNum = botNum
         self.solutionID = solutionID
-        self.robotID = p.loadURDF("body_" + bodytype + ".urdf")
+        print("body_" + bodytype + str(self.botNum) + ".urdf")
+        self.robotID = p.loadURDF("body_" + bodytype + str(self.botNum) + ".urdf")
         #self.nn = NEURAL_NETWORK("brain" + str(self.solutionID) + ".nndf")
 
         #os.system("del brain" + str(self.solutionID) + ".nndf")

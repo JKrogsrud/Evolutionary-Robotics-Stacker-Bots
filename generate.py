@@ -3,6 +3,7 @@
 
 import pyrosim.pyrosim as pyrosim
 import random
+import time
 
 
 def create_world():
@@ -22,9 +23,8 @@ def create_world():
 
 
 def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord):
-
     if bodyType == "A":
-        pyrosim.Start_URDF("body_" + bodyType + str(botNum) + ".urdf")
+        pyrosim.Start_URDF("body_" + str(bodyType) + str(botNum) + ".urdf")
 
         # Torso ---- OG: [0, 0, 1]
         pyrosim.Send_Cube(name='Torso', pos=[xCoord, yCoord, zCoord], size=[1, 1, 0.5])
@@ -163,8 +163,3 @@ def Generate_Brain():
             pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=random.random() % 1)
     pyrosim.End()  # Close sdf file
 
-
-
-create_world()
-Generate_Body()
-# Generate_Brain()

@@ -12,8 +12,12 @@ import constants as c  # File in which we store many of the constants we are usi
 
 
 class SIMULATION:
-    def __init__(self, directOrGUI, solutionID, bodyType):
+    def __init__(self, directOrGUI, solutionID, bodyType, numBots):
+        print("simulation constructor")
         self.directOrGui = directOrGUI
+        self.bodyType = bodyType
+        self.numBots = numBots
+        self.robots = []
 
         if (directOrGUI == "DIRECT"):
             self.physicsClient = p.connect(p.DIRECT)
@@ -24,7 +28,10 @@ class SIMULATION:
         p.setGravity(c.X_GRAV, c.Y_GRAV, c.Z_GRAV)
 
         self.world = WORLD()
-        self.robot = ROBOT(solutionID, bodyType)
+        for botNum in range(self.numBots):
+            print(solutionID, bodyType, botNum)
+            robot = ROBOT(solutionID, bodyType, botNum)
+            self.robots.append(robot)
 
     def run(self):
         for t in range(c.SIM_LEN):

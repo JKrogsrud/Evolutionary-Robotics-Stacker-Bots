@@ -17,9 +17,8 @@ class PARALLEL_HILLCLIMBER:
         #     self.parents[parent] = SOLUTION(self.nextAvailableID)
         #     self.nextAvailableID += 1
 
-        # For creation of a single body
+        # For creation of a multiple bodies
         self.solution = SOLUTION(self.nextAvailableID, bodyType, numBots)
-
 
 
     def Evolve(self):
