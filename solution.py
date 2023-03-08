@@ -20,10 +20,10 @@ class SOLUTION:
         self.Create_World()
         self.Create_Body()
         # self.Create_Brain()
-        print("here in solution start_simulation")
+        print("here in solution start_simulation making a system call to simulate with " + DirectOrGUI)
         os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
                   'simulate.py' + ' ' + DirectOrGUI + ' ' + str(self.myID) + ' ' + str(self.bodyType) + ' ' + str(self.numBots))
-        print("here in solution start_simulation 2")
+        print("here I am after my call to simulate")
 
     def Wait_For_Simulation_To_End(self):
 
@@ -57,7 +57,8 @@ class SOLUTION:
         pyrosim.End()  # Close sdf file
 
     def Create_Body(self):
-
+        print("here I am in Create Body")
+        print("generating bodies..")
         for botNum in range(self.numBots):
             xCoord = 0 + botNum * 3
             yCoord = 0

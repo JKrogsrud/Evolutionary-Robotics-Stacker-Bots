@@ -24,6 +24,7 @@ def create_world():
 
 def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord):
     if bodyType == "A":
+        print("body_" + str(bodyType) + str(botNum) + ".urdf created")
         pyrosim.Start_URDF("body_" + str(bodyType) + str(botNum) + ".urdf")
 
         # Torso ---- OG: [0, 0, 1]
