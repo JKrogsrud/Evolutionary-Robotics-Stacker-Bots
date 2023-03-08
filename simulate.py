@@ -2,14 +2,22 @@
 from simulation import SIMULATION
 import sys
 
-print("Here i am in simulate for args")
+print("In Simulate: with args:")
 
 directOrGUI = sys.argv[1]
 solutionID = sys.argv[2]
 bodyType = sys.argv[3]
 numBots = sys.argv[4]
 
+for i in range(5):
+    print(sys.argv[i])
+
 print("here")
+
+directOrGUI = 'GUI'
+solutionID = 0
+bodyType = 'A'
+numBots = 3
 
 simulation = SIMULATION(directOrGUI, solutionID, bodyType, numBots)
 

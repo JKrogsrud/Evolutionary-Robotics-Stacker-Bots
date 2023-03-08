@@ -10,6 +10,7 @@ import generate
 
 class SOLUTION:
     def __init__(self, nextAvailableID, bodyType, numBots):
+        print("Here I am in SOLUTION with: " + str(nextAvailableID) + str(bodyType) + str(numBots))
         self.myID = nextAvailableID
         self.bodyType = bodyType
         self.numBots = numBots
@@ -17,13 +18,21 @@ class SOLUTION:
 
     def Start_Simulation(self, DirectOrGUI):
 
+        print("Calling Create World:")
         self.Create_World()
+        print("Calling Create_Body:")
         self.Create_Body()
         # self.Create_Brain()
-        print("here in solution start_simulation making a system call to simulate with " + DirectOrGUI)
+
+        print("Back in SOLUTION Calling by simulate with os.system with arguments:")
+
+        #os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py ' + str(DirectOrGUI) + ' ' + str(self.myID) + ' ' + str(self.bodyType) + ' ' + str(self.numBots))
+
         os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
-                  'simulate.py' + ' ' + DirectOrGUI + ' ' + str(self.myID) + ' ' + str(self.bodyType) + ' ' + str(self.numBots))
-        print("here I am after my call to simulate")
+                  'simulate.py ' + str(DirectOrGUI) + ' ' + str(self.myID) + ' ' + str(self.bodyType) + ' ' + str(self.numBots))
+        #TODO: Figure out why this is not doing what it's supposed to
+
+        print("Ending Start_Simulation after os.system call")
 
     def Wait_For_Simulation_To_End(self):
 
@@ -60,7 +69,7 @@ class SOLUTION:
         print("here I am in Create Body")
         print("generating bodies..")
         for botNum in range(self.numBots):
-            xCoord = 0 + botNum * 3
+            xCoord = 0 + botNum * 4
             yCoord = 0
             zCoord = 1
             generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)

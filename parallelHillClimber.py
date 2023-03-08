@@ -12,17 +12,18 @@ class PARALLEL_HILLCLIMBER:
 
         # self.parents = {}
         self.nextAvailableID = 0
-
+        print("in PHC:")
         # for parent in range(populationSize):
         #     self.parents[parent] = SOLUTION(self.nextAvailableID)
         #     self.nextAvailableID += 1
 
         # For creation of a multiple bodies
+        print("Calling SOLUTION:")
         self.solution = SOLUTION(self.nextAvailableID, bodyType, numBots)
 
 
     def Evolve(self):
-
+        print("In evolve: calling evaluate")
         self.Evaluate(self.solution)
 
         # self.Evaluate(self.parents)
@@ -79,6 +80,7 @@ class PARALLEL_HILLCLIMBER:
 
     def Evaluate(self, solutions):
 
+        print("In evaluate calling SOLUTION.Start_Simulation:")
         self.solution.Start_Simulation('GUI')
 
         # for solution in solutions:

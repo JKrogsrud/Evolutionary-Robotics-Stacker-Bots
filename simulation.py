@@ -5,8 +5,9 @@ import time
 
 # My own created classes
 from world import WORLD
-from robot import ROBOT
+# from robot import ROBOT
 # import generate # uncomment if you want to run generate automatically before simulate
+from robots import ROBOTS
 
 import constants as c  # File in which we store many of the constants we are using
 
@@ -28,10 +29,14 @@ class SIMULATION:
         p.setGravity(c.X_GRAV, c.Y_GRAV, c.Z_GRAV)
 
         self.world = WORLD()
-        for botNum in range(self.numBots):
-            print(solutionID, bodyType, botNum)
-            robot = ROBOT(solutionID, bodyType, botNum)
-            self.robots.append(robot)
+
+        # for botNum in range(self.numBots):
+        #     print(solutionID, bodyType, botNum)
+        #     robot = ROBOT(solutionID, bodyType, botNum)
+        #     self.robots.append(robot)
+        print("calling robots:")
+        self.robots = ROBOTS(solutionID, bodyType, numBots)
+
 
     def run(self):
         for t in range(c.SIM_LEN):
