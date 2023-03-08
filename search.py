@@ -8,7 +8,7 @@ import constants as c
 #     os.system('"C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py')
 
 # print("Constructing : PHC")
-phc = PARALLEL_HILLCLIMBER(c.bodytype)
+phc = PARALLEL_HILLCLIMBER(c.bodytype, c.numBots)
 #
 # print("Calling Evolve: ")
 phc.Evolve()

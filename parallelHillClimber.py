@@ -5,10 +5,11 @@ from constants import *
 import copy as cp
 class PARALLEL_HILLCLIMBER:
 
-    def __init__(self, bodyType):
+    def __init__(self, bodyType, numBots):
 
         os.system("del brain*.nndf")
         os.system("del fitness*.nndf")
+
         # self.parents = {}
         self.nextAvailableID = 0
 
@@ -17,7 +18,7 @@ class PARALLEL_HILLCLIMBER:
         #     self.nextAvailableID += 1
 
         # For creation of a single body
-        self.solution = SOLUTION(self.nextAvailableID, bodyType=bodyType)
+        self.solution = SOLUTION(self.nextAvailableID, bodyType, numBots)
 
 
 

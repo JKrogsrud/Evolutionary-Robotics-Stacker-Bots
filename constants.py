@@ -46,4 +46,5 @@ populationSize = 10
 """
 Body experimentation
 """
-bodytype = "A_1"
+bodytype = "A"
+numBots = 3
