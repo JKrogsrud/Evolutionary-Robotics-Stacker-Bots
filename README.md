@@ -13,7 +13,7 @@ as part of a hive mind in which their neural networks are all intertwined.
 
 ### Planning
 
-Week 1:
+## Week 1:
 
 I will create a new bot very much similar to a mix between the hillclimber and the quadruped. 
 I hope to give it a shape that will be “stackable” but also limber enough to move climb. 
@@ -21,7 +21,19 @@ This bot will have no neural controller, so all code that simulates sensors, mot
 neural network controller will be commented out. I’ll submit a video of a ragdoll version
 of one robot and show that the joints work correctly.
 
-Results:
+Results:  https://youtu.be/k4eVCKiLt3E
+
+Notes: I've given a quadruped 4 'sensor-flaps' with the aims of sensing when another bot is above or below it.
+Additionally, the robot has a sensor above and below its torso. The 'sensor-flaps' can move with a joint but this may
+be limited in the future. The four legs each have a small join that allows for rotation in the xy plane, like a rotator cuff
+, and then two joints that serve for motion in the z direction.
+
+Additional goals for week 2:
+
+ - Create a function that generates the body.urdf with an x, y, and z coordinate so that the three robots can be
+reproduced dynamically
+ - Given some time I'd like to create another body or two so that I might choose later which body functions the best for
+this experiment
 
 Week 2:
 
