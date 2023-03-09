@@ -49,6 +49,7 @@ Notes:
  -  I seem to have lost the ability to run through terminal, something to work on but results 
 can still be reached without parallelization for now
  - Tweaked location flap sensors to improve connection capabilities when stacked
+ - Altered height of torso to allow sensors to touch a bit easier
 
 Week 3:
 
