@@ -7,6 +7,7 @@ import time
 
 import constants as c
 import generate
+from simulation import SIMULATION
 
 class SOLUTION:
     def __init__(self, nextAvailableID, bodyType, numBots):
@@ -24,17 +25,24 @@ class SOLUTION:
         self.Create_Body()
         # self.Create_Brain()
 
-        print("Back in SOLUTION Calling by simulate with os.system with arguments:")
+        # os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py ' + DirectOrGUI + ' ' + str(self.myID) + ' ' + self.bodyType + ' ' + str(self.numBots))
 
-        #os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py ' + str(DirectOrGUI) + ' ' + str(self.myID) + ' ' + str(self.bodyType) + ' ' + str(self.numBots))
-
-        #os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
+        # os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
         #          'simulate.py ' + str(DirectOrGUI) + ' ' + str(self.myID) + ' ' + str(self.bodyType) + ' ' + str(self.numBots))
-        os.system('START /B "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py 4 GUI 0 A 3')
-        #TODO: Figure out why this is not doing what it's supposed to
-        #simulate.run()
 
-        print("Ending Start_Simulation after os.system call")
+        # os.system('START /B "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py 4 GUI 0 A 3')
+
+        # os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
+        #           'simulate.py' + ' ' + DirectOrGUI + ' ' + str(self.myID))
+
+        # os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py')
+
+        #TODO: Figure out why this is not doing what it's supposed to
+
+        # Running Simulation:
+
+        sim = SIMULATION(DirectOrGUI, self.myID, self.bodyType, self.numBots)
+        sim.run()
 
     def Wait_For_Simulation_To_End(self):
 
@@ -70,11 +78,18 @@ class SOLUTION:
     def Create_Body(self):
         print("here I am in Create Body")
         print("generating bodies..")
-        for botNum in range(self.numBots):
-            xCoord = 0 + botNum * 4
-            yCoord = 0
-            zCoord = 1
-            generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
+        if c.startPos == 'horizontal':
+            for botNum in range(self.numBots):
+                xCoord = 0 + botNum * c.botSpacing
+                yCoord = 0
+                zCoord = 1
+                generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
+        elif c.startPos == 'stacked':
+            for botNum in range(self.numBots):
+                xCoord = 0
+                yCoord = 0
+                zCoord = 0.5 + botNum * c.botSpacing
+                generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
 
     def Create_Brain(self):
         pyrosim.Start_URDF("brain" + str(self.myID) + ".nndf")

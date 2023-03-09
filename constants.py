@@ -48,3 +48,15 @@ Body experimentation
 """
 bodytype = "A"
 numBots = 3
+
+"""
+Bot Spawning
+types: horizontal, stacked
+"""
+# startPos = 'horizontal'
+startPos = 'stacked'
+
+if startPos == 'horizontal':
+    botSpacing = 6
+else:
+    botSpacing = 7
