@@ -9,19 +9,19 @@ from motor import MOTOR
 
 class ROBOT:
 
-    def __init__(self, solutionID, bodytype, botNum):
-        self.bodyType = bodytype
+    def __init__(self, solutionID, bodyType, botNum):
+        self.bodyType = bodyType
         self.botNum = botNum
         self.solutionID = solutionID
-        print("body_" + bodytype + str(self.botNum) + ".urdf")
-        self.robotID = p.loadURDF("body_" + bodytype + str(self.botNum) + ".urdf")
-        #self.nn = NEURAL_NETWORK("brain" + str(self.solutionID) + ".nndf")
+        # print("body_" + bodyType + str(self.botNum) + ".urdf")
+        self.robotID = p.loadURDF("body_" + bodyType + str(self.botNum) + ".urdf")
+        self.nn = NEURAL_NETWORK("brain_" + str(self.solutionID) + str(self.bodyType) + str(self.botNum) + ".nndf")
 
         #os.system("del brain" + str(self.solutionID) + ".nndf")
 
         pyrosim.Prepare_To_Simulate(self.robotID)
+        self.Prepare_To_Sense()
 
-        # self.Prepare_To_Sense()
         # self.Prepare_To_Act()
 
     def Prepare_To_Sense(self):
@@ -34,6 +34,12 @@ class ROBOT:
     def Sense(self):
         for sensor in self.sensors:
             self.sensors[sensor].Get_Value()
+            if sensor in {'TopSensor', 'BottomSensor',
+                          'FrontTopSensor', 'FrontBottomSensor',
+                          'BackTopSensor', 'BackBottomSensor',
+                          'RightTopSensor', 'RightBottomSensor',
+                          'LeftTopSensor', 'LeftBottomSensor'}:
+                print("Robot: " + str(self.botNum) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
 
     def Prepare_To_Act(self):
 

@@ -19,16 +19,17 @@ class SOLUTION:
 
     def Start_Simulation(self, DirectOrGUI):
 
-        print("Calling Create World:")
+        print("Creating Worlds:")
         self.Create_World()
-        print("Calling Create_Body:")
+        print("Creating Bodies:")
         self.Create_Body()
-        # self.Create_Brain()
+        print("Creating Brains")
+        self.Create_Brain()
 
         # os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py ' + DirectOrGUI + ' ' + str(self.myID) + ' ' + self.bodyType + ' ' + str(self.numBots))
 
-        # os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
-        #          'simulate.py ' + str(DirectOrGUI) + ' ' + str(self.myID) + ' ' + str(self.bodyType) + ' ' + str(self.numBots))
+        # os.system('START "a" /B "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" '
+        #           'simulate.py ' + str(DirectOrGUI) + ' ' + str(self.myID) + ' ' + str(self.bodyType) + ' ' + str(self.numBots))
 
         # os.system('START /B "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py 4 GUI 0 A 3')
 
@@ -37,7 +38,7 @@ class SOLUTION:
 
         # os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py')
 
-        #TODO: Figure out why this is not doing what it's supposed to
+        # TODO: Figure out why this is not doing what it's supposed to
 
         # Running Simulation:
 
@@ -92,33 +93,39 @@ class SOLUTION:
                 generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
 
     def Create_Brain(self):
-        pyrosim.Start_URDF("brain" + str(self.myID) + ".nndf")
 
-        pyrosim.Send_Sensor_Neuron(name=0, linkName="Torso")
-        pyrosim.Send_Sensor_Neuron(name=1, linkName="BackLeg")
-        pyrosim.Send_Sensor_Neuron(name=2, linkName="FrontLeg")
-        pyrosim.Send_Sensor_Neuron(name=3, linkName="LeftLeg")
-        pyrosim.Send_Sensor_Neuron(name=4, linkName="RightLeg")
-        pyrosim.Send_Sensor_Neuron(name=5, linkName="LowerBackLeg")
-        pyrosim.Send_Sensor_Neuron(name=6, linkName="LowerFrontLeg")
-        pyrosim.Send_Sensor_Neuron(name=7, linkName="LowerLeftLeg")
-        pyrosim.Send_Sensor_Neuron(name=8, linkName="LowerRightLeg")
+        # Moving this to generate.py
 
-        pyrosim.Send_Motor_Neuron(name=9, jointName="Torso_BackLeg")
-        pyrosim.Send_Motor_Neuron(name=10, jointName="Torso_FrontLeg")
-        pyrosim.Send_Motor_Neuron(name=11, jointName="Torso_LeftLeg")
-        pyrosim.Send_Motor_Neuron(name=12, jointName="Torso_RightLeg")
-        pyrosim.Send_Motor_Neuron(name=13, jointName="BackLeg_LowerBackLeg")
-        pyrosim.Send_Motor_Neuron(name=14, jointName="FrontLeg_LowerFrontLeg")
-        pyrosim.Send_Motor_Neuron(name=15, jointName="LeftLeg_LowerLeftLeg")
-        pyrosim.Send_Motor_Neuron(name=16, jointName="RightLeg_LowerRightLeg")
+        for botNum in range(self.numBots):
+            generate.Generate_Brain(self.myID, self.bodyType, botNum)
 
-        for currentRow in range(c.numSensorNeurons):
-            for currentColumn in range(c.numMotorNeurons):
-                pyrosim.Send_Synapse(sourceNeuronName=currentRow,
-                                     targetNeuronName=currentColumn+c.numSensorNeurons,
-                                     weight=self.weights[currentRow][currentColumn])
-        pyrosim.End()  # Close sdf file
+        # pyrosim.Start_URDF("brain" + str(self.myID) + ".nndf")
+        #
+        # pyrosim.Send_Sensor_Neuron(name=0, linkName="Torso")
+        # pyrosim.Send_Sensor_Neuron(name=1, linkName="BackLeg")
+        # pyrosim.Send_Sensor_Neuron(name=2, linkName="FrontLeg")
+        # pyrosim.Send_Sensor_Neuron(name=3, linkName="LeftLeg")
+        # pyrosim.Send_Sensor_Neuron(name=4, linkName="RightLeg")
+        # pyrosim.Send_Sensor_Neuron(name=5, linkName="LowerBackLeg")
+        # pyrosim.Send_Sensor_Neuron(name=6, linkName="LowerFrontLeg")
+        # pyrosim.Send_Sensor_Neuron(name=7, linkName="LowerLeftLeg")
+        # pyrosim.Send_Sensor_Neuron(name=8, linkName="LowerRightLeg")
+
+        # pyrosim.Send_Motor_Neuron(name=9, jointName="Torso_BackLeg")
+        # pyrosim.Send_Motor_Neuron(name=10, jointName="Torso_FrontLeg")
+        # pyrosim.Send_Motor_Neuron(name=11, jointName="Torso_LeftLeg")
+        # pyrosim.Send_Motor_Neuron(name=12, jointName="Torso_RightLeg")
+        # pyrosim.Send_Motor_Neuron(name=13, jointName="BackLeg_LowerBackLeg")
+        # pyrosim.Send_Motor_Neuron(name=14, jointName="FrontLeg_LowerFrontLeg")
+        # pyrosim.Send_Motor_Neuron(name=15, jointName="LeftLeg_LowerLeftLeg")
+        # pyrosim.Send_Motor_Neuron(name=16, jointName="RightLeg_LowerRightLeg")
+
+        # for currentRow in range(c.numSensorNeurons):
+        #     for currentColumn in range(c.numMotorNeurons):
+        #         pyrosim.Send_Synapse(sourceNeuronName=currentRow,
+        #                              targetNeuronName=currentColumn+c.numSensorNeurons,
+        #                              weight=self.weights[currentRow][currentColumn])
+        # pyrosim.End()  # Close sdf file
 
     def Set_ID(self, newID):
         self.myID = newID

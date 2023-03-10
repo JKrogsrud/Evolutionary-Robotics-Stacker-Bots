@@ -9,7 +9,8 @@ SIM_LEN = 25000
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
 Y_GRAV = 0
-Z_GRAV = -9.8
+# Z_GRAV = -9.8
+Z_GRAV = -30
 
 """
 BOT CONSTANTS
@@ -47,7 +48,7 @@ populationSize = 10
 Body experimentation
 """
 bodytype = "A"
-numBots = 3
+numBots = 5
 
 """
 Bot Spawning
