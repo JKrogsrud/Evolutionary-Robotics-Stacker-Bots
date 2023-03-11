@@ -50,6 +50,7 @@ def Get_Touch_Sensor_Value_For_Link(linkName):
 
     pts = p.getContactPoints()
 
+
     for pt in pts:
 
         linkIndex = pt[4]
@@ -85,7 +86,8 @@ def Prepare_Link_Dictionary(bodyID):
 
            rootLinkName = jointName[0]
 
-           linkNamesToIndices[rootLinkName] = -1 
+           linkNamesToIndices[rootLinkName] = -1
+
 
 def Prepare_Joint_Dictionary(bodyID):
 

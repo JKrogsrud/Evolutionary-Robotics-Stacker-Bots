@@ -28,7 +28,10 @@ class ROBOT:
 
         self.sensors = {}
 
-        for linkName in pyrosim.linkNamesToIndices:# This is created after Prepare_To_Simulate
+        # TODO: I think this is a gloabl dictionary and not robot specific -
+        #       i.e. each robot is reporting the sensor results of all robots?
+
+        for linkName in pyrosim.linkNamesToIndices: # This is created after Prepare_To_Simulate
             self.sensors[linkName] = SENSOR(linkName)
 
     def Sense(self):

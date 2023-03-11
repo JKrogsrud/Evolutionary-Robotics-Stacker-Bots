@@ -161,43 +161,43 @@ def Generate_Brain(solutionID, bodyType, botNum):
 
     # Sensors for Cubes
     # Torso Sensors
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 0, linkName='Torso')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 1, linkName='TopSensor')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 2, linkName='BottomSensor')
+    pyrosim.Send_Sensor_Neuron(name=0, linkName='Torso')
+    pyrosim.Send_Sensor_Neuron(name=1, linkName='TopSensor')
+    pyrosim.Send_Sensor_Neuron(name=2, linkName='BottomSensor')
 
     # Flaps
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 3, linkName='FrontFlap')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 4, linkName='FrontTopSensor')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 5, linkName='FrontBottomSensor')
+    pyrosim.Send_Sensor_Neuron(name=3, linkName='FrontFlap')
+    pyrosim.Send_Sensor_Neuron(name=4, linkName='FrontTopSensor')
+    pyrosim.Send_Sensor_Neuron(name=5, linkName='FrontBottomSensor')
 
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 6, linkName='BackFlap')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 7, linkName='BackTopSensor')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 8, linkName='BackBottomSensor')
+    pyrosim.Send_Sensor_Neuron(name=6, linkName='BackFlap')
+    pyrosim.Send_Sensor_Neuron(name=7, linkName='BackTopSensor')
+    pyrosim.Send_Sensor_Neuron(name=8, linkName='BackBottomSensor')
 
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 9, linkName='RightFlap')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 10, linkName='RightTopSensor')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 11, linkName='RightBottomSensor')
+    pyrosim.Send_Sensor_Neuron(name=9, linkName='RightFlap')
+    pyrosim.Send_Sensor_Neuron(name=10, linkName='RightTopSensor')
+    pyrosim.Send_Sensor_Neuron(name=11, linkName='RightBottomSensor')
 
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 12, linkName='LeftFlap')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 13, linkName='LeftTopSensor')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 14, linkName='LeftBottomSensor')
+    pyrosim.Send_Sensor_Neuron(name=12, linkName='LeftFlap')
+    pyrosim.Send_Sensor_Neuron(name=13, linkName='LeftTopSensor')
+    pyrosim.Send_Sensor_Neuron(name=14, linkName='LeftBottomSensor')
 
     # Legs
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 15, linkName='URTopLeg')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 16, linkName='URBottomLeg')
+    pyrosim.Send_Sensor_Neuron(name=15, linkName='URTopLeg')
+    pyrosim.Send_Sensor_Neuron(name=16, linkName='URBottomLeg')
 
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 17, linkName='ULTopLeg')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 18, linkName='ULBottomLeg')
+    pyrosim.Send_Sensor_Neuron(name=17, linkName='ULTopLeg')
+    pyrosim.Send_Sensor_Neuron(name=18, linkName='ULBottomLeg')
 
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 19, linkName='BRTopLeg')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 20, linkName='BRBottomLeg')
+    pyrosim.Send_Sensor_Neuron(name=19, linkName='BRTopLeg')
+    pyrosim.Send_Sensor_Neuron(name=20, linkName='BRBottomLeg')
 
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 21, linkName='BLTopLeg')
-    pyrosim.Send_Sensor_Neuron(name=(23 * botNum) + 22, linkName='BLBottomLeg')
+    pyrosim.Send_Sensor_Neuron(name=21, linkName='BLTopLeg')
+    pyrosim.Send_Sensor_Neuron(name=22, linkName='BLBottomLeg')
 
     pyrosim.End()
 
-    # for sensor_name (23 * botNum)+ in range(3):
+    # for sensor_name in range(3):
     #     for motor in range(3, 5):
     #         pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=random.random() % 1)
     # pyrosim.End()  # Close sdf file
