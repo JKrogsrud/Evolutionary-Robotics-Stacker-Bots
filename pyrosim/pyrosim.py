@@ -66,6 +66,7 @@ def Prepare_Link_Dictionary(bodyID):
 
     linkNamesToIndices = {}
 
+    print("Preparing Link Dict")
     for jointIndex in range( 0 , p.getNumJoints(bodyID) ):
 
         jointInfo = p.getJointInfo( bodyID , jointIndex )

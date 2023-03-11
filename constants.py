@@ -48,14 +48,14 @@ populationSize = 10
 Body experimentation
 """
 bodytype = "A"
-numBots = 5
+numBots = 2
 
 """
 Bot Spawning
 types: horizontal, stacked
 """
-# startPos = 'horizontal'
-startPos = 'stacked'
+startPos = 'horizontal'
+# startPos = 'stacked'
 
 if startPos == 'horizontal':
     botSpacing = 6
