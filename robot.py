@@ -27,19 +27,18 @@ class ROBOT:
     def Prepare_To_Sense(self):
 
         self.sensors = {}
-        print("prepare to sense:")
+
         for linkName in pyrosim.linkNamesToIndices:# This is created after Prepare_To_Simulate
-            print(linkName)
             self.sensors[linkName] = SENSOR(linkName)
 
     def Sense(self):
         for sensor in self.sensors:
 
-            if sensor in {str(self.botNum) + 'TopSensor', str(self.botNum) + 'BottomSensor',
-                          str(self.botNum) + 'FrontTopSensor', str(self.botNum) + 'FrontBottomSensor',
-                          str(self.botNum) + 'BackTopSensor', str(self.botNum) + 'BackBottomSensor',
-                          str(self.botNum) + 'RightTopSensor', str(self.botNum) + 'RightBottomSensor',
-                          str(self.botNum) + 'LeftTopSensor', str(self.botNum) + 'LeftBottomSensor'}:
+            if sensor in {'TopSensor', 'BottomSensor',
+                          'FrontTopSensor', 'FrontBottomSensor',
+                          'BackTopSensor', 'BackBottomSensor',
+                          'RightTopSensor', 'RightBottomSensor',
+                          'LeftTopSensor', 'LeftBottomSensor'}:
                 print("Robot: " + str(self.botNum) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
 
     def Prepare_To_Act(self):
