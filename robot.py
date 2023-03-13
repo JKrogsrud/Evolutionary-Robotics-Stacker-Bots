@@ -36,13 +36,7 @@ class ROBOT:
 
     def Sense(self):
         for sensor in self.sensors:
-
-            if sensor in {'TopSensor', 'BottomSensor',
-                          'FrontTopSensor', 'FrontBottomSensor',
-                          'BackTopSensor', 'BackBottomSensor',
-                          'RightTopSensor', 'RightBottomSensor',
-                          'LeftTopSensor', 'LeftBottomSensor'}:
-                print("Robot: " + str(self.botNum) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
+            print("Robot: " + str(self.botNum) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
 
     def Prepare_To_Act(self):
 

@@ -43,7 +43,8 @@ class SIMULATION:
             if self.directOrGui == "GUI":
                 time.sleep(c.SLEEP_TIME)
             for robot in self.robots:
-                robot.Sense()
+                if t % 50 == 0:
+                    robot.Sense()
             # self.robot.Think()
             # self.robot.Act()
 

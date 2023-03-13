@@ -48,7 +48,7 @@ populationSize = 10
 Body experimentation
 """
 bodytype = "A"
-numBots = 2
+numBots = 4
 
 """
 Bot Spawning
