@@ -18,15 +18,34 @@ BOT CONSTANTS
 # Frame repetition
 FRAMES = 1000
 
-# Back Leg values
-BACK_AMP = 4 * np.pi / 16
-BACK_FREQ = 6.1
-BACK_PHASE = -4 * np.pi / 16
+"""
+MOTOR CONSTANTS
+"""
 
-# Front Leg Values
-FRONT_AMP = 3 * np.pi / 16
-FRONT_FREQ = 6.1
-FRONT_PHASE = 0
+# FLAPS
+FLAP_AMPS = 3 * np.pi / 16
+FLAP_FREQ = 6.1
+FLAP_OFFSET = - np.pi / 4
+FLAP_TRANSLATION = - np.pi / 4
+
+# ROTATORS
+ROTATOR_AMPS = np.pi / 4
+ROTATOR_FREQ = 6.1
+ROTATOR_OFFSET = - np.pi / 4
+ROTATOR_TRANSLATION = np.pi /4
+
+# LEGS
+# Upper Leg
+UPPER_LEG_AMPS = np.pi / 6
+UPPER_LEG_FREQ = 6.1
+UPPER_LEG_OFFSET = -np.pi / 5
+UPPER_LEG_TRANSLATION = 0
+
+# Lower Leg
+LOWER_LEG_AMPS = np.pi / 4
+LOWER_LEG_FREQ = 6.1
+LOWER_LEG_OFFSET = -np.pi / 2
+LOWER_LEG_TRANSLATION = np.pi / 3
 
 # Motor Force
 MAX_FORCE = 100
@@ -48,14 +67,14 @@ populationSize = 10
 Body experimentation
 """
 bodytype = "A"
-numBots = 4
+numBots = 3
 
 """
 Bot Spawning
 types: horizontal, stacked
 """
-startPos = 'horizontal'
-# startPos = 'stacked'
+# startPos = 'horizontal'
+startPos = 'stacked'
 
 if startPos == 'horizontal':
     botSpacing = 6

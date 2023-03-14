@@ -58,6 +58,7 @@ class ROBOT:
 
         # TODO: add in a way to pull random oscilations instead of NN
         #       this will change to the above once the full NN is active
+
         for neuronName in self.nn.Get_Neuron_Names():
             if self.nn.Is_Motor_Neuron(neuronName):
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)

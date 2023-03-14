@@ -46,7 +46,7 @@ class SIMULATION:
                 # if t % 50 == 0:
                 robot.Sense()
             # self.robot.Think()
-                robot.Act()
+                robot.Act(t)
 
     def __del__(self):
         # self.robot.Save_Values()
