@@ -22,7 +22,7 @@ class ROBOT:
         pyrosim.Prepare_To_Simulate(self.robotID)
         self.Prepare_To_Sense()
 
-        # self.Prepare_To_Act()
+        self.Prepare_To_Act()
 
     def Prepare_To_Sense(self):
 
@@ -49,14 +49,19 @@ class ROBOT:
         self.nn.Update()
         #self.nn.Print()
 
-    def Act(self):
+    def Act(self, time_stamp):
+        # for neuronName in self.nn.Get_Neuron_Names():
+        #     if self.nn.Is_Motor_Neuron(neuronName):
+        #         jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
+        #         desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRange
+        #         self.motors[jointName].Set_Value(self.robotID, desiredAngle)
+
+        # TODO: add in a way to pull random oscilations instead of NN
+        #       this will change to the above once the full NN is active
         for neuronName in self.nn.Get_Neuron_Names():
             if self.nn.Is_Motor_Neuron(neuronName):
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
-                desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRange
-                self.motors[jointName].Set_Value(self.robotID, desiredAngle)
-
-
+                self.motors[jointName].Set_Value(self.robotID, time_stamp)
 
     def Save_Values(self):
 

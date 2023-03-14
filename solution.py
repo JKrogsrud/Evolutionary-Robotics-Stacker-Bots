@@ -11,7 +11,7 @@ from simulation import SIMULATION
 
 class SOLUTION:
     def __init__(self, nextAvailableID, bodyType, numBots):
-        print("Here I am in SOLUTION with: " + str(nextAvailableID) + str(bodyType) + str(numBots))
+        # print("Here I am in SOLUTION with: " + str(nextAvailableID) + str(bodyType) + str(numBots))
         self.myID = nextAvailableID
         self.bodyType = bodyType
         self.numBots = numBots
@@ -77,8 +77,8 @@ class SOLUTION:
         pyrosim.End()  # Close sdf file
 
     def Create_Body(self):
-        print("here I am in Create Body")
-        print("generating bodies..")
+        # print("here I am in Create Body")
+        # print("generating bodies..")
         if c.startPos == 'horizontal':
             for botNum in range(self.numBots):
                 xCoord = 0 + botNum * c.botSpacing
