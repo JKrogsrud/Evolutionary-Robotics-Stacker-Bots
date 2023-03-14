@@ -72,10 +72,22 @@ Additional tasks for Week 3:
  - Debug the sensors so each robot does not somehow share what the last robot generated is sensing
  - Find out why I can no longer run multiple windows
 
-Week 3:
+## Week 3:
 
 I will attach motors to my stacker-bots with oscillatory motion and submit a video of 
 the them moving rhythmically in response.
+
+Notes:
+
+ - Motors Attached easily enough
+ - have yet to work on other outstanding issue
+ - Slow week due to spring break
+
+Video of Results: https://youtu.be/NZ42BIrVYmo
+
+Additional Tasks for Week 4:
+ - Debug the sensors so each robot does not somehow share what the last robot generated is sensing
+ - Find out why I can no longer run multiple windows
 
 Week 4:
 
