@@ -61,6 +61,7 @@ def Get_Touch_Sensor_Value_For_Link(linkName):
 
     return touchValue
 
+
 def Prepare_Link_Dictionary(bodyID):
 
     global linkNamesToIndices
@@ -68,9 +69,9 @@ def Prepare_Link_Dictionary(bodyID):
     linkNamesToIndices = {}
 
     print("Preparing Link Dict")
-    for jointIndex in range( 0 , p.getNumJoints(bodyID) ):
+    for jointIndex in range(0, p.getNumJoints(bodyID)):
 
-        jointInfo = p.getJointInfo( bodyID , jointIndex )
+        jointInfo = p.getJointInfo(bodyID, jointIndex)
 
         jointName = jointInfo[1]
 
@@ -82,11 +83,13 @@ def Prepare_Link_Dictionary(bodyID):
 
         linkNamesToIndices[linkName] = jointIndex
 
-        if jointIndex==0:
+        if jointIndex == 0:
 
-           rootLinkName = jointName[0]
+            rootLinkName = jointName[0]
 
-           linkNamesToIndices[rootLinkName] = -1
+            linkNamesToIndices[rootLinkName] = -1
+
+    print(linkNamesToIndices)
 
 
 def Prepare_Joint_Dictionary(bodyID):
@@ -95,6 +98,7 @@ def Prepare_Joint_Dictionary(bodyID):
 
     jointNamesToIndices = {}
 
+    print("Preparing Joint Dictionary")
     for jointIndex in range( 0 , p.getNumJoints(bodyID) ):
 
         jointInfo = p.getJointInfo( bodyID , jointIndex )
@@ -102,6 +106,8 @@ def Prepare_Joint_Dictionary(bodyID):
         jointName = jointInfo[1].decode('UTF-8')
 
         jointNamesToIndices[jointName] = jointIndex
+
+    print(jointNamesToIndices)
 
 def Prepare_To_Simulate(bodyID):
 

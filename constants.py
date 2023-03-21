@@ -90,7 +90,7 @@ else:
 
 """
 Bot Motion
-types: oscillatory, randomNN, distributiveNN, hivemind
+types: ragdoll, oscillatory, randomNN, distributiveNN, hivemind
 """
 
 MOTION_TYPE = 'oscillatory'

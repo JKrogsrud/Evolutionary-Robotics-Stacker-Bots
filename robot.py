@@ -14,6 +14,7 @@ class ROBOT:
         self.botNum = botNum
         self.solutionID = solutionID
         # print("body_" + bodyType + str(self.botNum) + ".urdf")
+
         self.robotID = p.loadURDF("body_" + bodyType + str(self.botNum) + ".urdf")
         self.nn = NEURAL_NETWORK("brain_" + str(self.solutionID) + str(self.bodyType) + str(self.botNum) + ".nndf")
 
@@ -43,7 +44,7 @@ class ROBOT:
         self.motors = {}
 
         for jointName in pyrosim.jointNamesToIndices:
-            self.motors[jointName] = MOTOR(jointName)
+            self.motors[jointName] = MOTOR(jointName, self.botNum)
 
     def Think(self):
         self.nn.Update()
