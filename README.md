@@ -89,10 +89,17 @@ Additional Tasks for Week 4:
  - Debug the sensors so each robot does not somehow share what the last robot generated is sensing
  - Find out why I can no longer run multiple windows
 
-Week 4:
+## Week 4:
 
 I will now reattach the Neural Network to the stacker-bots, 
 each with its own neural network, and allow them to move randomly.
+
+Notes:
+
+ - Figured out the problem with sensors. Prepare_To-Simulate in Pyrosim is set up to create a global 
+dictionary but that dictionary is still only local to a single call to pyrosim so every time a new 
+urdf file is read it restarts the dictionary. What I need to do is modify robot to really just be ALL the robots.
+
 
 Week 5:
 
