@@ -9,8 +9,7 @@ SIM_LEN = 25000
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
 Y_GRAV = 0
-# Z_GRAV = -9.8
-Z_GRAV = -30
+Z_GRAV = -9.8
 
 """
 BOT CONSTANTS
@@ -19,7 +18,7 @@ BOT CONSTANTS
 FRAMES = 1000
 
 """
-MOTOR CONSTANTS
+MOTOR CONSTANTS - Oscillatory
 """
 
 # FLAPS
@@ -53,7 +52,9 @@ MAX_FORCE = 100
 # Joint Restrictions
 motorJointRange = 0.4
 
-# Neural Network
+"""
+Neural Network
+"""
 numSensorNeurons = 9
 numMotorNeurons = 8
 
@@ -69,14 +70,27 @@ Body experimentation
 bodytype = "A"
 numBots = 3
 
+if bodytype == 'A':
+    topFlapSensorOffset = .45
+    bottomFlapSensorOffset = .55
+    torsoHeight = .20
+    torsoSensorHeight = .15
+    torsoSensorSize = .75
 """
 Bot Spawning
 types: horizontal, stacked
 """
-# startPos = 'horizontal'
-startPos = 'stacked'
+startPos = 'horizontal'
+# startPos = 'stacked'
 
 if startPos == 'horizontal':
     botSpacing = 6
 else:
     botSpacing = 7
+
+"""
+Bot Motion
+types: oscillatory, randomNN, distributiveNN, hivemind
+"""
+
+MOTION_TYPE = 'oscillatory'
