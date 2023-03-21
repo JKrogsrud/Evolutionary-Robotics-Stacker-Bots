@@ -16,7 +16,7 @@ class SIMULATION:
         self.directOrGui = directOrGUI
         self.bodyType = bodyType
         self.numBots = numBots
-        self.robots = []
+        # self.robots = []
 
         if (directOrGUI == "DIRECT"):
             self.physicsClient = p.connect(p.DIRECT)
@@ -28,10 +28,13 @@ class SIMULATION:
 
         self.world = WORLD()
 
-        for botNum in range(self.numBots):
-            print(solutionID, bodyType, botNum)
-            robot = ROBOT(solutionID, bodyType, botNum)
-            self.robots.append(robot)
+        # Creating robots all in one file to fix sensor issues
+        self.robots = ROBOT(solutionID, bodyType, self.numBots)
+
+        # for botNum in range(self.numBots):
+        #     print(solutionID, bodyType)
+        #     robot = ROBOT(solutionID, bodyType, botNum)
+        #     self.robots.append(robot)
 
         # print("calling robots:")
         # self.robots = ROBOTS(solutionID, bodyType, numBots)

@@ -5,16 +5,18 @@ import generate
 
 
 class MOTOR:
-    def __init__(self, jointName, botNum):
+    def __init__(self, jointName, numBots):
         self.jointName = jointName
-        self.botNum = botNum
+        self.numBots = numBots
         self.Prepare_To_Act()
 
 
     def Prepare_To_Act(self):
 
         if c.MOTION_TYPE == 'oscillatory':
-            self.motorValues = generate.Generate_Oscillation(c.bodytype, self.jointName, self.botNum)
+            self.motorValues = generate.Generate_Oscillation(c.bodytype, self.jointName, self.numBots)
+        elif c.MOTION_TYPE == 'ragdoll':
+            pass
 
     def Set_Value(self, robotID, time_stamp):
 
