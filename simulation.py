@@ -5,7 +5,7 @@ import time
 
 # My own created classes
 from world import WORLD
-from robot import ROBOT
+from robot import ROBOTSWARM
 
 import constants as c  # File in which we store many of the constants we are using
 
@@ -16,7 +16,7 @@ class SIMULATION:
         self.directOrGui = directOrGUI
         self.bodyType = bodyType
         self.numBots = numBots
-        # self.robots = []
+        self.robots = []
 
         if (directOrGUI == "DIRECT"):
             self.physicsClient = p.connect(p.DIRECT)
@@ -29,12 +29,7 @@ class SIMULATION:
         self.world = WORLD()
 
         # Creating robots all in one file to fix sensor issues
-        self.robots = ROBOT(solutionID, bodyType, self.numBots)
-
-        # for botNum in range(self.numBots):
-        #     print(solutionID, bodyType)
-        #     robot = ROBOT(solutionID, bodyType, botNum)
-        #     self.robots.append(robot)
+        self.robots = ROBOTSWARM(solutionID, bodyType, self.numBots)
 
         # print("calling robots:")
         # self.robots = ROBOTS(solutionID, bodyType, numBots)
@@ -45,11 +40,8 @@ class SIMULATION:
             p.stepSimulation()
             if self.directOrGui == "GUI":
                 time.sleep(c.SLEEP_TIME)
-            for robot in self.robots:
-                # if t % 50 == 0:
-                robot.Sense()
-            # self.robot.Think()
-                robot.Act(t)
+            self.robots.Sense()
+            self.robots.Act(t)
 
     def __del__(self):
         # self.robot.Save_Values()

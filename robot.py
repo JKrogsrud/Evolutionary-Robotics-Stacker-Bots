@@ -7,40 +7,47 @@ import os
 from sensor import SENSOR
 from motor import MOTOR
 
-class ROBOT:
+class ROBOTSWARM:
 
     def __init__(self, solutionID, bodyType, numBots):
         self.bodyType = bodyType
         self.numBots = numBots
         self.solutionID = solutionID
-        # print("body_" + bodyType + str(self.botNum) + ".urdf")
 
-        self.robotID = p.loadURDF("body_" + self.bodyType + ".urdf")
-        self.nn = NEURAL_NETWORK("brain_" + str(self.solutionID) + str(self.bodyType) + ".nndf")
+        self.bots = {}
+
+        for botNum in range(self.numBots):
+            robotID = p.loadURDF("body_" + self.bodyType + str(botNum) + ".urdf")
+            self.nn = NEURAL_NETWORK("brain_" + str(self.solutionID) + str(self.bodyType) + str(botNum) + ".nndf")
+            self.bots[robotID] = ROBOT(robotID)
 
         #os.system("del brain" + str(self.solutionID) + ".nndf")
 
-        pyrosim.Prepare_To_Simulate(self.robotID)
+        self.linkInfo, self.jointInfo = pyrosim.Prepare_To_Simulate(list(self.bots.keys()))
+
+        # Prepare the info needed for sensors and motors in the bots
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
 
     def Prepare_To_Sense(self):
 
-        self.sensors = {}
+        for bot in self.bots:
+            bot.Prepare_To_Sense(self.linkInfo[bot])
 
-        for linkName in pyrosim.linkNamesToIndices:  # This is created after Prepare_To_Simulate
-            self.sensors[linkName] = SENSOR(linkName)
+        # for linkName in pyrosim.linkNamesToIndices:  # This is created after Prepare_To_Simulate
+        #     self.sensors[linkName] = SENSOR(linkName)
 
     def Sense(self):
-        for sensor in self.sensors:
-            print("Robot: " + str(sensor.linkName[0]) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
+
+        for bot in self.bots:
+            bot.Sense()
+        # for sensor in self.sensors:
+        #     print("Robot: " + str(self.sensors[sensor]) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
 
     def Prepare_To_Act(self):
 
-        self.motors = {}
-
-        for jointName in pyrosim.jointNamesToIndices:
-            self.motors[jointName] = MOTOR(jointName, self.numBots)
+        for bot in self.bots:
+            bot.Prepare_To_Act(self.jointInfo[bot])
 
     def Think(self):
         self.nn.Update()
@@ -53,16 +60,9 @@ class ROBOT:
         #         desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRange
         #         self.motors[jointName].Set_Value(self.robotID, desiredAngle)
 
-        # TODO: add in a way to pull random oscilations instead of NN
-        #       this will change to the above once the full NN is active
+        for bot in self.bots:
+            bot.Act()
 
-        if c.MOTION_TYPE == 'oscillatory':
-            for neuronName in self.nn.Get_Neuron_Names():
-                if self.nn.Is_Motor_Neuron(neuronName):
-                    jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
-                    self.motors[jointName].Set_Value(self.robotID, time_stamp)
-        elif c.MOTION_TYPE == 'ragdoll':
-            pass
 
     def Save_Values(self):
 
@@ -84,3 +84,30 @@ class ROBOT:
 
         os.rename("tmp"+ str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
 
+class ROBOT:
+
+    def __init__(self, robotID):
+        self.botID = robotID
+
+    def Prepare_To_Sense(self, linkInfo):
+        self.sensors = {}
+        for linkName in linkInfo:
+            self.sensors[linkName] = SENSOR(linkName)
+
+    def Prepare_To_Act(self, jointInfo):
+        self.motors = {}
+        for jointName in jointInfo:
+            self.motors[jointName] = MOTOR(jointName, self.botID)
+
+    def Sense(self):
+        for sensor in self.sensors:
+            print("Robot: " + str(self.botID) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
+
+    def Act(self):
+        if c.MOTION_TYPE == 'oscillatory':
+            for neuronName in self.nn.Get_Neuron_Names():
+                if self.nn.Is_Motor_Neuron(neuronName):
+                    jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
+                    self.motors[jointName].Set_Value(self.robotID, time_stamp)
+        elif c.MOTION_TYPE == 'ragdoll':
+            pass

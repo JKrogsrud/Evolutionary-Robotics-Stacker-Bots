@@ -80,32 +80,32 @@ class SOLUTION:
         # Moving this call entirely to generate to create all bodies in one file instead of separate .urdfs
         # this may not be necessary but will be helpful to fix sensors to have everything there
 
-        generate.Generate_Bodies(c.bodytype, self.numBots)
+        # generate.Generate_Bodies(c.bodytype, self.numBots)
 
-        # if c.startPos == 'horizontal':
-        #     for botNum in range(self.numBots):
-        #         xCoord = 0 + botNum * c.botSpacing
-        #         yCoord = 0
-        #         zCoord = 1
-        #         generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
-        # elif c.startPos == 'stacked':
-        #     for botNum in range(self.numBots):
-        #         xCoord = 0
-        #         yCoord = 0
-        #         zCoord = 0.5 + botNum * c.botSpacing
-        #         generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
+        if c.startPos == 'horizontal':
+            for botNum in range(self.numBots):
+                xCoord = 0 + botNum * c.botSpacing
+                yCoord = 0
+                zCoord = 1
+                generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
+        elif c.startPos == 'stacked':
+            for botNum in range(self.numBots):
+                xCoord = 0
+                yCoord = 0
+                zCoord = 0.5 + botNum * c.botSpacing
+                generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
 
     def Create_Brain(self):
 
         # Moving this to generate.py
 
-        generate.Generate_Brains(self.myID, c.bodytype, self.numBots)
+        # generate.Generate_Brains(self.myID, c.bodytype, self.numBots)
 
         # Below has been moved to generate to create all brains and sensors at once in hopes to fix
         # outstanding issues
 
-        # for botNum in range(self.numBots):
-        #     generate.Generate_Brain(self.myID, self.bodyType, botNum)
+        for botNum in range(self.numBots):
+            generate.Generate_Brain(self.myID, self.bodyType, botNum)
 
         # pyrosim.Start_URDF("brain" + str(self.myID) + ".nndf")
         #

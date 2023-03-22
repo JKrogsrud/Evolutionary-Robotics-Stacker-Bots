@@ -20,7 +20,7 @@ URDF_FILETYPE = 1
 
 NNDF_FILETYPE   = 2
 
-# global availableLinkIndex
+global availableLinkIndex
 
 global linkNamesToIndices
 
@@ -62,58 +62,70 @@ def Get_Touch_Sensor_Value_For_Link(linkName):
     return touchValue
 
 
-def Prepare_Link_Dictionary(bodyID):
+def Prepare_Link_Dictionary(bodyIDList):
 
     global linkNamesToIndices
 
     linkNamesToIndices = {}
 
-    print("Preparing Link Dict")
-    for jointIndex in range(0, p.getNumJoints(bodyID)):
+    linkInfoDict = {}
 
-        jointInfo = p.getJointInfo(bodyID, jointIndex)
+    for bodyID in bodyIDList:
+        linkNames = []
+        for jointIndex in range(0, p.getNumJoints(bodyID)):
 
-        jointName = jointInfo[1]
+            jointInfo = p.getJointInfo(bodyID, jointIndex)
 
-        jointName = jointName.decode("utf-8")
+            jointName = jointInfo[1]
 
-        jointName = jointName.split("_")
+            jointName = jointName.decode("utf-8")
 
-        linkName = jointName[1]
+            jointName = jointName.split("_")
 
-        linkNamesToIndices[linkName] = jointIndex
+            linkName = jointName[1]
 
-        if jointIndex == 0:
+            linkNames.append(linkName)
 
-            rootLinkName = jointName[0]
+            linkNamesToIndices[linkName] = jointIndex
 
-            linkNamesToIndices[rootLinkName] = -1
+            if jointIndex == 0:
 
-    print(linkNamesToIndices)
+                rootLinkName = jointName[0]
+
+                linkNamesToIndices[rootLinkName] = -1
+        linkInfoDict[bodyID] = linkNames
+    return linkInfoDict
 
 
-def Prepare_Joint_Dictionary(bodyID):
+def Prepare_Joint_Dictionary(bodyIDList):
 
     global jointNamesToIndices
 
     jointNamesToIndices = {}
 
-    print("Preparing Joint Dictionary")
-    for jointIndex in range( 0 , p.getNumJoints(bodyID) ):
+    jointInfoDict = {}
 
-        jointInfo = p.getJointInfo( bodyID , jointIndex )
+    for bodyID in bodyIDList:
+        jointNames = []
+        for jointIndex in range( 0 , p.getNumJoints(bodyID) ):
 
-        jointName = jointInfo[1].decode('UTF-8')
+            jointInfo = p.getJointInfo( bodyID , jointIndex )
 
-        jointNamesToIndices[jointName] = jointIndex
+            jointName = jointInfo[1].decode('UTF-8')
 
-    print(jointNamesToIndices)
+            jointNames.append(jointName) # I added this
 
-def Prepare_To_Simulate(bodyID):
+            jointNamesToIndices[jointName] = jointIndex
+        jointInfoDict[bodyID] = jointNames
+    return jointInfoDict
 
-    Prepare_Link_Dictionary(bodyID)
+def Prepare_To_Simulate(bodyIDList):
 
-    Prepare_Joint_Dictionary(bodyID)
+    linkInfo = Prepare_Link_Dictionary(bodyIDList)
+
+    jointInfo = Prepare_Joint_Dictionary(bodyIDList)
+
+    return linkInfo, jointInfo
 
 def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1]):
 

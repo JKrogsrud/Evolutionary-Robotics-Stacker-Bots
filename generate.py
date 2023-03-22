@@ -152,174 +152,173 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord):
         pyrosim.End()  # Close sdf file
 
 
-def Generate_Bodies(bodyType, numBots):
+def Generate_Bodies(bodyType, botNum):
     if bodyType == 'A':
 
-        pyrosim.Start_URDF('body_' + str(bodyType) + '.urdf')
+        pyrosim.Start_URDF('body_' + str(bodyType) + str(botNum) + '.urdf')
 
-        for botNum in range(numBots):
-            if c.startPos == 'horizontal':
-                xCoord = 0 + botNum * c.botSpacing
-                yCoord = 0
-                zCoord = 1
-            elif c.startPos == 'stacked':
-                xCoord = 0
-                yCoord = 0
-                zCoord = 0.5 + botNum * c.botSpacing
-            else:
-                Exception("A start position needs to be picked in constants.py")
+        if c.startPos == 'horizontal':
+            xCoord = 0 + botNum * c.botSpacing
+            yCoord = 0
+            zCoord = 1
+        elif c.startPos == 'stacked':
+            xCoord = 0
+            yCoord = 0
+            zCoord = 0.5 + botNum * c.botSpacing
+        else:
+            Exception("A start position needs to be picked in constants.py")
 
-            pyrosim.Send_Cube(name=str(botNum) + 'Torso', pos=[xCoord, yCoord, zCoord], size=[1, 1, c.torsoHeight])
-            # Top Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'TopSensor', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'TopSensor',
-                               type='fixed', position=[xCoord, yCoord, zCoord + (c.torsoHeight / 2)], jointAxis="1 0 0")
-            pyrosim.Send_Cube(name=str(botNum) + 'TopSensor', pos=[0, 0, 0],
-                              size=[c.torsoSensorSize, c.torsoSensorSize, c.torsoSensorHeight])
-            # Bottom Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'BottomSensor', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'BottomSensor',
-                               type="fixed", position=[xCoord, yCoord, zCoord - (c.torsoHeight / 2)], jointAxis="1 0 0")
-            pyrosim.Send_Cube(name=str(botNum) + 'BottomSensor', pos=[0, 0, 0],
-                              size=[c.torsoSensorSize, c.torsoSensorSize, c.torsoSensorHeight])
+        pyrosim.Send_Cube(name=str(botNum) + 'Torso', pos=[xCoord, yCoord, zCoord], size=[1, 1, c.torsoHeight])
+        # Top Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'TopSensor', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'TopSensor',
+                           type='fixed', position=[xCoord, yCoord, zCoord + (c.torsoHeight / 2)], jointAxis="1 0 0")
+        pyrosim.Send_Cube(name=str(botNum) + 'TopSensor', pos=[0, 0, 0],
+                          size=[c.torsoSensorSize, c.torsoSensorSize, c.torsoSensorHeight])
+        # Bottom Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'BottomSensor', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'BottomSensor',
+                           type="fixed", position=[xCoord, yCoord, zCoord - (c.torsoHeight / 2)], jointAxis="1 0 0")
+        pyrosim.Send_Cube(name=str(botNum) + 'BottomSensor', pos=[0, 0, 0],
+                          size=[c.torsoSensorSize, c.torsoSensorSize, c.torsoSensorHeight])
 
-            # FRONTFLAP
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'FrontFlap',
-                               type='revolute', position=[xCoord, yCoord + 0.5, zCoord], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'FrontFlap', pos=[0, 0.75 / 2, 0], size=[.5, .75, 0.125])
-            # Top Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'FrontFlap_' + str(botNum) + 'FrontTopSensor',
-                               parent=str(botNum) + 'FrontFlap', child=str(botNum) + 'FrontTopSensor',
-                               type='fixed', position=[0, c.topFlapSensorOffset, .0625], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'FrontTopSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
-            # Bottom Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'FrontFlap_' + str(botNum) + 'FrontBottomSensor',
-                               parent=str(botNum) + 'FrontFlap', child=str(botNum) + 'FrontBottomSensor',
-                               type='fixed', position=[0, c.bottomFlapSensorOffset, -.0625], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'FrontBottomSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
+        # FRONTFLAP
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'FrontFlap',
+                           type='revolute', position=[xCoord, yCoord + 0.5, zCoord], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'FrontFlap', pos=[0, 0.75 / 2, 0], size=[.5, .75, 0.125])
+        # Top Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'FrontFlap_' + str(botNum) + 'FrontTopSensor',
+                           parent=str(botNum) + 'FrontFlap', child=str(botNum) + 'FrontTopSensor',
+                           type='fixed', position=[0, c.topFlapSensorOffset, .0625], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'FrontTopSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
+        # Bottom Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'FrontFlap_' + str(botNum) + 'FrontBottomSensor',
+                           parent=str(botNum) + 'FrontFlap', child=str(botNum) + 'FrontBottomSensor',
+                           type='fixed', position=[0, c.bottomFlapSensorOffset, -.0625], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'FrontBottomSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
 
-            # BACKFLAP
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'BackFlap', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'BackFlap',
-                               type='revolute', position=[xCoord, yCoord - 0.5, zCoord], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'BackFlap', pos=[0, -0.75 / 2, 0], size=[.5, .75, 0.125])
-            # Top Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'BackFlap_' + str(botNum) + 'BackTopSensor',
-                               parent=str(botNum) + 'BackFlap', child=str(botNum) + 'BackTopSensor',
-                               type='fixed', position=[0, -c.topFlapSensorOffset, .0625], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'BackTopSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
-            # Bottom Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'BackFlap_' + str(botNum) + 'BackBottomSensor',
-                               parent=str(botNum) + 'BackFlap', child=str(botNum) + 'BackBottomSensor',
-                               type='fixed', position=[0, -c.bottomFlapSensorOffset, -.0625], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'BackBottomSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
+        # BACKFLAP
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'BackFlap', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'BackFlap',
+                           type='revolute', position=[xCoord, yCoord - 0.5, zCoord], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'BackFlap', pos=[0, -0.75 / 2, 0], size=[.5, .75, 0.125])
+        # Top Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'BackFlap_' + str(botNum) + 'BackTopSensor',
+                           parent=str(botNum) + 'BackFlap', child=str(botNum) + 'BackTopSensor',
+                           type='fixed', position=[0, -c.topFlapSensorOffset, .0625], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'BackTopSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
+        # Bottom Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'BackFlap_' + str(botNum) + 'BackBottomSensor',
+                           parent=str(botNum) + 'BackFlap', child=str(botNum) + 'BackBottomSensor',
+                           type='fixed', position=[0, -c.bottomFlapSensorOffset, -.0625], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'BackBottomSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
 
-            # RIGHTFLAP
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'RightFlap', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'RightFlap',
-                               type='revolute', position=[xCoord + 0.5, yCoord, zCoord], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'RightFlap', pos=[0.75 / 2, 0, 0], size=[.75, .5, 0.125])
-            # Top Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'RightFlap_' + str(botNum) + 'RightTopSensor',
-                               parent=str(botNum) + 'RightFlap', child=str(botNum) + 'RightTopSensor',
-                               type='fixed', position=[c.topFlapSensorOffset, 0, .0625], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'RightTopSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
-            # Bottom Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'RightFlap_' + str(botNum) + 'RightBottomSensor',
-                               parent=str(botNum) + 'RightFlap', child=str(botNum) + 'RightBottomSensor',
-                               type='fixed', position=[c.bottomFlapSensorOffset, 0, -.0625], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'RightBottomSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
+        # RIGHTFLAP
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'RightFlap', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'RightFlap',
+                           type='revolute', position=[xCoord + 0.5, yCoord, zCoord], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'RightFlap', pos=[0.75 / 2, 0, 0], size=[.75, .5, 0.125])
+        # Top Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'RightFlap_' + str(botNum) + 'RightTopSensor',
+                           parent=str(botNum) + 'RightFlap', child=str(botNum) + 'RightTopSensor',
+                           type='fixed', position=[c.topFlapSensorOffset, 0, .0625], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'RightTopSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
+        # Bottom Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'RightFlap_' + str(botNum) + 'RightBottomSensor',
+                           parent=str(botNum) + 'RightFlap', child=str(botNum) + 'RightBottomSensor',
+                           type='fixed', position=[c.bottomFlapSensorOffset, 0, -.0625], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'RightBottomSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
 
-            # LEFTFLAP
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'LeftFlap',
-                               type='revolute', position=[xCoord - 0.5, yCoord, zCoord], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'LeftFlap', pos=[-0.75 / 2, 0, 0], size=[.75, .5, 0.125])
-            # Top Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'LeftFlap_' + str(botNum) + 'LeftTopSensor',
-                               parent=str(botNum) + 'LeftFlap', child=str(botNum) + 'LeftTopSensor',
-                               type='fixed', position=[-c.topFlapSensorOffset, 0, .0625], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'LeftTopSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
-            # Bottom Sensor
-            pyrosim.Send_Joint(name=str(botNum) + 'LeftFlap_' + str(botNum) + 'LeftBottomSensor',
-                               parent=str(botNum) + 'LeftFlap', child=str(botNum) + 'LeftBottomSensor',
-                               type='fixed', position=[-c.bottomFlapSensorOffset, 0, -.0625], jointAxis='1 0 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'LeftBottomSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
+        # LEFTFLAP
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'LeftFlap',
+                           type='revolute', position=[xCoord - 0.5, yCoord, zCoord], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'LeftFlap', pos=[-0.75 / 2, 0, 0], size=[.75, .5, 0.125])
+        # Top Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'LeftFlap_' + str(botNum) + 'LeftTopSensor',
+                           parent=str(botNum) + 'LeftFlap', child=str(botNum) + 'LeftTopSensor',
+                           type='fixed', position=[-c.topFlapSensorOffset, 0, .0625], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'LeftTopSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
+        # Bottom Sensor
+        pyrosim.Send_Joint(name=str(botNum) + 'LeftFlap_' + str(botNum) + 'LeftBottomSensor',
+                           parent=str(botNum) + 'LeftFlap', child=str(botNum) + 'LeftBottomSensor',
+                           type='fixed', position=[-c.bottomFlapSensorOffset, 0, -.0625], jointAxis='1 0 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'LeftBottomSensor', pos=[0, 0, 0], size=[.25, .25, 0.125])
 
-            # UR LEG
-            # Rotator Cuff
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'URRotate', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'URRotate',
-                               type='revolute', position=[xCoord - 0.5, yCoord - 0.5, zCoord], jointAxis='0 0 1')
-            pyrosim.Send_Cube(name=str(botNum) + 'URRotate', pos=[0, 0, 0], size=[.2, .2, .2])
-            # Top Leg
-            pyrosim.Send_Joint(name=str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg',
-                               parent=str(botNum) + 'URRotate', child=str(botNum) + 'URTopLeg',
-                               type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'URTopLeg', pos=[-.6, 0, 0], size=[1.2, .2, .2])
-            # Bottom Leg
-            pyrosim.Send_Joint(name=str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg',
-                               parent=str(botNum) + 'URTopLeg', child=str(botNum) + 'URBottomLeg',
-                               type='revolute', position=[-1.2, 0, 0], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'URBottomLeg', pos=[-0.5, 0, 0], size=[1, .2, .2])
+        # UR LEG
+        # Rotator Cuff
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'URRotate', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'URRotate',
+                           type='revolute', position=[xCoord - 0.5, yCoord - 0.5, zCoord], jointAxis='0 0 1')
+        pyrosim.Send_Cube(name=str(botNum) + 'URRotate', pos=[0, 0, 0], size=[.2, .2, .2])
+        # Top Leg
+        pyrosim.Send_Joint(name=str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg',
+                           parent=str(botNum) + 'URRotate', child=str(botNum) + 'URTopLeg',
+                           type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'URTopLeg', pos=[-.6, 0, 0], size=[1.2, .2, .2])
+        # Bottom Leg
+        pyrosim.Send_Joint(name=str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg',
+                           parent=str(botNum) + 'URTopLeg', child=str(botNum) + 'URBottomLeg',
+                           type='revolute', position=[-1.2, 0, 0], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'URBottomLeg', pos=[-0.5, 0, 0], size=[1, .2, .2])
 
-            # UL LEG
-            # Rotator Cuff
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'ULRotate', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'ULRotate',
-                               type='revolute', position=[xCoord - 0.5, yCoord + 0.5, zCoord], jointAxis='0 0 1')
-            pyrosim.Send_Cube(name=str(botNum) + 'ULRotate', pos=[0, 0, 0], size=[.2, .2, .2])
-            # Top Leg
-            pyrosim.Send_Joint(name=str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg',
-                               parent=str(botNum) + 'ULRotate', child=str(botNum) + 'ULTopLeg',
-                               type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'ULTopLeg', pos=[-.6, 0, 0], size=[1.2, .2, .2])
-            # Bottom Leg
-            pyrosim.Send_Joint(name=str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg',
-                               parent=str(botNum) + 'ULTopLeg', child=str(botNum) + 'ULBottomLeg',
-                               type='revolute', position=[-1.2, 0, 0], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'ULBottomLeg', pos=[-0.5, 0, 0], size=[1, .2, .2])
+        # UL LEG
+        # Rotator Cuff
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'ULRotate', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'ULRotate',
+                           type='revolute', position=[xCoord - 0.5, yCoord + 0.5, zCoord], jointAxis='0 0 1')
+        pyrosim.Send_Cube(name=str(botNum) + 'ULRotate', pos=[0, 0, 0], size=[.2, .2, .2])
+        # Top Leg
+        pyrosim.Send_Joint(name=str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg',
+                           parent=str(botNum) + 'ULRotate', child=str(botNum) + 'ULTopLeg',
+                           type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'ULTopLeg', pos=[-.6, 0, 0], size=[1.2, .2, .2])
+        # Bottom Leg
+        pyrosim.Send_Joint(name=str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg',
+                           parent=str(botNum) + 'ULTopLeg', child=str(botNum) + 'ULBottomLeg',
+                           type='revolute', position=[-1.2, 0, 0], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'ULBottomLeg', pos=[-0.5, 0, 0], size=[1, .2, .2])
 
-            # BR LEG
-            # Rotator Cuff
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'BRRotate', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'BRRotate',
-                               type='revolute', position=[xCoord + 0.5, yCoord + 0.5, zCoord], jointAxis='0 0 1')
-            pyrosim.Send_Cube(name=str(botNum) + 'BRRotate', pos=[0, 0, 0], size=[.2, .2, .2])
-            # Top Leg
-            pyrosim.Send_Joint(name=str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg',
-                               parent=str(botNum) + 'BRRotate', child=str(botNum) + 'BRTopLeg',
-                               type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'BRTopLeg', pos=[.6, 0, 0], size=[1.2, .2, .2])
-            # Bottom Leg
-            pyrosim.Send_Joint(name=str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg',
-                               parent=str(botNum) + 'BRTopLeg', child=str(botNum) + 'BRBottomLeg',
-                               type='revolute', position=[1.2, 0, 0], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'BRBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2])
+        # BR LEG
+        # Rotator Cuff
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'BRRotate', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'BRRotate',
+                           type='revolute', position=[xCoord + 0.5, yCoord + 0.5, zCoord], jointAxis='0 0 1')
+        pyrosim.Send_Cube(name=str(botNum) + 'BRRotate', pos=[0, 0, 0], size=[.2, .2, .2])
+        # Top Leg
+        pyrosim.Send_Joint(name=str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg',
+                           parent=str(botNum) + 'BRRotate', child=str(botNum) + 'BRTopLeg',
+                           type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'BRTopLeg', pos=[.6, 0, 0], size=[1.2, .2, .2])
+        # Bottom Leg
+        pyrosim.Send_Joint(name=str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg',
+                           parent=str(botNum) + 'BRTopLeg', child=str(botNum) + 'BRBottomLeg',
+                           type='revolute', position=[1.2, 0, 0], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'BRBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2])
 
-            # BL LEG
-            # Rotator Cuff
-            pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'BLRotate', parent=str(botNum) + 'Torso',
-                               child=str(botNum) + 'BLRotate',
-                               type='revolute', position=[xCoord + 0.5, yCoord - 0.5, zCoord], jointAxis='0 0 1')
-            pyrosim.Send_Cube(name=str(botNum) + 'BLRotate', pos=[0, 0, 0], size=[.2, .2, .2])
-            # Top Leg
-            pyrosim.Send_Joint(name=str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg',
-                               parent=str(botNum) + 'BLRotate', child=str(botNum) + 'BLTopLeg',
-                               type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'BLTopLeg', pos=[.6, 0, 0], size=[1.2, .2, .2])
-            # Bottom Leg
-            pyrosim.Send_Joint(name=str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg',
-                               parent=str(botNum) + 'BLTopLeg', child=str(botNum) + 'BLBottomLeg',
-                               type='revolute', position=[1.2, 0, 0], jointAxis='0 1 0')
-            pyrosim.Send_Cube(name=str(botNum) + 'BLBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2])
+        # BL LEG
+        # Rotator Cuff
+        pyrosim.Send_Joint(name=str(botNum) + 'Torso_' + str(botNum) + 'BLRotate', parent=str(botNum) + 'Torso',
+                           child=str(botNum) + 'BLRotate',
+                           type='revolute', position=[xCoord + 0.5, yCoord - 0.5, zCoord], jointAxis='0 0 1')
+        pyrosim.Send_Cube(name=str(botNum) + 'BLRotate', pos=[0, 0, 0], size=[.2, .2, .2])
+        # Top Leg
+        pyrosim.Send_Joint(name=str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg',
+                           parent=str(botNum) + 'BLRotate', child=str(botNum) + 'BLTopLeg',
+                           type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'BLTopLeg', pos=[.6, 0, 0], size=[1.2, .2, .2])
+        # Bottom Leg
+        pyrosim.Send_Joint(name=str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg',
+                           parent=str(botNum) + 'BLTopLeg', child=str(botNum) + 'BLBottomLeg',
+                           type='revolute', position=[1.2, 0, 0], jointAxis='0 1 0')
+        pyrosim.Send_Cube(name=str(botNum) + 'BLBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2])
 
         pyrosim.End()  # Close sdf file
 
 
 def Generate_Brain(solutionID, bodyType, botNum):
-    pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + '.nndf')
+    pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf')
 
     # Sensors for Cubes
     # Torso Sensors
@@ -393,6 +392,9 @@ def Generate_Brain(solutionID, bodyType, botNum):
     #         pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=random.random() % 1)
     # pyrosim.End()  # Close sdf file
 
+"""
+Testing to see if this needs to be done all at once
+"""
 def Generate_Brains(solutionID, bodyType, numBots):
     pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + '.nndf')
 
