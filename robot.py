@@ -18,8 +18,8 @@ class ROBOTSWARM:
 
         for botNum in range(self.numBots):
             robotID = p.loadURDF("body_" + self.bodyType + str(botNum) + ".urdf")
-            self.nn = NEURAL_NETWORK("brain_" + str(self.solutionID) + str(self.bodyType) + str(botNum) + ".nndf")
-            self.bots[robotID] = ROBOT(robotID)
+            robotNN = NEURAL_NETWORK("brain_" + str(self.solutionID) + str(self.bodyType) + str(botNum) + ".nndf")
+            self.bots[robotID] = ROBOT(robotID, robotNN)
 
         #os.system("del brain" + str(self.solutionID) + ".nndf")
 
@@ -32,22 +32,23 @@ class ROBOTSWARM:
     def Prepare_To_Sense(self):
 
         for bot in self.bots:
-            bot.Prepare_To_Sense(self.linkInfo[bot])
+            self.bots[bot].Prepare_To_Sense(self.linkInfo[bot])
 
         # for linkName in pyrosim.linkNamesToIndices:  # This is created after Prepare_To_Simulate
         #     self.sensors[linkName] = SENSOR(linkName)
 
     def Sense(self):
 
+
         for bot in self.bots:
-            bot.Sense()
+            self.bots[bot].Sense()
         # for sensor in self.sensors:
         #     print("Robot: " + str(self.sensors[sensor]) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
 
     def Prepare_To_Act(self):
 
         for bot in self.bots:
-            bot.Prepare_To_Act(self.jointInfo[bot])
+            self.bots[bot].Prepare_To_Act(self.jointInfo[bot])
 
     def Think(self):
         self.nn.Update()
@@ -61,8 +62,7 @@ class ROBOTSWARM:
         #         self.motors[jointName].Set_Value(self.robotID, desiredAngle)
 
         for bot in self.bots:
-            bot.Act()
-
+            self.bots[bot].Act(time_stamp)
 
     def Save_Values(self):
 
@@ -86,8 +86,9 @@ class ROBOTSWARM:
 
 class ROBOT:
 
-    def __init__(self, robotID):
-        self.botID = robotID
+    def __init__(self, robotID, robotNN):
+        self.robotID = robotID
+        self.nn = robotNN
 
     def Prepare_To_Sense(self, linkInfo):
         self.sensors = {}
@@ -97,17 +98,20 @@ class ROBOT:
     def Prepare_To_Act(self, jointInfo):
         self.motors = {}
         for jointName in jointInfo:
-            self.motors[jointName] = MOTOR(jointName, self.botID)
+            self.motors[jointName] = MOTOR(jointName, self.robotID)
 
     def Sense(self):
         for sensor in self.sensors:
-            print("Robot: " + str(self.botID) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
+            print("Robot: " + str(self.robotID) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
 
-    def Act(self):
+    def Act(self, time_stamp):
+
         if c.MOTION_TYPE == 'oscillatory':
+
             for neuronName in self.nn.Get_Neuron_Names():
                 if self.nn.Is_Motor_Neuron(neuronName):
                     jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
                     self.motors[jointName].Set_Value(self.robotID, time_stamp)
+
         elif c.MOTION_TYPE == 'ragdoll':
             pass
