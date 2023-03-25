@@ -52,7 +52,6 @@ def Get_Touch_Sensor_Value_For_Link(linkName, botNum, numLinks):
 
     # Check using dict (desired number of values)
     desiredLinkIndex = linkNamesToIndices[linkName]
-    print(linkNamesToIndices)
     # print("Desired Link Index:" + str(desiredLinkIndex))
 
     # This right here is what reports the sensors which are getting set wrong
@@ -61,10 +60,12 @@ def Get_Touch_Sensor_Value_For_Link(linkName, botNum, numLinks):
     # print(pts)
     for pt in pts:
 
-        linkIndex = pt[4] + (botNum - 1) * numLinks
+        # linkIndex = pt[4] + (botNum - 1) * numLinks
+        linkIndex = pt[3]
         # print("Link Index found by pybullet:")
         # print(linkIndex)
         # print("Bot: " + str(botNum) + " Link Index: " + str(linkIndex) + " desired Link Index: " + str(desiredLinkIndex))
+
         if (linkIndex == desiredLinkIndex):
 
             touchValue = 1.0
@@ -97,7 +98,8 @@ def Prepare_Link_Dictionary(bodyIDList):
 
             linkNames.append(linkName)
 
-            linkNamesToIndices[linkName] = jointIndex + linkIndexOffset
+            # linkNamesToIndices[linkName] = jointIndex + linkIndexOffset
+            linkNamesToIndices[linkName] = jointIndex
 
             if jointIndex == 0:
 

@@ -4,7 +4,7 @@ import numpy as np
 SLEEP_TIME = 1/250
 
 """DATA COLLECTION"""
-SIM_LEN = 2
+SIM_LEN = 1000
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -99,4 +99,4 @@ MOTION_TYPE = 'ragdoll'
 """
 Data Reporting
 """
-senseTiming = 1
+senseTiming = 50
