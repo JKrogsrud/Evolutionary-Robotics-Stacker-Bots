@@ -25,11 +25,11 @@ def create_world():
     pyrosim.End()  # Close sdf file
 
 
-def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord):
+def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botName):
     if bodyType == 'A':
 
         # print('body_' + str(bodyType) + str(botNum) + '.urdf created')
-        pyrosim.Start_URDF('body_' + str(bodyType) + str(botNum) + '.urdf')
+        pyrosim.Start_URDF('body_' + str(bodyType) + str(botNum) + '.urdf', startingIndex, botName)
 
         pyrosim.Send_Cube(name=str(botNum) + 'Torso', pos=[xCoord, yCoord, zCoord], size=[1, 1, c.torsoHeight])
         # Top Sensor
@@ -149,9 +149,13 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord):
                            type='revolute', position=[1.2, 0, 0], jointAxis='0 1 0')
         pyrosim.Send_Cube(name=str(botNum) + 'BLBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2])
 
-        pyrosim.End()  # Close sdf file
+        currentIndex = pyrosim.End()  # Close sdf file
+        return currentIndex
 
-
+"""
+NOT USED CURRENTLY
+"""
+"""
 def Generate_Bodies(bodyType, botNum):
     if bodyType == 'A':
 
@@ -316,9 +320,10 @@ def Generate_Bodies(bodyType, botNum):
 
         pyrosim.End()  # Close sdf file
 
+"""
 
 def Generate_Brain(solutionID, bodyType, botNum):
-    pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf')
+    pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf', 0, botNum)
 
     # Sensors for Cubes
     # Torso Sensors
@@ -385,7 +390,7 @@ def Generate_Brain(solutionID, bodyType, botNum):
     pyrosim.Send_Motor_Neuron(name=39*botNum + 37, jointName=str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg')
     pyrosim.Send_Motor_Neuron(name=39*botNum + 38, jointName=str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg')
 
-    pyrosim.End()
+    endingIndex = pyrosim.End()
 
     # for sensor_name 23*botNum + in range(3):
     #     for motor in range(3, 5):

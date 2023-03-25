@@ -23,7 +23,7 @@ class SOLUTION:
         self.Create_World()
         print("Creating Bodies:")
         self.Create_Body()
-        print("Creating Brains")
+        print("Creating Brains:")
         self.Create_Brain()
 
         # os.system('START /B "" "C:\\Users\\Jared Krogsrud\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" simulate.py ' + DirectOrGUI + ' ' + str(self.myID) + ' ' + self.bodyType + ' ' + str(self.numBots))
@@ -62,7 +62,7 @@ class SOLUTION:
 
 
     def Create_World(self):
-        pyrosim.Start_SDF("world.sdf")  # Creates file where world info will be stored
+        pyrosim.Start_SDF("world.sdf", 0)  # Creates file where world info will be stored
 
         # length = 2
         # width = 2
@@ -82,18 +82,20 @@ class SOLUTION:
 
         # generate.Generate_Bodies(c.bodytype, self.numBots)
 
+        startingIndex = -1
         if c.startPos == 'horizontal':
             for botNum in range(self.numBots):
                 xCoord = 0 + botNum * c.botSpacing
                 yCoord = 0
                 zCoord = 1
-                generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
+                startingIndex = generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNum)
+                print(startingIndex)
         elif c.startPos == 'stacked':
             for botNum in range(self.numBots):
                 xCoord = 0
                 yCoord = 0
                 zCoord = 0.5 + botNum * c.botSpacing
-                generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord)
+                startingIndex = generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNum)
 
     def Create_Brain(self):
 

@@ -2,7 +2,7 @@ from pyrosim.commonFunctions import Save_Whitespace
 
 class JOINT: 
 
-    def __init__(self,name,parent,child,type,position):
+    def __init__(self, name, parent, child, type, position):
 
         self.name = name
 

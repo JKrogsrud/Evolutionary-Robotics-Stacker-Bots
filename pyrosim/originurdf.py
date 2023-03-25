@@ -2,7 +2,7 @@ from pyrosim.commonFunctions import Save_Whitespace
 
 class ORIGIN_URDF: 
 
-    def __init__(self,pos):
+    def __init__(self, pos):
 
         self.depth  = 3
 

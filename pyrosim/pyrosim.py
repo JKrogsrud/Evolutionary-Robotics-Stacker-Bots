@@ -25,6 +25,7 @@ global availableLinkIndex
 global linkNamesToIndices
 
 def End():
+    global availableLinkIndex
 
     if filetype == SDF_FILETYPE:
 
@@ -37,25 +38,34 @@ def End():
         urdf.Save_End_Tag(f)
 
     f.close()
+    return availableLinkIndex
 
 def End_Model():
 
     model.Save_End_Tag(f)
 
-def Get_Touch_Sensor_Value_For_Link(linkName):
 
+def Get_Touch_Sensor_Value_For_Link(linkName, botNum, numLinks):
     touchValue = -1.0
 
+    # print("Get_Touch_Sensor_Value_For_Link: " + str(linkName) + " Bot: " + str(botNum))
+
+    # Check using dict (desired number of values)
     desiredLinkIndex = linkNamesToIndices[linkName]
+    print(linkNamesToIndices)
+    # print("Desired Link Index:" + str(desiredLinkIndex))
 
-    pts = p.getContactPoints()
-
-
+    # This right here is what reports the sensors which are getting set wrong
+    # print(botNum)
+    pts = p.getContactPoints(botNum)
+    # print(pts)
     for pt in pts:
 
-        linkIndex = pt[4]
-
-        if ( linkIndex == desiredLinkIndex ):
+        linkIndex = pt[4] + (botNum - 1) * numLinks
+        # print("Link Index found by pybullet:")
+        # print(linkIndex)
+        # print("Bot: " + str(botNum) + " Link Index: " + str(linkIndex) + " desired Link Index: " + str(desiredLinkIndex))
+        if (linkIndex == desiredLinkIndex):
 
             touchValue = 1.0
 
@@ -69,13 +79,14 @@ def Prepare_Link_Dictionary(bodyIDList):
     linkNamesToIndices = {}
 
     linkInfoDict = {}
-
+    linkIndexOffset = 0
     for bodyID in bodyIDList:
         linkNames = []
+        # for jointIndex in range(0 + linkIndexOffset, p.getNumJoints(bodyID) + linkIndexOffset):
         for jointIndex in range(0, p.getNumJoints(bodyID)):
-
+            # print(bodyID, jointIndex)
             jointInfo = p.getJointInfo(bodyID, jointIndex)
-
+            # print(jointInfo)
             jointName = jointInfo[1]
 
             jointName = jointName.decode("utf-8")
@@ -86,14 +97,16 @@ def Prepare_Link_Dictionary(bodyIDList):
 
             linkNames.append(linkName)
 
-            linkNamesToIndices[linkName] = jointIndex
+            linkNamesToIndices[linkName] = jointIndex + linkIndexOffset
 
             if jointIndex == 0:
 
                 rootLinkName = jointName[0]
 
                 linkNamesToIndices[rootLinkName] = -1
+
         linkInfoDict[bodyID] = linkNames
+        linkIndexOffset += p.getNumJoints(bodyID)
     return linkInfoDict
 
 
@@ -105,18 +118,26 @@ def Prepare_Joint_Dictionary(bodyIDList):
 
     jointInfoDict = {}
 
+    jointIndexOffset = 0
+
+    # print("Prepare_Joint_Dictionary")
     for bodyID in bodyIDList:
         jointNames = []
-        for jointIndex in range( 0 , p.getNumJoints(bodyID) ):
+        # for jointIndex in range(0+ jointIndexOffset, p.getNumJoints(bodyID)+jointIndexOffset):
+        for jointIndex in range(0, p.getNumJoints(bodyID)):
 
-            jointInfo = p.getJointInfo( bodyID , jointIndex )
+            jointInfo = p.getJointInfo(bodyID, jointIndex)
 
             jointName = jointInfo[1].decode('UTF-8')
+            # print(jointName)
+            jointNames.append(jointName)
 
-            jointNames.append(jointName) # I added this
+            jointNamesToIndices[jointName] = jointIndex + jointIndexOffset
 
-            jointNamesToIndices[jointName] = jointIndex
+
+        jointIndexOffset += p.getNumJoints(bodyID)
         jointInfoDict[bodyID] = jointNames
+        jointInfoDict["numJoints"] = p.getNumJoints(bodyID)
     return jointInfoDict
 
 def Prepare_To_Simulate(bodyIDList):
@@ -125,23 +146,28 @@ def Prepare_To_Simulate(bodyIDList):
 
     jointInfo = Prepare_Joint_Dictionary(bodyIDList)
 
+    print(linkInfo)
+    print(jointInfo)
+    print(linkNamesToIndices)
+
     return linkInfo, jointInfo
 
-def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1]):
+def Send_Cube(name="default", pos=[0, 0, 0], size=[1, 1, 1]):
 
     global availableLinkIndex
+    # print("In Send_Cube: linkIndex:" + str(availableLinkIndex))
 
     global links
 
     if filetype == SDF_FILETYPE:
 
-        Start_Model(name,pos)
+        Start_Model(name, pos)
 
-        link = LINK_SDF(name,pos,size)
+        link = LINK_SDF(name, pos, size)
 
         links.append(link)
     else:
-        link = LINK_URDF(name,pos,size)
+        link = LINK_URDF(name, pos, size)
 
         links.append(link)
 
@@ -155,19 +181,23 @@ def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1]):
 
     availableLinkIndex = availableLinkIndex + 1
 
-def Send_Joint(name,parent,child,type,position, jointAxis):
 
-    joint = JOINT(name,parent,child,type,position)
+def Send_Joint(name, parent, child, type, position, jointAxis):
+
+    joint = JOINT(name, parent, child, type, position)
 
     joint.Save(f, jointAxis)
+
 
 def Send_Motor_Neuron(name,jointName):
 
     f.write('    <neuron name = "' + str(name) + '" type = "motor"  jointName = "' + jointName + '" />\n')
 
+
 def Send_Sensor_Neuron(name,linkName):
 
     f.write('    <neuron name = "' + str(name) + '" type = "sensor" linkName = "' + linkName + '" />\n')
+
 
 def Send_Synapse( sourceNeuronName , targetNeuronName , weight ):
 
@@ -196,7 +226,7 @@ def Start_NeuralNetwork(filename):
 
     global f
 
-    f = open(filename,"w")
+    f = open(filename, "w")
 
     global nndf
 
@@ -204,11 +234,11 @@ def Start_NeuralNetwork(filename):
 
     nndf.Save_Start_Tag(f)
 
-def Start_SDF(filename):
+def Start_SDF(filename, currentIndex):
 
     global availableLinkIndex
 
-    availableLinkIndex = -1
+    availableLinkIndex = currentIndex
 
     global linkNamesToIndices
 
@@ -220,7 +250,7 @@ def Start_SDF(filename):
 
     global f
  
-    f = open(filename,"w")
+    f = open(filename, "w")
 
     global sdf
 
@@ -232,11 +262,11 @@ def Start_SDF(filename):
 
     links = []
 
-def Start_URDF(filename):
+def Start_URDF(filename, currentIndex, botName):
 
     global availableLinkIndex
 
-    availableLinkIndex = -1
+    availableLinkIndex = currentIndex
 
     global linkNamesToIndices
 
@@ -254,7 +284,7 @@ def Start_URDF(filename):
 
     urdf = URDF()
 
-    urdf.Save_Start_Tag(f)
+    urdf.Save_Start_Tag(f, botName)
 
     global links
 

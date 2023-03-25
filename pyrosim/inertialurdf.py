@@ -6,7 +6,7 @@ from pyrosim.commonFunctions import Save_Whitespace
 
 class INERTIAL_URDF:
 
-    def __init__(self,origin):
+    def __init__(self, origin):
 
         self.depth = 2
 
@@ -16,7 +16,7 @@ class INERTIAL_URDF:
 
         self.inertia = INERTIA_URDF()
 
-    def Save(self,f):
+    def Save(self, f):
 
         self.Save_Start_Tag(f)
 

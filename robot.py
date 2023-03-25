@@ -24,6 +24,11 @@ class ROBOTSWARM:
         #os.system("del brain" + str(self.solutionID) + ".nndf")
 
         self.linkInfo, self.jointInfo = pyrosim.Prepare_To_Simulate(list(self.bots.keys()))
+        # print(self.linkInfo)
+        # print(self.jointInfo)
+
+        for bot in self.bots:
+            self.bots[bot].Set_Number_links(self.jointInfo["numJoints"])
 
         # Prepare the info needed for sensors and motors in the bots
         self.Prepare_To_Sense()
@@ -32,16 +37,19 @@ class ROBOTSWARM:
     def Prepare_To_Sense(self):
 
         for bot in self.bots:
+            print("Prepare_To_Sense")
+            print(bot)
             self.bots[bot].Prepare_To_Sense(self.linkInfo[bot])
+            print(self.linkInfo[bot])
 
         # for linkName in pyrosim.linkNamesToIndices:  # This is created after Prepare_To_Simulate
         #     self.sensors[linkName] = SENSOR(linkName)
 
-    def Sense(self):
-
+    def Sense(self, t):
 
         for bot in self.bots:
-            self.bots[bot].Sense()
+            self.bots[bot].Sense(t)
+
         # for sensor in self.sensors:
         #     print("Robot: " + str(self.sensors[sensor]) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
 
@@ -60,9 +68,11 @@ class ROBOTSWARM:
         #         jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
         #         desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRange
         #         self.motors[jointName].Set_Value(self.robotID, desiredAngle)
-
-        for bot in self.bots:
-            self.bots[bot].Act(time_stamp)
+        if c.MOTION_TYPE == 'ragdoll':
+            pass
+        elif c.MOTION_TYPE == 'oscillatory':
+            for bot in self.bots:
+                self.bots[bot].Act(time_stamp)
 
     def Save_Values(self):
 
@@ -77,7 +87,6 @@ class ROBOTSWARM:
         basePosition = basePositionAndOrientation[0]
         xPosition = basePosition[0]
 
-
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
         f.write(str(xPosition))
         f.close()
@@ -90,19 +99,29 @@ class ROBOT:
         self.robotID = robotID
         self.nn = robotNN
 
+    def Set_Number_links(self, numLinks):
+        self.numLinks = numLinks
+
+
     def Prepare_To_Sense(self, linkInfo):
         self.sensors = {}
         for linkName in linkInfo:
-            self.sensors[linkName] = SENSOR(linkName)
+            # print(linkName)
+            self.sensors[linkName] = SENSOR(linkName, self.robotID, self.numLinks)
+        # print("Bot " + str(self.robotID) + " Sensor set up: " + str(linkName))
 
     def Prepare_To_Act(self, jointInfo):
         self.motors = {}
         for jointName in jointInfo:
             self.motors[jointName] = MOTOR(jointName, self.robotID)
 
-    def Sense(self):
+    def Sense(self, t):
+        if t % c.senseTiming == 0:
+            print("-")
         for sensor in self.sensors:
-            print("Robot: " + str(self.robotID) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
+            if t % c.senseTiming == 0:
+                if self.sensors[sensor].Get_Value() != -1.0:
+                    print("Robot: " + str(self.robotID) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
 
     def Act(self, time_stamp):
 

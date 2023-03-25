@@ -4,7 +4,7 @@ import numpy as np
 SLEEP_TIME = 1/250
 
 """DATA COLLECTION"""
-SIM_LEN = 25000
+SIM_LEN = 2
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -68,7 +68,7 @@ populationSize = 10
 Body experimentation
 """
 bodytype = "A"
-numBots = 3
+numBots = 2
 
 if bodytype == 'A':
     topFlapSensorOffset = .45
@@ -93,4 +93,10 @@ Bot Motion
 types: ragdoll, oscillatory, randomNN, distributiveNN, hivemind
 """
 
-MOTION_TYPE = 'oscillatory'
+# MOTION_TYPE = 'oscillatory'
+MOTION_TYPE = 'ragdoll'
+
+"""
+Data Reporting
+"""
+senseTiming = 1

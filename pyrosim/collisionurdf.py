@@ -2,7 +2,7 @@ from pyrosim.commonFunctions import Save_Whitespace
 
 class COLLISION_URDF: 
 
-    def __init__(self,origin,geometry):
+    def __init__(self, origin, geometry):
 
         self.origin = origin
 
@@ -10,7 +10,7 @@ class COLLISION_URDF:
  
         self.depth = 2
 
-    def Save(self,f):
+    def Save(self, f):
 
         self.Save_Start_Tag(f)
 

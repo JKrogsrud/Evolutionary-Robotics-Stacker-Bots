@@ -12,7 +12,7 @@ from pyrosim.commonFunctions import Save_Whitespace
 
 class LINK_URDF:
 
-    def __init__(self,name,pos,size):
+    def __init__(self, name, pos, size):
 
         self.name = name
 
