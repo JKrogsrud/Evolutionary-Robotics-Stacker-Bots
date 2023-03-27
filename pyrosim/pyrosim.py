@@ -80,7 +80,7 @@ def Prepare_Link_Dictionary(bodyIDList):
     linkNamesToIndices = {}
 
     linkInfoDict = {}
-    linkIndexOffset = 0
+    # linkIndexOffset = 0
     for bodyID in bodyIDList:
         linkNames = []
         # for jointIndex in range(0 + linkIndexOffset, p.getNumJoints(bodyID) + linkIndexOffset):
@@ -108,7 +108,7 @@ def Prepare_Link_Dictionary(bodyIDList):
                 linkNamesToIndices[rootLinkName] = -1
 
         linkInfoDict[bodyID] = linkNames
-        linkIndexOffset += p.getNumJoints(bodyID)
+        # linkIndexOffset += p.getNumJoints(bodyID)
     return linkInfoDict
 
 
@@ -134,7 +134,8 @@ def Prepare_Joint_Dictionary(bodyIDList):
             # print(jointName)
             jointNames.append(jointName)
 
-            jointNamesToIndices[jointName] = jointIndex + jointIndexOffset
+            # jointNamesToIndices[jointName] = jointIndex + jointIndexOffset
+            jointNamesToIndices[jointName] = jointIndex
 
 
         jointIndexOffset += p.getNumJoints(bodyID)
@@ -148,9 +149,9 @@ def Prepare_To_Simulate(bodyIDList):
 
     jointInfo = Prepare_Joint_Dictionary(bodyIDList)
 
-    print(linkInfo)
-    print(jointInfo)
-    print(linkNamesToIndices)
+    # print(linkInfo)
+    # print(jointInfo)
+    # print(linkNamesToIndices)
 
     return linkInfo, jointInfo
 
@@ -206,8 +207,11 @@ def Send_Synapse( sourceNeuronName , targetNeuronName , weight ):
     f.write('    <synapse sourceNeuronName = "' + str(sourceNeuronName) + '" targetNeuronName = "' + str(targetNeuronName) + '" weight = "' + str(weight) + '" />\n')
 
  
-def Set_Motor_For_Joint(bodyIndex,jointName,controlMode,targetPosition,maxForce):
-
+def Set_Motor_For_Joint(bodyIndex, jointName, controlMode, targetPosition, maxForce):
+    # print("Set_Motor_For_Joint:")
+    # print(jointName)
+    # print(bodyIndex)
+    # print(jointNamesToIndices)
     p.setJointMotorControl2(
 
         bodyIndex      = bodyIndex,

@@ -476,168 +476,496 @@ def Generate_Brains(solutionID, bodyType, numBots):
     pyrosim.End()
 
 def Generate_Oscillation(bodyType, jointName, numBots):
-
     if bodyType == 'A':
         for botNum in range(numBots):
-            if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
-                             str(botNum) + 'Torso_' + str(botNum) + 'BackFlap',
-                             str(botNum) + 'Torso_' + str(botNum) + 'RightFlap',
-                             str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap']:
+            if c.DIFFERENT_BEHAVIOR:
+                if botNum == 1:
+                    # Testing that the bots can move differently
+                    if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
+                                     str(botNum) + 'Torso_' + str(botNum) + 'BackFlap',
+                                     str(botNum) + 'Torso_' + str(botNum) + 'RightFlap',
+                                     str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap']:
 
-                amplitude = c.FLAP_AMPS
-                frequency = c.FLAP_FREQ
-                offset = c.FLAP_OFFSET
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
-                                 str(botNum) + 'Torso_' + str(botNum) + 'RightFlap']:
-                    motorValues = np.sin(x) * amplitude - c.FLAP_TRANSLATION
+                        if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
+                                         str(botNum) + 'Torso_' + str(botNum) + 'RightFlap']:
+                            motorValues = np.sin(x) * amplitude - c.FLAP_TRANSLATION
+                        else:
+                            motorValues = np.sin(x) * amplitude + c.FLAP_TRANSLATION
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'URRotate':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude + c.ROTATOR_TRANSLATION
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'ULRotate':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0 + 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BRRotate':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0 + 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BLRotate':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude
+
+                        return motorValues
+
+                    elif jointName == str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg':
+
+                        amplitude = 0
+                        frequency = 0
+                        offset = 0
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
+
+                        return motorValues
                 else:
-                    motorValues = np.sin(x) * amplitude + c.FLAP_TRANSLATION
+                    if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
+                                     str(botNum) + 'Torso_' + str(botNum) + 'BackFlap',
+                                     str(botNum) + 'Torso_' + str(botNum) + 'RightFlap',
+                                     str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap']:
 
-                return motorValues
+                        amplitude = c.FLAP_AMPS
+                        frequency = c.FLAP_FREQ
+                        offset = c.FLAP_OFFSET
 
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'URRotate':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.ROTATOR_AMPS
-                frequency = c.ROTATOR_FREQ
-                offset = c.ROTATOR_OFFSET
+                        if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
+                                         str(botNum) + 'Torso_' + str(botNum) + 'RightFlap']:
+                            motorValues = np.sin(x) * amplitude - c.FLAP_TRANSLATION
+                        else:
+                            motorValues = np.sin(x) * amplitude + c.FLAP_TRANSLATION
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude + c.ROTATOR_TRANSLATION
+                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'URRotate':
 
-                return motorValues
+                        amplitude = c.ROTATOR_AMPS
+                        frequency = c.ROTATOR_FREQ
+                        offset = c.ROTATOR_OFFSET
 
-            elif jointName == str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.UPPER_LEG_AMPS
-                frequency = c.UPPER_LEG_FREQ
-                offset = c.UPPER_LEG_OFFSET
+                        motorValues = np.sin(x) * amplitude + c.ROTATOR_TRANSLATION
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude
+                    elif jointName == str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg':
 
-                return motorValues
+                        amplitude = c.UPPER_LEG_AMPS
+                        frequency = c.UPPER_LEG_FREQ
+                        offset = c.UPPER_LEG_OFFSET
 
-            elif jointName == str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.LOWER_LEG_AMPS
-                frequency = c.LOWER_LEG_FREQ
-                offset = c.LOWER_LEG_OFFSET
+                        motorValues = np.sin(x) * amplitude
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
+                    elif jointName == str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg':
 
-                return motorValues
+                        amplitude = c.LOWER_LEG_AMPS
+                        frequency = c.LOWER_LEG_FREQ
+                        offset = c.LOWER_LEG_OFFSET
 
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'ULRotate':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.ROTATOR_AMPS
-                frequency = c.ROTATOR_FREQ
-                offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
+                        motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude
+                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'ULRotate':
 
-                return motorValues
+                        amplitude = c.ROTATOR_AMPS
+                        frequency = c.ROTATOR_FREQ
+                        offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
 
-            elif jointName == str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.UPPER_LEG_AMPS
-                frequency = c.UPPER_LEG_FREQ
-                offset = c.UPPER_LEG_OFFSET
+                        motorValues = np.sin(x) * amplitude
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude
+                    elif jointName == str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg':
 
-                return motorValues
+                        amplitude = c.UPPER_LEG_AMPS
+                        frequency = c.UPPER_LEG_FREQ
+                        offset = c.UPPER_LEG_OFFSET
 
-            elif jointName == str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.LOWER_LEG_AMPS
-                frequency = c.LOWER_LEG_FREQ
-                offset = c.LOWER_LEG_OFFSET
+                        motorValues = np.sin(x) * amplitude
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
+                    elif jointName == str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg':
 
-                return motorValues
+                        amplitude = c.LOWER_LEG_AMPS
+                        frequency = c.LOWER_LEG_FREQ
+                        offset = c.LOWER_LEG_OFFSET
 
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BRRotate':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.ROTATOR_AMPS
-                frequency = c.ROTATOR_FREQ
-                offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
+                        motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude
+                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BRRotate':
 
-                return motorValues
+                        amplitude = c.ROTATOR_AMPS
+                        frequency = c.ROTATOR_FREQ
+                        offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
 
-            elif jointName == str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.UPPER_LEG_AMPS
-                frequency = c.UPPER_LEG_FREQ
-                offset = c.UPPER_LEG_OFFSET
+                        motorValues = np.sin(x) * amplitude
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude
+                    elif jointName == str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg':
 
-                return motorValues
+                        amplitude = c.UPPER_LEG_AMPS
+                        frequency = c.UPPER_LEG_FREQ
+                        offset = c.UPPER_LEG_OFFSET
 
-            elif jointName == str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.LOWER_LEG_AMPS
-                frequency = c.LOWER_LEG_FREQ
-                offset = c.LOWER_LEG_OFFSET
+                        motorValues = np.sin(x) * amplitude
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
+                    elif jointName == str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg':
 
-                return motorValues
+                        amplitude = c.LOWER_LEG_AMPS
+                        frequency = c.LOWER_LEG_FREQ
+                        offset = c.LOWER_LEG_OFFSET
 
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BLRotate':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.ROTATOR_AMPS
-                frequency = c.ROTATOR_FREQ
-                offset = c.ROTATOR_OFFSET - c.ROTATOR_TRANSLATION
+                        motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude
+                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BLRotate':
 
-                return motorValues
+                        amplitude = c.ROTATOR_AMPS
+                        frequency = c.ROTATOR_FREQ
+                        offset = c.ROTATOR_OFFSET - c.ROTATOR_TRANSLATION
 
-            elif jointName == str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.UPPER_LEG_AMPS
-                frequency = c.UPPER_LEG_FREQ
-                offset = c.UPPER_LEG_OFFSET
+                        motorValues = np.sin(x) * amplitude
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude
+                    elif jointName == str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg':
 
-                return motorValues
+                        amplitude = c.UPPER_LEG_AMPS
+                        frequency = c.UPPER_LEG_FREQ
+                        offset = c.UPPER_LEG_OFFSET
 
-            elif jointName == str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg':
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
 
-                amplitude = c.LOWER_LEG_AMPS
-                frequency = c.LOWER_LEG_FREQ
-                offset = c.LOWER_LEG_OFFSET
+                        motorValues = np.sin(x) * amplitude
 
-                x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+                        return motorValues
 
-                motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
+                    elif jointName == str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg':
 
-                return motorValues
+                        amplitude = c.LOWER_LEG_AMPS
+                        frequency = c.LOWER_LEG_FREQ
+                        offset = c.LOWER_LEG_OFFSET
+
+                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                        motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
+
+                        return motorValues
+            else:
+                if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
+                                 str(botNum) + 'Torso_' + str(botNum) + 'BackFlap',
+                                 str(botNum) + 'Torso_' + str(botNum) + 'RightFlap',
+                                 str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap']:
+
+                    amplitude = c.FLAP_AMPS
+                    frequency = c.FLAP_FREQ
+                    offset = c.FLAP_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
+                                     str(botNum) + 'Torso_' + str(botNum) + 'RightFlap']:
+                        motorValues = np.sin(x) * amplitude - c.FLAP_TRANSLATION
+                    else:
+                        motorValues = np.sin(x) * amplitude + c.FLAP_TRANSLATION
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'URRotate':
+
+                    amplitude = c.ROTATOR_AMPS
+                    frequency = c.ROTATOR_FREQ
+                    offset = c.ROTATOR_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude + c.ROTATOR_TRANSLATION
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg':
+
+                    amplitude = c.UPPER_LEG_AMPS
+                    frequency = c.UPPER_LEG_FREQ
+                    offset = c.UPPER_LEG_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg':
+
+                    amplitude = c.LOWER_LEG_AMPS
+                    frequency = c.LOWER_LEG_FREQ
+                    offset = c.LOWER_LEG_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'ULRotate':
+
+                    amplitude = c.ROTATOR_AMPS
+                    frequency = c.ROTATOR_FREQ
+                    offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg':
+
+                    amplitude = c.UPPER_LEG_AMPS
+                    frequency = c.UPPER_LEG_FREQ
+                    offset = c.UPPER_LEG_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg':
+
+                    amplitude = c.LOWER_LEG_AMPS
+                    frequency = c.LOWER_LEG_FREQ
+                    offset = c.LOWER_LEG_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BRRotate':
+
+                    amplitude = c.ROTATOR_AMPS
+                    frequency = c.ROTATOR_FREQ
+                    offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg':
+
+                    amplitude = c.UPPER_LEG_AMPS
+                    frequency = c.UPPER_LEG_FREQ
+                    offset = c.UPPER_LEG_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg':
+
+                    amplitude = c.LOWER_LEG_AMPS
+                    frequency = c.LOWER_LEG_FREQ
+                    offset = c.LOWER_LEG_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BLRotate':
+
+                    amplitude = c.ROTATOR_AMPS
+                    frequency = c.ROTATOR_FREQ
+                    offset = c.ROTATOR_OFFSET - c.ROTATOR_TRANSLATION
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg':
+
+                    amplitude = c.UPPER_LEG_AMPS
+                    frequency = c.UPPER_LEG_FREQ
+                    offset = c.UPPER_LEG_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude
+
+                    return motorValues
+
+                elif jointName == str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg':
+
+                    amplitude = c.LOWER_LEG_AMPS
+                    frequency = c.LOWER_LEG_FREQ
+                    offset = c.LOWER_LEG_OFFSET
+
+                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
+
+                    motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
+
+                    return motorValues

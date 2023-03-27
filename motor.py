@@ -17,6 +17,9 @@ class MOTOR:
             self.motorValues = generate.Generate_Oscillation(c.bodytype, self.jointName, self.numBots)
         elif c.MOTION_TYPE == 'ragdoll':
             pass
+        elif c.MOTION_TYPE == 'rigid':
+            #TODO: Working on rigid body
+            pass
 
     def Set_Value(self, robotID, time_stamp):
 

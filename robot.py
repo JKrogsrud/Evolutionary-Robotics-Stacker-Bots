@@ -37,10 +37,10 @@ class ROBOTSWARM:
     def Prepare_To_Sense(self):
 
         for bot in self.bots:
-            print("Prepare_To_Sense")
-            print(bot)
+            # print("Prepare_To_Sense")
+            # print(bot)
             self.bots[bot].Prepare_To_Sense(self.linkInfo[bot])
-            print(self.linkInfo[bot])
+            # print(self.linkInfo[bot])
 
         # for linkName in pyrosim.linkNamesToIndices:  # This is created after Prepare_To_Simulate
         #     self.sensors[linkName] = SENSOR(linkName)
