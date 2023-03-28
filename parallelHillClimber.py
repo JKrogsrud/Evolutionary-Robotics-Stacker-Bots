@@ -10,27 +10,20 @@ class PARALLEL_HILLCLIMBER:
         os.system("del brain*.nndf")
         os.system("del fitness*.nndf")
 
-        # self.parents = {}
+        self.parents = {}
 
         self.nextAvailableID = 0
-        print("in PHC:")
 
-        # for parent in range(c.populationSize):
-        #     self.parents[parent] = SOLUTION(self.nextAvailableID, bodyType, numBots)
-        #     self.nextAvailableID += 1
-
-        # For creation of a multiple bodies
-        print("Calling SOLUTION:")
-        self.solution = SOLUTION(self.nextAvailableID, bodyType, numBots)
-
+        for parent in range(c.populationSize):
+            self.parents[parent] = SOLUTION(self.nextAvailableID, bodyType, numBots)
+            self.nextAvailableID += 1
 
     def Evolve(self):
-        print("In evolve: calling evaluate")
-        self.Evaluate(self.solution)
 
-        # self.Evaluate(self.parents)
-        # for currentGeneration in range(numberOfGenerations):
-        #     self.Evolve_For_One_Generation()
+        self.Evaluate(self.parents)
+
+        for currentGeneration in range(c.numberOfGenerations):
+            self.Evolve_For_One_Generation()
 
     def Evolve_For_One_Generation(self):
         self.Spawn()
@@ -82,10 +75,7 @@ class PARALLEL_HILLCLIMBER:
 
     def Evaluate(self, solutions):
 
-        print("In evaluate calling SOLUTION.Start_Simulation:")
-        self.solution.Start_Simulation('GUI')
-
-        # for solution in solutions:
-        #     solutions[solution].Start_Simulation('DIRECT')
-        # for solution in solutions:
-        #     solutions[solution].Wait_For_Simulation_To_End()
+        for solution in solutions:
+            solutions[solution].Start_Simulation('DIRECT')
+        for solution in solutions:
+            solutions[solution].Wait_For_Simulation_To_End()

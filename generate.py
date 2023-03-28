@@ -153,7 +153,7 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNa
         return currentIndex
 
 
-def Generate_Brain(solutionID, bodyType, botNum):
+def Generate_Brain(solutionID, bodyType, botNum, weights):
     pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf', 0, botNum)
 
     # Sensors for Cubes
@@ -221,11 +221,15 @@ def Generate_Brain(solutionID, bodyType, botNum):
     pyrosim.Send_Motor_Neuron(name=39*botNum + 37, jointName=str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg')
     pyrosim.Send_Motor_Neuron(name=39*botNum + 38, jointName=str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg')
 
-    print("Bot: " + str(botNum))
-    for sensor_name in range(39*botNum, 39*botNum + c.numSensorNeurons):
-        # print(sensor_name)
-        for motor in range(botNum*39 + c.numSensorNeurons, botNum*39 + c.numSensorNeurons + c.numMotorNeurons):
-            pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=2 * random.random() - 1)
+    # for sensor_name in range(39*botNum, 39*botNum + c.numSensorNeurons):
+    #     for motor in range(botNum*39 + c.numSensorNeurons, botNum*39 + c.numSensorNeurons + c.numMotorNeurons):
+    #         pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=2 * random.random() - 1)
+
+    for currentRow in range(c.numSensorNeurons):
+        for currentColumn in range(c.numMotorNeurons):
+            pyrosim.Send_Synapse(sourceNeuronName=currentRow + (39*botNum),
+                                 targetNeuronName=currentColumn + (39*botNum) + c.numSensorNeurons,
+                                 weight= weights[currentRow][currentColumn])
 
     endingIndex = pyrosim.End()
 

@@ -11,8 +11,8 @@ class ROBOTSWARM:
 
     def __init__(self, solutionID, bodyType, numBots):
         self.bodyType = bodyType
-        self.numBots = numBots
-        self.solutionID = solutionID
+        self.numBots = int(numBots)
+        self.solutionID = int(solutionID)
 
         self.bots = {}
 
@@ -85,15 +85,18 @@ class ROBOTSWARM:
 
     def Get_Fitness(self):
 
-        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotID)
-        basePosition = basePositionAndOrientation[0]
-        xPosition = basePosition[0]
+        fitness = []
+        for bot in self.bots:
+            fitness.append(self.bots[bot].Get_Fitness())
 
+        avg = sum(fitness) / len(fitness)
+
+        # changed tmp to fitness
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
-        f.write(str(xPosition))
+        f.write(str(avg))
         f.close()
 
-        os.rename("tmp"+ str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
+        os.rename("tmp" + str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
 
 class ROBOT:
 
@@ -117,13 +120,15 @@ class ROBOT:
             self.motors[jointName] = MOTOR(jointName, self.robotID)
 
     def Sense(self, t):
-        if t % c.senseTiming == 0:
-            print("-")
-        for sensor in self.sensors:
-            if t % c.senseTiming == 0:
-                if self.sensors[sensor].Get_Value() != -1.0:
-                    print("Robot: " + str(self.robotID) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
-
+        # if t % c.senseTiming == 0:
+        #     # print("-")
+        #     pass
+        # for sensor in self.sensors:
+        #     if t % c.senseTiming == 0:
+        #         if self.sensors[sensor].Get_Value() != -1.0:
+        #             # print("Robot: " + str(self.robotID) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
+        #             pass
+        pass
     def Act(self, time_stamp):
 
         if c.MOTION_TYPE == 'oscillatory':
@@ -155,3 +160,11 @@ class ROBOT:
 
     def Think(self):
         self.nn.Update(self.robotID)
+
+    def Get_Fitness(self):
+        # This will likely change over time but I want the evolutionary algorithm
+        # working before working on finding the right fitness
+        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotID)
+        basePosition = basePositionAndOrientation[0]
+        xPosition = basePosition[0]
+        return xPosition

@@ -16,7 +16,6 @@ class SIMULATION:
         self.directOrGui = directOrGUI
         self.bodyType = bodyType
         self.numBots = numBots
-        self.robots = []
 
         if (directOrGUI == "DIRECT"):
             self.physicsClient = p.connect(p.DIRECT)
@@ -49,4 +48,4 @@ class SIMULATION:
         p.disconnect()
 
     def Get_Fitness(self):
-        self.robot.Get_Fitness()
+        self.robots.Get_Fitness()

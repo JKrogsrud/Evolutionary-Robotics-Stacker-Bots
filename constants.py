@@ -5,7 +5,7 @@ SLEEP_TIME = 1/240
 FRAMES = 1000
 
 """DATA COLLECTION"""
-SIM_LEN = 10000
+SIM_LEN = 2000
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -130,7 +130,7 @@ numMotorNeurons = 16
 Evolution Constants
 """
 numberOfGenerations = 10
-populationSize = 10
+populationSize = 5
 
 """
 Body experimentation
