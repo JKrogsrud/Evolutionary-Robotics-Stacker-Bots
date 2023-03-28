@@ -1,7 +1,7 @@
 import os
 
 from solution import SOLUTION
-from constants import *
+import constants as c
 import copy as cp
 class PARALLEL_HILLCLIMBER:
 
@@ -11,10 +11,12 @@ class PARALLEL_HILLCLIMBER:
         os.system("del fitness*.nndf")
 
         # self.parents = {}
+
         self.nextAvailableID = 0
         print("in PHC:")
-        # for parent in range(populationSize):
-        #     self.parents[parent] = SOLUTION(self.nextAvailableID)
+
+        # for parent in range(c.populationSize):
+        #     self.parents[parent] = SOLUTION(self.nextAvailableID, bodyType, numBots)
         #     self.nextAvailableID += 1
 
         # For creation of a multiple bodies

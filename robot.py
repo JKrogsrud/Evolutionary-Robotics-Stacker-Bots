@@ -59,18 +59,20 @@ class ROBOTSWARM:
             self.bots[bot].Prepare_To_Act(self.jointInfo[bot])
 
     def Think(self):
-        self.nn.Update()
-        #self.nn.Print()
+        for bot in self.bots:
+            self.bots[bot].Think()
 
     def Act(self, time_stamp):
-        # for neuronName in self.nn.Get_Neuron_Names():
-        #     if self.nn.Is_Motor_Neuron(neuronName):
-        #         jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
-        #         desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRange
-        #         self.motors[jointName].Set_Value(self.robotID, desiredAngle)
+
         if c.MOTION_TYPE == 'ragdoll':
             pass
         elif c.MOTION_TYPE == 'oscillatory':
+            for bot in self.bots:
+                self.bots[bot].Act(time_stamp)
+        elif c.MOTION_TYPE == 'rigid':
+            for bot in self.bots:
+                self.bots[bot].Act(time_stamp)
+        elif c.MOTION_TYPE == 'neural_network':
             for bot in self.bots:
                 self.bots[bot].Act(time_stamp)
 
@@ -101,7 +103,6 @@ class ROBOT:
 
     def Set_Number_links(self, numLinks):
         self.numLinks = numLinks
-
 
     def Prepare_To_Sense(self, linkInfo):
         self.sensors = {}
@@ -134,3 +135,23 @@ class ROBOT:
 
         elif c.MOTION_TYPE == 'ragdoll':
             pass
+
+        elif c.MOTION_TYPE == 'rigid':
+
+            for neuronName in self.nn.Get_Neuron_Names():
+                if self.nn.Is_Motor_Neuron(neuronName):
+                    jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
+                    self.motors[jointName].Set_Value(self.robotID, time_stamp)
+
+        elif c.MOTION_TYPE == 'neural_network':
+            for neuronName in self.nn.Get_Neuron_Names():
+                if self.nn.Is_Motor_Neuron(neuronName):
+                    # print("Neuron name: " + str(neuronName))
+                    jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
+                    desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRange
+                    # print("Motor name: " + str(self.motors[jointName].jointName))
+                    # print("Desired Angle: " + str(desiredAngle))
+                    self.motors[jointName].Set_Value_NN(self.robotID, desiredAngle)
+
+    def Think(self):
+        self.nn.Update(self.robotID)

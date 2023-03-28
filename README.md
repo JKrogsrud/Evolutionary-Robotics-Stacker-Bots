@@ -100,6 +100,17 @@ Notes:
 dictionary but that dictionary is still only local to a single call to pyrosim so every time a new 
 urdf file is read it restarts the dictionary. What I need to do is modify robot to really just be ALL the robots.
 
+- Update: Actually have the sensors working, it required a rather extensive dive into the pyrosim overlay
+of pybullet. I can now create any number of robots and have each set of sensors respective to those robots
+
+- I updated the motors to be able to be given their own oscillating movement
+
+https://youtu.be/lxBY70h6j5o
+
+Additional Tasks for Week 5:
+ - Now that I have my sensors working I'm hoping to get both a neural network attached
+to each individual bot and be able to run an evolutionary algorithm to make them all move in one direction
+to start. I'm hoping that after this I might start searching for a good fitness function to train them to stack
 
 Week 5:
 

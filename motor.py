@@ -18,7 +18,8 @@ class MOTOR:
         elif c.MOTION_TYPE == 'ragdoll':
             pass
         elif c.MOTION_TYPE == 'rigid':
-            #TODO: Working on rigid body
+            pass
+        elif c.MOTION_TYPE == 'neural_network':
             pass
 
     def Set_Value(self, robotID, time_stamp):
@@ -29,8 +30,21 @@ class MOTOR:
                                         controlMode=p.POSITION_CONTROL,
                                         targetPosition=self.motorValues[time_stamp % c.FRAMES],
                                         maxForce=c.MAX_FORCE)
+        if c.MOTION_TYPE == 'rigid':
+            pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
+                                        jointName=self.jointName,
+                                        controlMode=p.POSITION_CONTROL,
+                                        targetPosition=generate.Generate_Rigidity(c.bodytype, self.jointName, self.numBots),
+                                        maxForce=c.MAX_FORCE)
 
-    # THE FOLLOWING IS FOR A TRUE NN FOR OSCILLATORY MOVEMENT WE WILL USE A DIFFERENT FUNCTION
+    def Set_Value_NN(self, robotID, desiredAngle):
+        pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
+                                    jointName=self.jointName,
+                                    controlMode=p.POSITION_CONTROL,
+                                    targetPosition=desiredAngle,
+                                    maxForce=c.MAX_FORCE)
+
+    # THE FOLLOWING IS FOR A TRUE NN
     # def Set_Value(self, robotID, desiredAngle):
     #
     #     pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,

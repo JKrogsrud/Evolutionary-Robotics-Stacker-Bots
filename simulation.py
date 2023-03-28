@@ -12,7 +12,7 @@ import constants as c  # File in which we store many of the constants we are usi
 
 class SIMULATION:
     def __init__(self, directOrGUI, solutionID, bodyType, numBots):
-        print("simulation constructor")
+        # print("simulation constructor")
         self.directOrGui = directOrGUI
         self.bodyType = bodyType
         self.numBots = numBots
@@ -42,6 +42,7 @@ class SIMULATION:
                 time.sleep(c.SLEEP_TIME)
             self.robots.Sense(t)
             self.robots.Act(t)
+            self.robots.Think()
 
     def __del__(self):
         # self.robot.Save_Values()
