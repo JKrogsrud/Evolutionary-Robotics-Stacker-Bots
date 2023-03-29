@@ -7,4 +7,5 @@ phc = PARALLEL_HILLCLIMBER(c.bodytype, c.numBots)
 
 phc.Evolve()
 
-phc.Show_Best()
+phc.Save_Best()
+# phc.Show_Best()

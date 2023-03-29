@@ -59,6 +59,25 @@ class PARALLEL_HILLCLIMBER:
             print("Parent " + str(parent) + "'s fitness:" + str(self.parents[parent].fitness) +
                   ", Child: " + str(self.children[parent].fitness))
 
+    def Save_Best(self):
+        min_fit = 999
+        fittest_parent = None
+        for parent in self.parents:
+            if fittest_parent is None:
+                fittest_parent = parent
+                min_fit = self.parents[parent].fitness
+            else:
+                if self.parents[parent].fitness < min_fit:
+                    fittest_parent = parent
+                    min_fit = self.parents[parent].fitness
+        # self.parents[fittest_parent].Start_Simulation('GUI')
+        # parent is a solution which is a number of robots, we want to save the brains
+        # of the fittest solution:
+        IDofFittest = self.parents[fittest_parent].myID
+        for botNum in range(c.numBots):
+            os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + str(botNum) + '.nndf',
+                      'best_brain_' + str(botNum) + '.nndf')
+
     def Show_Best(self):
         # self.parent.Evaluate('GUI')
         min_fit = 999

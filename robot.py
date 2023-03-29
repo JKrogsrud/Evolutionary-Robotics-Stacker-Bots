@@ -1,6 +1,7 @@
 import pybullet as p
 import pyrosim.pyrosim as pyrosim
 import constants as c
+import numpy as np
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
 
@@ -85,15 +86,33 @@ class ROBOTSWARM:
 
     def Get_Fitness(self):
 
-        fitness = []
-        for bot in self.bots:
-            fitness.append(self.bots[bot].Get_Fitness())
+        bot_info = []
+        fitness = 0
 
-        avg = sum(fitness) / len(fitness)
+        for bot in self.bots:
+            bot_info.append(self.bots[bot].Get_Fitness())
+
+        # Higher fitness is awarded to bots that are stacking, so their center of mass should
+        # be close to each other
+
+        total_x = 0
+        total_y = 0
+        for bot in bot_info:
+            total_x += bot['position'][0]
+            total_y += bot['position'][1]
+
+        mid_x = total_x / self.numBots
+        mid_y = total_y / self.numBots
+
+        # find the distance each bot is from that center of mass
+
+        for bot in bot_info:
+            distance_from_mid = np.sqrt((mid_x - bot['position'][0])**2 + (mid_y - bot['position'][1])**2)
+            fitness *= 1 / distance_from_mid
 
         # changed tmp to fitness
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
-        f.write(str(avg))
+        f.write(str(fitness))
         f.close()
 
         os.rename("tmp" + str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
@@ -165,14 +184,17 @@ class ROBOT:
         # This will likely change over time but I want the evolutionary algorithm
         # working before working on finding the right fitness
 
+        bot_info = {}
+
         # Get x and y position of bot
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotID)
         basePosition = basePositionAndOrientation[0]
         xPosition = basePosition[0]
         yPosition = basePosition[1]
 
+        bot_info['position'] = (xPosition, yPosition)
+
         # Get which torso sensors are active at the end
         # Don't exactly know how to do this part
 
-
-        return (xPosition, yPosition)
+        return bot_info
