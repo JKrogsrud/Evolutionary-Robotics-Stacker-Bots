@@ -9,6 +9,7 @@ class PARALLEL_HILLCLIMBER:
 
         os.system("del brain*.nndf")
         os.system("del fitness*.nndf")
+        os.system("del best*.nndf")
 
         self.parents = {}
 

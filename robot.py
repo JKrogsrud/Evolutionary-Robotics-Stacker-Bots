@@ -87,7 +87,7 @@ class ROBOTSWARM:
     def Get_Fitness(self):
 
         bot_info = []
-        fitness = 0
+        fitness = 1
 
         for bot in self.bots:
             bot_info.append(self.bots[bot].Get_Fitness())
@@ -108,6 +108,7 @@ class ROBOTSWARM:
 
         for bot in bot_info:
             distance_from_mid = np.sqrt((mid_x - bot['position'][0])**2 + (mid_y - bot['position'][1])**2)
+            # print(distance_from_mid)
             fitness *= 1 / distance_from_mid
 
         # changed tmp to fitness

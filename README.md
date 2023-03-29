@@ -118,6 +118,16 @@ I will create an evolutionary algorithm that rewards cooperation between the thr
 I will submit a video of the three robots managing to have at least one robot stacked
 on top of another.
 
+ - PHC set up and working
+ - Neural network set up and working though I need to add a hidden layer to each bot
+
+TODO: 
+ - Add a way to play the best_brain sim with an easy function
+ - Add Hidden Layers
+ - Speed up evolution by changing more neurons each step?
+ - Remove some of the sensors?
+ - Start robots in one position?
+
 Week 6:
 
 I will create a new neural network for the stacker-bots which acts as a hive mind between
@@ -127,7 +137,7 @@ I will submit a video of this.
 Week 7:
 
 I will implement a similar evolutionary algorithm and fitness function to that of 
-the induvial stacker bots and allow the bots controlled by a hive mind to evolve and be 
+the individual stacker bots and allow the bots controlled by a hive mind to evolve and be 
 able to stack on top of each other.
 
 Week 8:
