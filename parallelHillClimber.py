@@ -51,7 +51,7 @@ class PARALLEL_HILLCLIMBER:
         # if self.parent.fitness > self.child.fitness:
         #     self.parent = self.child
         for parent in self.parents:
-            if self.parents[parent].fitness > self.children[parent].fitness:
+            if self.parents[parent].fitness < self.children[parent].fitness:
                 self.parents[parent] = self.children[parent]
 
     def Print(self):

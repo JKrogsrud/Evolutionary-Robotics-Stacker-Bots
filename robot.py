@@ -164,7 +164,15 @@ class ROBOT:
     def Get_Fitness(self):
         # This will likely change over time but I want the evolutionary algorithm
         # working before working on finding the right fitness
+
+        # Get x and y position of bot
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotID)
         basePosition = basePositionAndOrientation[0]
         xPosition = basePosition[0]
-        return xPosition
+        yPosition = basePosition[1]
+
+        # Get which torso sensors are active at the end
+        # Don't exactly know how to do this part
+
+
+        return (xPosition, yPosition)
