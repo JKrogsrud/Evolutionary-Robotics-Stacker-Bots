@@ -129,7 +129,7 @@ numMotorNeurons = 16
 """
 Evolution Constants
 """
-numberOfGenerations = 10
+numberOfGenerations = 110
 populationSize = 5
 
 """

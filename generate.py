@@ -192,6 +192,8 @@ def Generate_Brain(solutionID, bodyType, botNum, weights):
     pyrosim.Send_Sensor_Neuron(name=39*botNum + 21, linkName=str(botNum) + 'BLTopLeg')
     pyrosim.Send_Sensor_Neuron(name=39*botNum + 22, linkName=str(botNum) + 'BLBottomLeg')
 
+    ### Hidden Neurons
+
     ### MOTORS ###
 
     ## Flaps ##
