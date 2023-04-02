@@ -126,6 +126,8 @@ numSensorNeurons = 23
 numHiddenNeurons = 20
 numMotorNeurons = 16
 
+totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
+
 """
 Evolution Constants
 """

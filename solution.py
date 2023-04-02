@@ -19,7 +19,9 @@ class SOLUTION:
         self.weights = {}
         if c.MOTION_TYPE == "neural_network":
             for botNum in range(numBots):
-                self.weights[botNum] = 2*np.random.rand(c.numSensorNeurons, c.numMotorNeurons)-1
+                SensorHidden = 2*np.random.rand(c.numSensorNeurons, c.numHiddenNeurons)-1
+                HiddenMotor = 2*np.random.rand(c.numHiddenNeurons, c.numMotorNeurons)-1
+                self.weights[botNum] = [SensorHidden, HiddenMotor]
 
     def Start_Simulation(self, DirectOrGUI):
 
@@ -59,6 +61,15 @@ class SOLUTION:
 
     def Mutate(self):
         for botNum in range(self.numBots):
+            ## Update synapse in Sensor -> Hidden OR Hidden -> Motor
+            choice = random.randint(0, 1)
+
+            randomRow = random.randint(0, c.numSensorNeurons - 1)
+            randomColumn = random.randint(0, c.numHiddenNeurons - 1)
+            #TODO: Finish up working one synapses
+            if choice:
+                self.weights[botNum][0] =
+
             randomRow = random.randint(0, c.numSensorNeurons - 1)
             randomColumn = random.randint(0, c.numMotorNeurons - 1)
             self.weights[botNum][randomRow, randomColumn] = 2 * random.random() - 1
@@ -89,7 +100,7 @@ class SOLUTION:
     def Create_Brain(self):
 
         for botNum in range(self.numBots):
-            generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum])
+            generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum][0], self.weights[botNum][1])
 
 
     def Set_ID(self, newID):

@@ -20,7 +20,7 @@ class NEURON:
 
         self.Set_Value(0.0)
 
-    def Add_To_Value( self, value ):
+    def Add_To_Value(self, value ):
 
         self.Set_Value( self.Get_Value() + value )
 
@@ -72,12 +72,7 @@ class NEURON:
     def Update_Hidden_Or_Motor_Neuron(self, neurons, synapses):
         self.Set_Value(0)
         for synapse in synapses:
-            # print(synapse)
-            # print(synapse[1])
-            # print(self.Get_Name())
             if synapse[1] == self.Get_Name():
-                # print("Updating Neuron: " + str(self.Get_Name()) + " from: " + str(self.Get_Value()) + " to: ")
-                # print("Updating Motor Neuron: " + str(self.Get_Name()) + " with values from sensor neuron: " + str(synapse[0]))
                 self.Allow_Presynaptic_Neuron_To_Influence_Me(synapses[synapse].Get_Weight(), neurons[synapse[0]].Get_Value())
         self.Threshold()
 
@@ -96,7 +91,7 @@ class NEURON:
 
             self.name = splitLine[1]
 
-    def Determine_Type(self,line):
+    def Determine_Type(self, line):
 
         if "sensor" in line:
 

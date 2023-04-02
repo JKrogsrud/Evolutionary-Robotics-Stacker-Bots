@@ -153,85 +153,139 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNa
         return currentIndex
 
 
-def Generate_Brain(solutionID, bodyType, botNum, weights):
+def Generate_Brain(solutionID, bodyType, botNum, SensorHiddenWeight, HiddenMotorWeight):
     pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf', 0, botNum)
 
     # Sensors for Cubes
-    # Torso Sensors
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 0, linkName=str(botNum) + 'Torso')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 1, linkName=str(botNum) + 'TopSensor')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 2, linkName=str(botNum) + 'BottomSensor')
+    cubes = [
+        'Torso', 'TopSensor', 'BottomSensor', 'FrontFlap', 'FrontTopSensor', 'FrontBottomSensor',
+        'BackFlap', 'BackTopSensor', 'BackBottomSensor', 'RightFlap', 'RightTopSensor',
+        'RightBottomSensor', 'LeftFlap', 'LeftTopSensor', 'LeftBottomSensor',
+        'URTopLeg', 'URBottomLeg', 'ULTopLeg', 'ULBottomLeg', 'BRTopLeg', 'BRBottomLeg',
+        'BLTopLeg', 'BLBottomLeg'
+    ]
 
-    # Flaps
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 3, linkName=str(botNum) + 'FrontFlap')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 4, linkName=str(botNum) + 'FrontTopSensor')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 5, linkName=str(botNum) + 'FrontBottomSensor')
+    neuronIndex = 0
 
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 6, linkName=str(botNum) + 'BackFlap')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 7, linkName=str(botNum) + 'BackTopSensor')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 8, linkName=str(botNum) + 'BackBottomSensor')
+    neuronDict = {}
+    neuronDict['Sensor'] = {}
+    neuronDict['Hidden'] = {}
+    neuronDict['Motor'] = {}
 
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 9, linkName=str(botNum) + 'RightFlap')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 10, linkName=str(botNum) + 'RightTopSensor')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 11, linkName=str(botNum) + 'RightBottomSensor')
+    ### Sensors ###
+    neuronDict['Sensor']['startIndex'] = c.totalNeurons * botNum + neuronIndex
+    for cube in cubes:
+        pyrosim.Send_Sensor_Neuron(name=c.totalNeurons * botNum + neuronIndex, linkName=str(botNum) + str(cube))
+        neuronIndex += 1
+    neuronDict['Sensor']['endIndex'] = c.totalNeurons * botNum + neuronIndex
 
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 12, linkName=str(botNum) + 'LeftFlap')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 13, linkName=str(botNum) + 'LeftTopSensor')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 14, linkName=str(botNum) + 'LeftBottomSensor')
-
-    # Legs
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 15, linkName=str(botNum) + 'URTopLeg')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 16, linkName=str(botNum) + 'URBottomLeg')
-
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 17, linkName=str(botNum) + 'ULTopLeg')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 18, linkName=str(botNum) + 'ULBottomLeg')
-
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 19, linkName=str(botNum) + 'BRTopLeg')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 20, linkName=str(botNum) + 'BRBottomLeg')
-
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 21, linkName=str(botNum) + 'BLTopLeg')
-    pyrosim.Send_Sensor_Neuron(name=39*botNum + 22, linkName=str(botNum) + 'BLBottomLeg')
+    # # Torso Sensors
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 0, linkName=str(botNum) + 'Torso')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 1, linkName=str(botNum) + 'TopSensor')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 2, linkName=str(botNum) + 'BottomSensor')
+    #
+    # # Flaps
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 3, linkName=str(botNum) + 'FrontFlap')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 4, linkName=str(botNum) + 'FrontTopSensor')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 5, linkName=str(botNum) + 'FrontBottomSensor')
+    #
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 6, linkName=str(botNum) + 'BackFlap')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 7, linkName=str(botNum) + 'BackTopSensor')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 8, linkName=str(botNum) + 'BackBottomSensor')
+    #
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 9, linkName=str(botNum) + 'RightFlap')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 10, linkName=str(botNum) + 'RightTopSensor')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 11, linkName=str(botNum) + 'RightBottomSensor')
+    #
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 12, linkName=str(botNum) + 'LeftFlap')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 13, linkName=str(botNum) + 'LeftTopSensor')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 14, linkName=str(botNum) + 'LeftBottomSensor')
+    #
+    # # Legs
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 15, linkName=str(botNum) + 'URTopLeg')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 16, linkName=str(botNum) + 'URBottomLeg')
+    #
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 17, linkName=str(botNum) + 'ULTopLeg')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 18, linkName=str(botNum) + 'ULBottomLeg')
+    #
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 19, linkName=str(botNum) + 'BRTopLeg')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 20, linkName=str(botNum) + 'BRBottomLeg')
+    #
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 21, linkName=str(botNum) + 'BLTopLeg')
+    # pyrosim.Send_Sensor_Neuron(name=39*botNum + 22, linkName=str(botNum) + 'BLBottomLeg')
 
     ### Hidden Neurons
 
+    ### Hidden ###
+    neuronDict['Hidden']['startIndex'] = c.totalNeurons * botNum + neuronIndex
+    for i in range(c.numHiddenNeurons):
+        pyrosim.Send_Hidden_Neuron(name=c.totalNeurons*botNum + neuronIndex)
+        neuronIndex += 1
+    neuronDict['Hidden']['endIndex'] = c.totalNeurons * botNum + neuronIndex
+
     ### MOTORS ###
+    motors = [
+        ('Torso', 'FrontFlap'), ('Torso', 'BackFlap'), ('Torso', 'RightFlap'), ('Torso', 'leftFlap'),
+        ('Torso', 'URRotate'), ('URRotate', 'URTopLeg'), ('URTopLeg', 'URBottomLeg'),
+        ('Torso', 'ULRotate'), ('ULRotate', 'ULTopLeg'), ('ULTopLeg', 'ULBottomLeg'),
+        ('Torso', 'BRRotate'), ('BRRotate', 'BRTopLeg'), ('BRTopLeg', 'BRBottomLeg'),
+        ('Torso', 'BLRotate'), ('BLRotate', 'BLTopLeg'), ('BLTopLeg', 'BLBottomLeg')
+    ]
+    neuronDict['Motor']['startIndex'] = c.totalNeurons * botNum + neuronIndex
+    for motor in motors:
+        pyrosim.Send_Motor_Neuron(name=c.totalNeurons * botNum + neuronIndex,
+                                  jointName=str(botNum) + str(motor[0]) + '_' + str(botNum) + str(motor[1]))
+        neuronIndex += 1
+    neuronDict['Motor']['endIndex'] = c.totalNeurons * botNum + neuronIndex
 
-    ## Flaps ##
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 23, jointName=str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 24, jointName=str(botNum) + 'Torso_' + str(botNum) + 'BackFlap')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 25, jointName=str(botNum) + 'Torso_' + str(botNum) + 'RightFlap')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 26, jointName=str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap')
-
-    ## Legs ##
-    # Upper Right #
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 27, jointName=str(botNum) + 'Torso_' + str(botNum) + 'URRotate')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 28, jointName=str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 29, jointName=str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg')
-
-    # Upper Left #
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 30, jointName=str(botNum) + 'Torso_' + str(botNum) + 'ULRotate')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 31, jointName=str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 32, jointName=str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg')
-
-    # Back Right #
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 33, jointName=str(botNum) + 'Torso_' + str(botNum) + 'BRRotate')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 34, jointName=str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 35, jointName=str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg')
-
-    # Back Left #
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 36, jointName=str(botNum) + 'Torso_' + str(botNum) + 'BLRotate')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 37, jointName=str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg')
-    pyrosim.Send_Motor_Neuron(name=39*botNum + 38, jointName=str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg')
+    # ## Flaps ##
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 23, jointName=str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 24, jointName=str(botNum) + 'Torso_' + str(botNum) + 'BackFlap')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 25, jointName=str(botNum) + 'Torso_' + str(botNum) + 'RightFlap')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 26, jointName=str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap')
+    #
+    # ## Legs ##
+    # # Upper Right #
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 27, jointName=str(botNum) + 'Torso_' + str(botNum) + 'URRotate')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 28, jointName=str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 29, jointName=str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg')
+    #
+    # # Upper Left #
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 30, jointName=str(botNum) + 'Torso_' + str(botNum) + 'ULRotate')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 31, jointName=str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 32, jointName=str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg')
+    #
+    # # Back Right #
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 33, jointName=str(botNum) + 'Torso_' + str(botNum) + 'BRRotate')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 34, jointName=str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 35, jointName=str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg')
+    #
+    # # Back Left #
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 36, jointName=str(botNum) + 'Torso_' + str(botNum) + 'BLRotate')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 37, jointName=str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg')
+    # pyrosim.Send_Motor_Neuron(name=39*botNum + 38, jointName=str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg')
 
     # for sensor_name in range(39*botNum, 39*botNum + c.numSensorNeurons):
     #     for motor in range(botNum*39 + c.numSensorNeurons, botNum*39 + c.numSensorNeurons + c.numMotorNeurons):
     #         pyrosim.Send_Synapse(sourceNeuronName=sensor_name, targetNeuronName=motor, weight=2 * random.random() - 1)
 
+    ### Connect Sensors to hidden neurons ###
+    ### Assume the appropriate array of synapse values have been passed in
     for currentRow in range(c.numSensorNeurons):
+        for currentColumn in range(c.numHiddenNeurons):
+            sourceNeuron = neuronDict['Sensor']['startIndex'] + currentRow
+            targetNeuron = neuronDict['Hidden']['startIndex'] + currentColumn
+            pyrosim.Send_Synapse(sourceNeuronName= sourceNeuron,
+                                 targetNeuronName= targetNeuron,
+                                 weight=SensorHiddenWeight[currentRow][currentColumn])
+
+    for currentRow in range(c.numHiddenNeurons):
         for currentColumn in range(c.numMotorNeurons):
-            pyrosim.Send_Synapse(sourceNeuronName=currentRow + (39*botNum),
-                                 targetNeuronName=currentColumn + (39*botNum) + c.numSensorNeurons,
-                                 weight= weights[currentRow][currentColumn])
+            sourceNeuron = neuronDict['Hidden']['startIndex'] + currentRow
+            targetNeuron = neuronDict['Motor']['startIndex'] + currentColumn
+            pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                 targetNeuronName=targetNeuron,
+                                 weight= HiddenMotorWeight[currentRow][currentColumn])
 
     endingIndex = pyrosim.End()
 
