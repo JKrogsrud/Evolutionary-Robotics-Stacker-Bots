@@ -21,7 +21,9 @@ class SOLUTION:
             for botNum in range(numBots):
                 SensorHidden = 2*np.random.rand(c.numSensorNeurons, c.numHiddenNeurons)-1
                 HiddenMotor = 2*np.random.rand(c.numHiddenNeurons, c.numMotorNeurons)-1
+                print([SensorHidden, HiddenMotor])
                 self.weights[botNum] = [SensorHidden, HiddenMotor]
+                print(self.weights[botNum])
 
     def Start_Simulation(self, DirectOrGUI):
 
@@ -64,15 +66,14 @@ class SOLUTION:
             ## Update synapse in Sensor -> Hidden OR Hidden -> Motor
             choice = random.randint(0, 1)
 
-            randomRow = random.randint(0, c.numSensorNeurons - 1)
-            randomColumn = random.randint(0, c.numHiddenNeurons - 1)
-            #TODO: Finish up working one synapses
             if choice:
-                self.weights[botNum][0] =
-
-            randomRow = random.randint(0, c.numSensorNeurons - 1)
-            randomColumn = random.randint(0, c.numMotorNeurons - 1)
-            self.weights[botNum][randomRow, randomColumn] = 2 * random.random() - 1
+                randomRow = random.randint(0, c.numSensorNeurons - 1)
+                randomColumn = random.randint(0, c.numHiddenNeurons - 1)
+                self.weights[botNum][0][randomRow, randomColumn] = 2 * random.random() - 1
+            else:
+                randomRow = random.randint(0, c.numHiddenNeurons - 1)
+                randomColumn = random.randint(0, c.numMotorNeurons - 1)
+                self.weights[botNum][1][randomRow, randomColumn] = 2 * random.random() - 1
 
 
     def Create_World(self):

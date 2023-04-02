@@ -225,7 +225,7 @@ def Generate_Brain(solutionID, bodyType, botNum, SensorHiddenWeight, HiddenMotor
 
     ### MOTORS ###
     motors = [
-        ('Torso', 'FrontFlap'), ('Torso', 'BackFlap'), ('Torso', 'RightFlap'), ('Torso', 'leftFlap'),
+        ('Torso', 'FrontFlap'), ('Torso', 'BackFlap'), ('Torso', 'RightFlap'), ('Torso', 'LeftFlap'),
         ('Torso', 'URRotate'), ('URRotate', 'URTopLeg'), ('URTopLeg', 'URBottomLeg'),
         ('Torso', 'ULRotate'), ('ULRotate', 'ULTopLeg'), ('ULTopLeg', 'ULBottomLeg'),
         ('Torso', 'BRRotate'), ('BRRotate', 'BRTopLeg'), ('BRTopLeg', 'BRBottomLeg'),

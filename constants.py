@@ -131,7 +131,7 @@ totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 """
 Evolution Constants
 """
-numberOfGenerations = 110
+numberOfGenerations = 10
 populationSize = 5
 
 """
