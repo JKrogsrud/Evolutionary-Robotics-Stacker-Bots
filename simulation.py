@@ -40,8 +40,8 @@ class SIMULATION:
             if self.directOrGui == "GUI":
                 time.sleep(c.SLEEP_TIME)
             self.robots.Sense(t)
-            self.robots.Act(t)
             self.robots.Think()
+            self.robots.Act(t)
 
     def __del__(self):
         # self.robot.Save_Values()

@@ -17,7 +17,6 @@ BOT CONSTANTS
 """
 # Frame repetition
 MAX_FORCE = 100
-motorJointRange = np.pi / 4
 
 """
 Bot Motion
@@ -131,7 +130,7 @@ totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 """
 Evolution Constants
 """
-numberOfGenerations = 10
+numberOfGenerations = 100
 populationSize = 5
 
 """
@@ -146,6 +145,27 @@ if bodytype == 'A':
     torsoHeight = .20
     torsoSensorHeight = .2
     torsoSensorSize = .5
+
+    # joint limitations
+    motorJointRanges = {
+        'Torso_FrontFlap': 0.2,
+        'Torso_BackFlap': 0.2,
+        'Torso_RightFlap': 0.2,
+        'Torso_LeftFlap': 0.2,
+        'Torso_URRotate': 0.2,
+        'URRotate_URTopLeg': 0.2,
+        'URTopLeg_URBottomLeg': 0.2,
+        'Torso_ULRotate': 0.2,
+        'ULRotate_ULTopLeg': 0.2,
+        'ULTopLeg_ULBottomLeg': 0.2,
+        'Torso_BRRotate': 0.2,
+        'BRRotate_BRTopLeg': 0.2,
+        'BRTopLeg_BRBottomLeg': 0.2,
+        'Torso_BLRotate': 0.2,
+        'BLRotate_BLTopLeg': 0.2,
+        'BLTopLeg_BLBottomLeg': 0.2,
+    }
+
 """
 Bot Spawning
 types: horizontal, stacked

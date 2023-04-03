@@ -171,11 +171,14 @@ class ROBOT:
         elif c.MOTION_TYPE == 'neural_network':
             for neuronName in self.nn.Get_Neuron_Names():
                 if self.nn.Is_Motor_Neuron(neuronName):
-                    # print("Neuron name: " + str(neuronName))
                     jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
-                    desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRange
-                    # print("Motor name: " + str(self.motors[jointName].jointName))
-                    # print("Desired Angle: " + str(desiredAngle))
+                    # Need to change the angles that are allowed per joint
+                    # Lets do this by a dictionary in the constants
+                    # NOTE: THIS WILL LIMIT NUMBOTS TO 9 BUT DOUBT I CAN GET
+                    #       THOSE KIND OF RESULTS ANYWAYS
+                    jointTypes = str(jointName).split('_')
+                    jointType = jointTypes[0][1:] + '_' + jointTypes[1][1:]
+                    desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRanges[jointType]
                     self.motors[jointName].Set_Value_NN(self.robotID, desiredAngle)
 
     def Think(self):

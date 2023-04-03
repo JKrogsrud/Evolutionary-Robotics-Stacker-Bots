@@ -120,13 +120,18 @@ on top of another.
 
  - PHC set up and working
  - Neural network set up and working though I need to add a hidden layer to each bot
+ - Hidden Layer Added
+ - Laptop keeps sleeping, slowing down my runs
 
 TODO: 
- - Add a way to play the best_brain sim with an easy function
- - Add Hidden Layers
  - Speed up evolution by changing more neurons each step?
  - Remove some of the sensors?
  - Start robots in one position?
+ - Create a function that can start from specific nndf files
+ - Modify fitness function to reward activation of flap sensors
+   - Can i make them only sense when touching other bots?
+ - Change the range of the motors so that the bots dont get quite as stuck
+ as wet noodles
 
 Week 6:
 
