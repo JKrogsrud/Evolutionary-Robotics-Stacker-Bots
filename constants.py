@@ -5,7 +5,7 @@ SLEEP_TIME = 1/240
 FRAMES = 1000
 
 """DATA COLLECTION"""
-SIM_LEN = 10000
+SIM_LEN = 1000
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -130,14 +130,14 @@ totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 """
 Evolution Constants
 """
-numberOfGenerations = 100
-populationSize = 5
+numberOfGenerations = 1
+populationSize = 1
 
 """
 Body experimentation
 """
 bodytype = "A"
-numBots = 3
+numBots = 1
 
 if bodytype == 'A':
     topFlapSensorOffset = .43
@@ -147,23 +147,25 @@ if bodytype == 'A':
     torsoSensorSize = .5
 
     # joint limitations
+    # These should be a lower and upper bound for each joint
+    # Neuron Values range between -1 and 1
     motorJointRanges = {
-        'Torso_FrontFlap': 0.2,
-        'Torso_BackFlap': 0.2,
-        'Torso_RightFlap': 0.2,
-        'Torso_LeftFlap': 0.2,
-        'Torso_URRotate': 0.2,
-        'URRotate_URTopLeg': 0.2,
-        'URTopLeg_URBottomLeg': 0.2,
-        'Torso_ULRotate': 0.2,
-        'ULRotate_ULTopLeg': 0.2,
-        'ULTopLeg_ULBottomLeg': 0.2,
-        'Torso_BRRotate': 0.2,
-        'BRRotate_BRTopLeg': 0.2,
-        'BRTopLeg_BRBottomLeg': 0.2,
-        'Torso_BLRotate': 0.2,
-        'BLRotate_BLTopLeg': 0.2,
-        'BLTopLeg_BLBottomLeg': 0.2,
+        'Torso_FrontFlap': (-1, -0.5),
+        'Torso_BackFlap': (0.5, 1),
+        'Torso_RightFlap': (0.5, 1),
+        'Torso_LeftFlap': (-1, -0.5),
+        'Torso_URRotate': (0.6, 1.2),
+        'URRotate_URTopLeg': (-.75, -0.35),
+        'URTopLeg_URBottomLeg': (-.75, -0.35),
+        'Torso_ULRotate': (-1.2, -0.6),
+        'ULRotate_ULTopLeg': (-.75, -0.35),
+        'ULTopLeg_ULBottomLeg': (-.75, -0.35),
+        'Torso_BRRotate': (0.6, 1.2),
+        'BRRotate_BRTopLeg': (0.35, .75),
+        'BRTopLeg_BRBottomLeg': (0.35, .75),
+        'Torso_BLRotate': (-1.2, -0.6),
+        'BLRotate_BLTopLeg': (0.35, .75),
+        'BLTopLeg_BLBottomLeg': (0.35, .75),
     }
 
 """

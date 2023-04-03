@@ -178,7 +178,9 @@ class ROBOT:
                     #       THOSE KIND OF RESULTS ANYWAYS
                     jointTypes = str(jointName).split('_')
                     jointType = jointTypes[0][1:] + '_' + jointTypes[1][1:]
-                    desiredAngle = self.nn.Get_Value_Of(neuronName) * c.motorJointRanges[jointType]
+                    lower_bound = c.motorJointRanges[jointType][0]
+                    upper_bound = c.motorJointRanges[jointType][1]
+                    desiredAngle = self.nn.Get_Value_Of(neuronName) * (upper_bound - lower_bound) + lower_bound
                     self.motors[jointName].Set_Value_NN(self.robotID, desiredAngle)
 
     def Think(self):
