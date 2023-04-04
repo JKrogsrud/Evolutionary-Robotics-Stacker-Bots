@@ -1,5 +1,7 @@
 import pybullet as p
 
+import constants as c
+
 from pyrosim.nndf import NNDF
 
 from pyrosim.linksdf  import LINK_SDF
@@ -155,10 +157,10 @@ def Prepare_To_Simulate(bodyIDList):
 
     return linkInfo, jointInfo
 
-def Send_Cube(name="default", pos=[0, 0, 0], size=[1, 1, 1]):
+
+def Send_Cube(name="default", pos=[0, 0, 0], size=[1, 1, 1], color=("DEFAULT", .5, .5, 0, 1.0)):
 
     global availableLinkIndex
-    # print("In Send_Cube: linkIndex:" + str(availableLinkIndex))
 
     global links
 
@@ -170,7 +172,7 @@ def Send_Cube(name="default", pos=[0, 0, 0], size=[1, 1, 1]):
 
         links.append(link)
     else:
-        link = LINK_URDF(name, pos, size)
+        link = LINK_URDF(name, pos, size, color)
 
         links.append(link)
 

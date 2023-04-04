@@ -21,9 +21,7 @@ class SOLUTION:
             for botNum in range(numBots):
                 SensorHidden = 2*np.random.rand(c.numSensorNeurons, c.numHiddenNeurons)-1
                 HiddenMotor = 2*np.random.rand(c.numHiddenNeurons, c.numMotorNeurons)-1
-                print([SensorHidden, HiddenMotor])
                 self.weights[botNum] = [SensorHidden, HiddenMotor]
-                print(self.weights[botNum])
 
     def Start_Simulation(self, DirectOrGUI):
 

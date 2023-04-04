@@ -122,16 +122,19 @@ on top of another.
  - Neural network set up and working though I need to add a hidden layer to each bot
  - Hidden Layer Added
  - Laptop keeps sleeping, slowing down my runs
+ - Reduced number of sensors - some body parts did not really need to sense like upper legs
+ - Colored various limbs and reduced and restricted motor joints
+   - created a dictionary for the various motors i.e. bottom of legs can either be straight or bent at 90 degrees
+ -
 
 TODO: 
  - Speed up evolution by changing more neurons each step?
- - Remove some of the sensors?
- - Start robots in one position?
  - Create a function that can start from specific nndf files
  - Modify fitness function to reward activation of flap sensors
    - Can i make them only sense when touching other bots?
- - Change the range of the motors so that the bots dont get quite as stuck
- as wet noodles
+ - Recurrent connections and CPG?
+
+Video: https://youtu.be/m9Y3eo4ZjaI
 
 Week 6:
 

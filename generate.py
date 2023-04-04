@@ -101,11 +101,11 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNa
         # Top Leg
         pyrosim.Send_Joint(name=str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg', parent=str(botNum) + 'URRotate', child=str(botNum) + 'URTopLeg',
                            type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
-        pyrosim.Send_Cube(name=str(botNum) + 'URTopLeg', pos=[-.6, 0, 0], size=[1.2, .2, .2])
+        pyrosim.Send_Cube(name=str(botNum) + 'URTopLeg', pos=[-.6, 0, 0], size=[1.2, .2, .2], color=c.UR)
         # Bottom Leg
         pyrosim.Send_Joint(name=str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg', parent=str(botNum) + 'URTopLeg', child=str(botNum) + 'URBottomLeg',
                            type='revolute', position=[-1.2, 0, 0], jointAxis='0 1 0')
-        pyrosim.Send_Cube(name=str(botNum) + 'URBottomLeg', pos=[-0.5, 0, 0], size=[1, .2, .2])
+        pyrosim.Send_Cube(name=str(botNum) + 'URBottomLeg', pos=[-0.5, 0, 0], size=[1, .2, .2], color=c.UR)
 
         # UL LEG
         # Rotator Cuff
@@ -115,11 +115,11 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNa
         # Top Leg
         pyrosim.Send_Joint(name=str(botNum) + 'ULRotate_'+ str(botNum) + 'ULTopLeg', parent=str(botNum) + 'ULRotate', child=str(botNum) + 'ULTopLeg',
                            type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
-        pyrosim.Send_Cube(name=str(botNum) + 'ULTopLeg', pos=[-.6, 0, 0], size=[1.2, .2, .2])
+        pyrosim.Send_Cube(name=str(botNum) + 'ULTopLeg', pos=[-.6, 0, 0], size=[1.2, .2, .2], color=c.UL)
         # Bottom Leg
         pyrosim.Send_Joint(name=str(botNum) + 'ULTopLeg_'+ str(botNum) + 'ULBottomLeg', parent=str(botNum) + 'ULTopLeg', child=str(botNum) + 'ULBottomLeg',
                            type='revolute', position=[-1.2, 0, 0], jointAxis='0 1 0')
-        pyrosim.Send_Cube(name=str(botNum) + 'ULBottomLeg', pos=[-0.5, 0, 0], size=[1, .2, .2])
+        pyrosim.Send_Cube(name=str(botNum) + 'ULBottomLeg', pos=[-0.5, 0, 0], size=[1, .2, .2], color=c.UL)
 
         # BR LEG
         # Rotator Cuff
@@ -129,11 +129,11 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNa
         # Top Leg
         pyrosim.Send_Joint(name=str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg', parent=str(botNum) + 'BRRotate', child=str(botNum) + 'BRTopLeg',
                            type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
-        pyrosim.Send_Cube(name=str(botNum) + 'BRTopLeg', pos=[.6, 0, 0], size=[1.2, .2, .2])
+        pyrosim.Send_Cube(name=str(botNum) + 'BRTopLeg', pos=[.6, 0, 0], size=[1.2, .2, .2], color=c.BR)
         # Bottom Leg
-        pyrosim.Send_Joint(name=str(botNum) + 'BRTopLeg_'+ str(botNum) + 'BRBottomLeg', parent=str(botNum) + 'BRTopLeg', child=str(botNum) + 'BRBottomLeg',
+        pyrosim.Send_Joint(name=str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg', parent=str(botNum) + 'BRTopLeg', child=str(botNum) + 'BRBottomLeg',
                            type='revolute', position=[1.2, 0, 0], jointAxis='0 1 0')
-        pyrosim.Send_Cube(name=str(botNum) + 'BRBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2])
+        pyrosim.Send_Cube(name=str(botNum) + 'BRBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2], color=c.BR)
 
         # BL LEG
         # Rotator Cuff
@@ -143,11 +143,11 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNa
         # Top Leg
         pyrosim.Send_Joint(name=str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg', parent=str(botNum) + 'BLRotate', child=str(botNum) + 'BLTopLeg',
                            type='revolute', position=[0, 0, 0], jointAxis='0 1 0')
-        pyrosim.Send_Cube(name=str(botNum) + 'BLTopLeg', pos=[.6, 0, 0], size=[1.2, .2, .2])
+        pyrosim.Send_Cube(name=str(botNum) + 'BLTopLeg', pos=[.6, 0, 0], size=[1.2, .2, .2], color=c.BL)
         # Bottom Leg
         pyrosim.Send_Joint(name=str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg', parent=str(botNum) + 'BLTopLeg', child=str(botNum) + 'BLBottomLeg',
                            type='revolute', position=[1.2, 0, 0], jointAxis='0 1 0')
-        pyrosim.Send_Cube(name=str(botNum) + 'BLBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2])
+        pyrosim.Send_Cube(name=str(botNum) + 'BLBottomLeg', pos=[0.5, 0, 0], size=[1, .2, .2], color=c.BL)
 
         currentIndex = pyrosim.End()  # Close sdf file
         return currentIndex
@@ -157,12 +157,20 @@ def Generate_Brain(solutionID, bodyType, botNum, SensorHiddenWeight, HiddenMotor
     pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf', 0, botNum)
 
     # Sensors for Cubes
+    # cubes = [
+    #     'Torso', 'TopSensor', 'BottomSensor', 'FrontFlap', 'FrontTopSensor', 'FrontBottomSensor',
+    #     'BackFlap', 'BackTopSensor', 'BackBottomSensor', 'RightFlap', 'RightTopSensor',
+    #     'RightBottomSensor', 'LeftFlap', 'LeftTopSensor', 'LeftBottomSensor',
+    #     'URTopLeg', 'URBottomLeg', 'ULTopLeg', 'ULBottomLeg', 'BRTopLeg', 'BRBottomLeg',
+    #     'BLTopLeg', 'BLBottomLeg'
+    # ]
+
     cubes = [
-        'Torso', 'TopSensor', 'BottomSensor', 'FrontFlap', 'FrontTopSensor', 'FrontBottomSensor',
-        'BackFlap', 'BackTopSensor', 'BackBottomSensor', 'RightFlap', 'RightTopSensor',
-        'RightBottomSensor', 'LeftFlap', 'LeftTopSensor', 'LeftBottomSensor',
-        'URTopLeg', 'URBottomLeg', 'ULTopLeg', 'ULBottomLeg', 'BRTopLeg', 'BRBottomLeg',
-        'BLTopLeg', 'BLBottomLeg'
+        'TopSensor', 'BottomSensor', 'FrontTopSensor', 'FrontBottomSensor',
+        'BackTopSensor', 'BackBottomSensor', 'RightTopSensor',
+        'RightBottomSensor', 'LeftTopSensor', 'LeftBottomSensor',
+        'URBottomLeg', 'ULBottomLeg', 'BRBottomLeg',
+        'BLBottomLeg'
     ]
 
     neuronIndex = 0
@@ -271,12 +279,13 @@ def Generate_Brain(solutionID, bodyType, botNum, SensorHiddenWeight, HiddenMotor
 
     ### Connect Sensors to hidden neurons ###
     ### Assume the appropriate array of synapse values have been passed in
+
     for currentRow in range(c.numSensorNeurons):
         for currentColumn in range(c.numHiddenNeurons):
             sourceNeuron = neuronDict['Sensor']['startIndex'] + currentRow
             targetNeuron = neuronDict['Hidden']['startIndex'] + currentColumn
-            pyrosim.Send_Synapse(sourceNeuronName= sourceNeuron,
-                                 targetNeuronName= targetNeuron,
+            pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                 targetNeuronName=targetNeuron,
                                  weight=SensorHiddenWeight[currentRow][currentColumn])
 
     for currentRow in range(c.numHiddenNeurons):

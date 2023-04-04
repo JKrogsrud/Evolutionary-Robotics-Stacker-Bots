@@ -25,8 +25,6 @@ class ROBOTSWARM:
         #os.system("del brain" + str(self.solutionID) + ".nndf")
 
         self.linkInfo, self.jointInfo = pyrosim.Prepare_To_Simulate(list(self.bots.keys()))
-        # print(self.linkInfo)
-        # print(self.jointInfo)
 
         for bot in self.bots:
             self.bots[bot].Set_Number_links(self.jointInfo["numJoints"])
@@ -109,7 +107,7 @@ class ROBOTSWARM:
         for bot in bot_info:
             distance_from_mid = np.sqrt((mid_x - bot['position'][0])**2 + (mid_y - bot['position'][1])**2)
             # print(distance_from_mid)
-            fitness *= 1 / distance_from_mid
+            fitness *= 1 / (distance_from_mid + .01)
 
         # changed tmp to fitness
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
@@ -180,7 +178,7 @@ class ROBOT:
                     jointType = jointTypes[0][1:] + '_' + jointTypes[1][1:]
                     lower_bound = c.motorJointRanges[jointType][0]
                     upper_bound = c.motorJointRanges[jointType][1]
-                    desiredAngle = self.nn.Get_Value_Of(neuronName) * (upper_bound - lower_bound) + lower_bound
+                    desiredAngle = ((self.nn.Get_Value_Of(neuronName) + 1) / 2) * (upper_bound - lower_bound) + lower_bound
                     self.motors[jointName].Set_Value_NN(self.robotID, desiredAngle)
 
     def Think(self):

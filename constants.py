@@ -5,7 +5,7 @@ SLEEP_TIME = 1/240
 FRAMES = 1000
 
 """DATA COLLECTION"""
-SIM_LEN = 1000
+SIM_LEN = 10000
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -121,8 +121,10 @@ elif MOTION_TYPE == 'rigid':
 """
 Neural Network
 """
-numSensorNeurons = 23
-numHiddenNeurons = 20
+# numSensorNeurons = 23
+numSensorNeurons = 14
+# numHiddenNeurons = 20
+numHiddenNeurons = 14
 numMotorNeurons = 16
 
 totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
@@ -130,14 +132,14 @@ totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 """
 Evolution Constants
 """
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 15
+populationSize = 5
 
 """
 Body experimentation
 """
 bodytype = "A"
-numBots = 1
+numBots = 3
 
 if bodytype == 'A':
     topFlapSensorOffset = .43
@@ -149,24 +151,42 @@ if bodytype == 'A':
     # joint limitations
     # These should be a lower and upper bound for each joint
     # Neuron Values range between -1 and 1
+
+    """
+    Rotate joints: 
+    """
+
     motorJointRanges = {
-        'Torso_FrontFlap': (-1, -0.5),
-        'Torso_BackFlap': (0.5, 1),
-        'Torso_RightFlap': (0.5, 1),
-        'Torso_LeftFlap': (-1, -0.5),
-        'Torso_URRotate': (0.6, 1.2),
-        'URRotate_URTopLeg': (-.75, -0.35),
-        'URTopLeg_URBottomLeg': (-.75, -0.35),
-        'Torso_ULRotate': (-1.2, -0.6),
-        'ULRotate_ULTopLeg': (-.75, -0.35),
-        'ULTopLeg_ULBottomLeg': (-.75, -0.35),
-        'Torso_BRRotate': (0.6, 1.2),
-        'BRRotate_BRTopLeg': (0.35, .75),
-        'BRTopLeg_BRBottomLeg': (0.35, .75),
-        'Torso_BLRotate': (-1.2, -0.6),
-        'BLRotate_BLTopLeg': (0.35, .75),
-        'BLTopLeg_BLBottomLeg': (0.35, .75),
+        'Torso_FrontFlap': (-np.pi / 4 - 0.1, 0),
+        'Torso_BackFlap': (0, np.pi / 4 + 0.1),
+        'Torso_RightFlap': (0, np.pi / 4 + 0.1),
+        'Torso_LeftFlap': (-np.pi / 4 - 0.1, 0),
+        'Torso_URRotate': (0, np.pi / 2),
+        'URRotate_URTopLeg': (-np.pi / 3, np.pi / 4),
+        'URTopLeg_URBottomLeg': (-np.pi / 2, 0),
+        'Torso_ULRotate': (-np.pi / 2, 0),
+        'ULRotate_ULTopLeg': (-np.pi / 3, np.pi / 4),
+        'ULTopLeg_ULBottomLeg': (-np.pi / 2, 0),
+        'Torso_BRRotate': (0, np.pi / 2),
+        'BRRotate_BRTopLeg': (-np.pi / 4, np.pi / 3),
+        'BRTopLeg_BRBottomLeg': (0, np.pi / 2),
+        'Torso_BLRotate': (-np.pi / 2, 0),
+        'BLRotate_BLTopLeg': (-np.pi / 4, np.pi / 3),
+        'BLTopLeg_BLBottomLeg': (0, np.pi / 2),
     }
+
+### Colors ###
+
+DEFAULT = ("DEFAULT", 0/255.0, 204.0/255.0, 204.0 / 255.0, 1.0)
+
+# Red
+UR = ("UR", 255.0/255.0, 0/255.0, 0 / 255.0, 1.0)
+# White
+BR = ("BR", 255.0/255.0, 255.0/255.0, 255.0 / 255.0, 1.0)
+# Blue
+UL = ("UL", 0/255.0, 0/255.0, 200.0 / 255.0, 1.0)
+# Green
+BL = ("BL", 0/255.0, 255.0/255.0, 0.0 / 255.0, 1.0)
 
 """
 Bot Spawning
@@ -176,7 +196,7 @@ startPos = 'horizontal'
 # startPos = 'stacked'
 
 if startPos == 'horizontal':
-    botSpacing = 6
+    botSpacing = 5.5
 else:
     botSpacing = 7
 
