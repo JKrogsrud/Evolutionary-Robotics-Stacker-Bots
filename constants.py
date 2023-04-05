@@ -132,8 +132,12 @@ totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 """
 Evolution Constants
 """
-numberOfGenerations = 250
+
+numberOfGenerations = 3
 populationSize = 5
+
+# evolutionaryAlgorithm = 'PHC'
+evolutionaryAlgorithm = 'SAM'
 
 """
 Body experimentation

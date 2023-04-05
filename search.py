@@ -1,18 +1,28 @@
 import os
 from hillclimber import HILLCLIMBER
 from parallelHillClimber import PARALLEL_HILLCLIMBER
+from surviveAndMultiply import SURVIVE_MULTIPLY
 import constants as c
 import time
 
-start_time = time.time()
-phc = PARALLEL_HILLCLIMBER(c.bodytype, c.numBots)
+if c.evolutionaryAlgorithm == 'PHC':
+    start_time = time.time()
+    phc = PARALLEL_HILLCLIMBER(c.bodytype, c.numBots)
+    phc.Evolve()
 
-phc.Evolve()
+    end_time = time.time()
 
-end_time = time.time()
+    # phc.Show_Best()
+    phc.Save_Best()
+elif c.evolutionaryAlgorithm == 'SAM':
+    start_time = time.time()
+    phc = PARALLEL_HILLCLIMBER(c.bodytype, c.numBots)
+    phc.Evolve()
 
-# phc.Show_Best()
-phc.Save_Best()
+    end_time = time.time()
+
+    # phc.Show_Best()
+    phc.Save_Best()
 
 # save an info document relaying some information about this run
 

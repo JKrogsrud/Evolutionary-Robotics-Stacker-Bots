@@ -2,7 +2,8 @@ import os
 from solution import SOLUTION
 import constants as c
 import copy as cp
-class PARALLEL_HILLCLIMBER:
+
+class SURVIVE_MULTIPLY:
 
     def __init__(self, bodyType, numBots):
 
@@ -26,6 +27,7 @@ class PARALLEL_HILLCLIMBER:
             self.Evolve_For_One_Generation()
 
     def Evolve_For_One_Generation(self):
+
         self.Spawn()
         self.Mutate()
         self.Evaluate(self.children)
@@ -48,11 +50,18 @@ class PARALLEL_HILLCLIMBER:
             self.children[child].Mutate()
 
     def Select(self):
+        all_solutions = dict(self.parents.items() | self.children.items())
+        sorted_by_fitness = sorted(all_solutions.items(), key=lambda x: x[1].fitness)
 
-        for parent in self.parents:
-            if self.parents[parent].fitness < self.children[parent].fitness:
-                self.parents[parent] = self.children[parent]
+        survivors = sorted_by_fitness[-int(c.populationSize):]
 
+        # I now have half the winners
+        # Lets throw them back into
+        parent_tmp = {}
+        for i in range(len(survivors)):
+            parent_tmp[i] = survivors[i][1]
+
+        self.parents = parent_tmp
     def Print(self):
         for parent in self.parents:
             print("Parent " + str(parent) + "'s fitness:" + str(self.parents[parent].fitness) +

@@ -138,9 +138,23 @@ Video: https://youtu.be/m9Y3eo4ZjaI
 
 Week 6:
 
+Initial Goals:
+
 I will create a new neural network for the stacker-bots which acts as a hive mind between
 the three robots and allow the neurons to be created randomly so we can see the robots moving, 
 I will submit a video of this.
+
+Updated goals:
+ - Move to a different evolutionary algorithm
+ - Create Hive-Mind option
+ - Create an info logging function, recording robot's sensor values over time
+   - Similar file for recording what constants were used in the run
+ - Have fitness reward active top / bottom / flap sensors
+
+Notes:
+ - Wrapped fileread with in Wait_For_Simulation_To_End with a try except loop as lengthy runs would sometimes
+crash mid-run
+ - Created a new evolutionary algorithm called SurviveAndMultiply
 
 Week 7:
 
