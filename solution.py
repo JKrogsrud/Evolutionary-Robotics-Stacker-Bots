@@ -54,7 +54,13 @@ class SOLUTION:
         while not os.path.exists("fitness" + str(self.myID) + ".txt"):
             time.sleep(0.01)
 
-        file = open("fitness" + str(self.myID) + ".txt", "r")
+        fileRead = False
+        while not fileRead:
+            try:
+                file = open("fitness" + str(self.myID) + ".txt", "r")
+                fileRead = True
+            except:
+                time.sleep(0.1)
         self.fitness = float(file.read())
         file.close()
         os.system("del fitness" + str(self.myID) + ".txt")

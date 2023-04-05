@@ -11,9 +11,10 @@ phc.Evolve()
 
 end_time = time.time()
 
-
 # phc.Show_Best()
 phc.Save_Best()
+
+# save an info document relaying some information about this run
 
 print("Number of generations: " + str(c.numberOfGenerations))
 print("Population per generation: " + str(c.populationSize))

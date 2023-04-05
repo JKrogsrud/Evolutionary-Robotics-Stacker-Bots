@@ -1,0 +1,5 @@
+numberOfGenerations = 100
+populationSize = 5
+bodytype = "A"
+numBots = 3
+SIM_LEN = 10000

@@ -132,14 +132,14 @@ totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 """
 Evolution Constants
 """
-numberOfGenerations = 15
+numberOfGenerations = 250
 populationSize = 5
 
 """
 Body experimentation
 """
 bodytype = "A"
-numBots = 3
+numBots = 2
 
 if bodytype == 'A':
     topFlapSensorOffset = .43

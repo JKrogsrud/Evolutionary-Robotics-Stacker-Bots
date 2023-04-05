@@ -1,0 +1,8 @@
+
+numberOfGenerations = 250
+populationSize = 5
+
+numBots = 2
+
+ERROR OCCURED:
+PermissionError: [Errno 13] Permission denied: 'fitness525.txt'
