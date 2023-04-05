@@ -61,6 +61,7 @@ class SOLUTION:
                 fileRead = True
             except:
                 time.sleep(0.1)
+
         self.fitness = float(file.read())
         file.close()
         os.system("del fitness" + str(self.myID) + ".txt")
