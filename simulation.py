@@ -6,6 +6,7 @@ import time
 # My own created classes
 from world import WORLD
 from robot import ROBOTSWARM
+from robot import HIVE_MIND
 
 import constants as c  # File in which we store many of the constants we are using
 
@@ -28,10 +29,10 @@ class SIMULATION:
         self.world = WORLD()
 
         # Creating robots all in one file to fix sensor issues
-        self.robots = ROBOTSWARM(solutionID, bodyType, self.numBots)
-
-        # print("calling robots:")
-        # self.robots = ROBOTS(solutionID, bodyType, numBots)
+        if c.BRAIN_TYPE == 'hive_mind':
+            self.robots = HIVE_MIND(solutionID, bodyType, self.numBots)
+        else:
+            self.robots = ROBOTSWARM(solutionID, bodyType, self.numBots)
 
 
     def run(self):

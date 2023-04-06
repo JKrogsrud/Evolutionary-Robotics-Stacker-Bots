@@ -145,11 +145,16 @@ the three robots and allow the neurons to be created randomly so we can see the 
 I will submit a video of this.
 
 Updated goals:
- - Move to a different evolutionary algorithm
- - Create Hive-Mind option
+ - Move to a different evolutionary algorithm - done
+
+ - Create Hive-Mind option - working no this
+
  - Create an info logging function, recording robot's sensor values over time
    - Similar file for recording what constants were used in the run
- - Have fitness reward active top / bottom / flap sensors
+ - SMALL CHANGE: Update algorithm to only update one robot at a time
+ - BIG CHANGE: Remove the sensor flaps and sensors (maybe keep top and bottom sensors for now)
+   - This should quicken the pace of evolution (and how taxing it is on my PC)
+   - maybe allow for some smaller 
 
 Notes:
  - Wrapped fileread with in Wait_For_Simulation_To_End with a try except loop as lengthy runs would sometimes

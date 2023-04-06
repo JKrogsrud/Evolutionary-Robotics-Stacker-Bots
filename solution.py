@@ -15,13 +15,25 @@ class SOLUTION:
         self.myID = nextAvailableID
         self.bodyType = bodyType
         self.numBots = numBots
+
         # Enable weights here for easy modification in Mutate call
-        self.weights = {}
-        if c.MOTION_TYPE == "neural_network":
+        if c.BRAIN_TYPE == "neural_network":
+            self.weights = {}
             for botNum in range(numBots):
                 SensorHidden = 2*np.random.rand(c.numSensorNeurons, c.numHiddenNeurons)-1
                 HiddenMotor = 2*np.random.rand(c.numHiddenNeurons, c.numMotorNeurons)-1
                 self.weights[botNum] = [SensorHidden, HiddenMotor]
+
+        if c.BRAIN_TYPE == "hive_mind":
+            # For each bot we will connect all sensors to the Hidden neurons
+            # and the shared hidden neurons will each in turn attach to all of the motors
+            # of each bot. So self.weights doesn't actually change much but instead breaking it
+            # up by botNum we will send one massive array because of how generate_hive_mind
+            # is currently set up
+            SensorHidden = 2 * np.random.rand(c.numSensorNeurons * c.numBots, c.numHiddenNeurons) - 1
+            HiddenMotor = 2 * np.random.rand(c.numHiddenNeurons, c.numBots * c.numMotorNeurons) - 1
+            self.weights = [SensorHidden, HiddenMotor]
+
 
     def Start_Simulation(self, DirectOrGUI):
 
@@ -67,18 +79,31 @@ class SOLUTION:
         os.system("del fitness" + str(self.myID) + ".txt")
 
     def Mutate(self):
-        for botNum in range(self.numBots):
-            ## Update synapse in Sensor -> Hidden OR Hidden -> Motor
+        if c.BRAIN_TYPE == "neural_network":
+            for botNum in range(self.numBots):
+                ## Update synapse in Sensor -> Hidden OR Hidden -> Motor
+                choice = random.randint(0, 1)
+
+                if choice:
+                    randomRow = random.randint(0, c.numSensorNeurons - 1)
+                    randomColumn = random.randint(0, c.numHiddenNeurons - 1)
+                    self.weights[botNum][0][randomRow, randomColumn] = 2 * random.random() - 1
+                else:
+                    randomRow = random.randint(0, c.numHiddenNeurons - 1)
+                    randomColumn = random.randint(0, c.numMotorNeurons - 1)
+                    self.weights[botNum][1][randomRow, randomColumn] = 2 * random.random() - 1
+
+        if c.BRAIN_TYPE == 'hive_mind':
             choice = random.randint(0, 1)
 
             if choice:
-                randomRow = random.randint(0, c.numSensorNeurons - 1)
+                randomRow = random.randint(0, c.numBots * c.numSensorNeurons - 1)
                 randomColumn = random.randint(0, c.numHiddenNeurons - 1)
-                self.weights[botNum][0][randomRow, randomColumn] = 2 * random.random() - 1
+                self.weights[0][randomRow][randomColumn] = 2 * random.random() - 1
             else:
                 randomRow = random.randint(0, c.numHiddenNeurons - 1)
-                randomColumn = random.randint(0, c.numMotorNeurons - 1)
-                self.weights[botNum][1][randomRow, randomColumn] = 2 * random.random() - 1
+                randomColumn = random.randint(0, c.numBots * c.numMotorNeurons - 1)
+                self.weights[1][randomRow][randomColumn] = 2 * random.random() - 1
 
 
     def Create_World(self):
@@ -105,8 +130,11 @@ class SOLUTION:
 
     def Create_Brain(self):
 
-        for botNum in range(self.numBots):
-            generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum][0], self.weights[botNum][1])
+        if c.BRAIN_TYPE == 'neural_network':
+            for botNum in range(self.numBots):
+                generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum][0], self.weights[botNum][1])
+        elif c.BRAIN_TYPE == 'hive_mind':
+            generate.Generate_Hive_Mind(self.myID, self.bodyType, self.weights)
 
 
     def Set_ID(self, newID):

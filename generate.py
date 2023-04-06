@@ -154,7 +154,7 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNa
 
 
 def Generate_Brain(solutionID, bodyType, botNum, SensorHiddenWeight, HiddenMotorWeight):
-    pyrosim.Start_URDF('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf', 0, botNum)
+    pyrosim.Start_NeuralNetwork('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf')
 
     # Sensors for Cubes
     # cubes = [
@@ -294,10 +294,81 @@ def Generate_Brain(solutionID, bodyType, botNum, SensorHiddenWeight, HiddenMotor
             targetNeuron = neuronDict['Motor']['startIndex'] + currentColumn
             pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
                                  targetNeuronName=targetNeuron,
-                                 weight= HiddenMotorWeight[currentRow][currentColumn])
+                                 weight=HiddenMotorWeight[currentRow][currentColumn])
 
     endingIndex = pyrosim.End()
 
+def Generate_Hive_Mind(solutionID, bodyType, weights):
+    pyrosim.Start_NeuralNetwork('brain_' + str(solutionID) + str(bodyType))
+
+    cubes = [
+        'TopSensor', 'BottomSensor', 'FrontTopSensor', 'FrontBottomSensor',
+        'BackTopSensor', 'BackBottomSensor', 'RightTopSensor',
+        'RightBottomSensor', 'LeftTopSensor', 'LeftBottomSensor',
+        'URBottomLeg', 'ULBottomLeg', 'BRBottomLeg',
+        'BLBottomLeg'
+    ]
+
+    neuronIndex = 0
+
+    neuronDict = {}
+    neuronDict['Sensor'] = {}
+    neuronDict['Hidden'] = {}
+    neuronDict['Motor'] = {}
+
+    # Attach Sensors to cubes
+    neuronDict['Sensor']['startIndex'] = neuronIndex
+    for botNum in range(c.numBots):
+        for cube in cubes:
+            pyrosim.Send_Sensor_Neuron(name=neuronIndex, linkName=str(botNum) + str(cube))
+            neuronIndex += 1
+    neuronDict['Sensor']['endIndex'] = neuronIndex
+
+    # Create a Hidden Layer
+    neuronDict['Hidden']['startIndex'] = neuronIndex
+    for i in range (c.numHiddenNeurons):
+        pyrosim.Send_Hidden_Neuron(name=neuronIndex)
+        neuronIndex += 1
+    neuronDict['Hidden']['endIndex'] = neuronIndex
+
+    # Attach motors
+    motors = [
+        ('Torso', 'FrontFlap'), ('Torso', 'BackFlap'), ('Torso', 'RightFlap'), ('Torso', 'LeftFlap'),
+        ('Torso', 'URRotate'), ('URRotate', 'URTopLeg'), ('URTopLeg', 'URBottomLeg'),
+        ('Torso', 'ULRotate'), ('ULRotate', 'ULTopLeg'), ('ULTopLeg', 'ULBottomLeg'),
+        ('Torso', 'BRRotate'), ('BRRotate', 'BRTopLeg'), ('BRTopLeg', 'BRBottomLeg'),
+        ('Torso', 'BLRotate'), ('BLRotate', 'BLTopLeg'), ('BLTopLeg', 'BLBottomLeg')
+    ]
+
+    neuronDict['Motors']['startIndex'] = neuronIndex
+    for botNum in c.numBots:
+        for motor in motors:
+            pyrosim.Send_Motor_Neuron(name=neuronIndex,
+                                      jointName=str(botNum) + str(motor[0]) + '_' + str(botNum) + str(motor[1]))
+            neuronIndex += 1
+    neuronDict['Motors']['endIndex'] = neuronIndex
+
+    # Attaching Synapses
+    # We need a c.numSensorNeurons * c.numBots by c.numHiddenNeurons array
+
+    # Sensors to Hidden
+    for currentRow in range(c.numSensorNeurons * c.numBots):
+        for currentColumn in range(c.numHiddenNeurons):
+            sourceNeuron = neuronDict['Sensor']['startIndex'] + currentRow
+            targetNeuron = neuronDict['Hidden']['startIndex'] + currentColumn
+            pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                 targetNeuronName=targetNeuron,
+                                 weight=weights[0][currentRow][currentColumn])
+    # Hidden to Motors
+    for currentRow in range(c.numHiddenNeurons):
+        for currentColumn in range(c.numBots * c.numMotorNeurons):
+            sourceNeuron = neuronDict['Hidden']['startIndex'] + currentRow
+            targetNeuron = neuronDict['Motor']['startIndex'] + currentColumn
+            pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                 targetNeuronName=targetNeuron,
+                                 weight=weights[1][currentRow][currentColumn])
+
+    endingIndex = pyrosim.End()
 def Generate_Rigidity(bodyType, jointName, numBots):
     if bodyType == 'A':
         for botNum in range(numBots):

@@ -5,7 +5,7 @@ SLEEP_TIME = 1/240
 FRAMES = 1000
 
 """DATA COLLECTION"""
-SIM_LEN = 10000
+SIM_LEN = 3000
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -23,10 +23,11 @@ Bot Motion
 types: ragdoll, oscillatory, randomNN, neural_network
 """
 
-# MOTION_TYPE = 'oscillatory'
-MOTION_TYPE = 'neural_network'
-# MOTION_TYPE = 'ragdoll'
-# MOTION_TYPE = 'rigid'
+# BRAIN_TYPE = 'oscillatory'
+BRAIN_TYPE = 'neural_network'
+# BRAIN_TYPE = 'hive_mind'
+# BRAIN_TYPE = 'ragdoll'
+# BRAIN_TYPE = 'rigid'
 
 """
 MOTOR CONSTANTS - Oscillatory
@@ -42,7 +43,7 @@ DIFFERENT_BEHAVIOR = False
 """
 MOTOR RANGES 
 """
-if RANDOM == True and MOTION_TYPE == 'oscillatory':
+if RANDOM == True and BRAIN_TYPE == 'oscillatory':
     # Flaps
     FLAP_AMPS = np.random.random_sample() * 2 * np.pi
     FLAP_FREQ = np.random.random_sample() * 10.0
@@ -74,7 +75,7 @@ if RANDOM == True and MOTION_TYPE == 'oscillatory':
     # Joint Restrictions
     motorJointRange = np.random.random_sample()
 
-elif RANDOM == False and MOTION_TYPE == 'oscillatory':
+elif RANDOM == False and BRAIN_TYPE == 'oscillatory':
     # FLAPS
     FLAP_AMPS = 3 * np.pi / 16
     FLAP_FREQ = 6.1
@@ -106,7 +107,7 @@ elif RANDOM == False and MOTION_TYPE == 'oscillatory':
     # Joint Restrictions
     motorJointRange = 0.4
 
-elif MOTION_TYPE == 'rigid':
+elif BRAIN_TYPE == 'rigid':
 
     TORSO_FLAP_ANGLE = np.pi / 3.5
 
@@ -133,8 +134,8 @@ totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 Evolution Constants
 """
 
-numberOfGenerations = 3
-populationSize = 5
+numberOfGenerations = 1
+populationSize = 1
 
 # evolutionaryAlgorithm = 'PHC'
 evolutionaryAlgorithm = 'SAM'
@@ -143,7 +144,7 @@ evolutionaryAlgorithm = 'SAM'
 Body experimentation
 """
 bodytype = "A"
-numBots = 2
+numBots = 2  # Limit to 9 - or need to rethink something in Robot - Act
 
 if bodytype == 'A':
     topFlapSensorOffset = .43

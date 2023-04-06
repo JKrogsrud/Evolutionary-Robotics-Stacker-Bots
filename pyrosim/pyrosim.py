@@ -47,26 +47,18 @@ def End_Model():
     model.Save_End_Tag(f)
 
 
-def Get_Touch_Sensor_Value_For_Link(linkName, botNum, numLinks):
+def Get_Touch_Sensor_Value_For_Link(linkName, botNum):
     touchValue = -1.0
-
-    # print("Get_Touch_Sensor_Value_For_Link: " + str(linkName) + " Bot: " + str(botNum))
 
     # Check using dict (desired number of values)
     desiredLinkIndex = linkNamesToIndices[linkName]
-    # print("Desired Link Index:" + str(desiredLinkIndex))
 
-    # This right here is what reports the sensors which are getting set wrong
-    # print(botNum)
     pts = p.getContactPoints(botNum)
-    # print(pts)
+
     for pt in pts:
 
         # linkIndex = pt[4] + (botNum - 1) * numLinks
         linkIndex = pt[3]
-        # print("Link Index found by pybullet:")
-        # print(linkIndex)
-        # print("Bot: " + str(botNum) + " Link Index: " + str(linkIndex) + " desired Link Index: " + str(desiredLinkIndex))
 
         if (linkIndex == desiredLinkIndex):
 
@@ -82,25 +74,20 @@ def Prepare_Link_Dictionary(bodyIDList):
     linkNamesToIndices = {}
 
     linkInfoDict = {}
-    # linkIndexOffset = 0
+
     for bodyID in bodyIDList:
         linkNames = []
         # for jointIndex in range(0 + linkIndexOffset, p.getNumJoints(bodyID) + linkIndexOffset):
         for jointIndex in range(0, p.getNumJoints(bodyID)):
-            # print(bodyID, jointIndex)
+
             jointInfo = p.getJointInfo(bodyID, jointIndex)
-            # print(jointInfo)
+
             jointName = jointInfo[1]
-
             jointName = jointName.decode("utf-8")
-
             jointName = jointName.split("_")
 
             linkName = jointName[1]
-
             linkNames.append(linkName)
-
-            # linkNamesToIndices[linkName] = jointIndex + linkIndexOffset
             linkNamesToIndices[linkName] = jointIndex
 
             if jointIndex == 0:
@@ -110,7 +97,7 @@ def Prepare_Link_Dictionary(bodyIDList):
                 linkNamesToIndices[rootLinkName] = -1
 
         linkInfoDict[bodyID] = linkNames
-        # linkIndexOffset += p.getNumJoints(bodyID)
+
     return linkInfoDict
 
 
@@ -150,10 +137,6 @@ def Prepare_To_Simulate(bodyIDList):
     linkInfo = Prepare_Link_Dictionary(bodyIDList)
 
     jointInfo = Prepare_Joint_Dictionary(bodyIDList)
-
-    # print(linkInfo)
-    # print(jointInfo)
-    # print(linkNamesToIndices)
 
     return linkInfo, jointInfo
 

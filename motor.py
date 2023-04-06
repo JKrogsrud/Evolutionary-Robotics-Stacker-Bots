@@ -13,24 +13,26 @@ class MOTOR:
 
     def Prepare_To_Act(self):
 
-        if c.MOTION_TYPE == 'oscillatory':
+        if c.BRAIN_TYPE == 'oscillatory':
             self.motorValues = generate.Generate_Oscillation(c.bodytype, self.jointName, self.numBots)
-        elif c.MOTION_TYPE == 'ragdoll':
+        elif c.BRAIN_TYPE == 'ragdoll':
             pass
-        elif c.MOTION_TYPE == 'rigid':
+        elif c.BRAIN_TYPE == 'rigid':
             pass
-        elif c.MOTION_TYPE == 'neural_network':
+        elif c.BRAIN_TYPE == 'neural_network':
+            pass
+        elif c.BRAIN_TYPE == 'hive_mind':
             pass
 
     def Set_Value(self, robotID, time_stamp):
 
-        if c.MOTION_TYPE == 'oscillatory':
+        if c.BRAIN_TYPE == 'oscillatory':
             pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
                                         jointName=self.jointName,
                                         controlMode=p.POSITION_CONTROL,
                                         targetPosition=self.motorValues[time_stamp % c.FRAMES],
                                         maxForce=c.MAX_FORCE)
-        if c.MOTION_TYPE == 'rigid':
+        if c.BRAIN_TYPE == 'rigid':
             pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
                                         jointName=self.jointName,
                                         controlMode=p.POSITION_CONTROL,
@@ -44,14 +46,6 @@ class MOTOR:
                                     targetPosition=desiredAngle,
                                     maxForce=c.MAX_FORCE)
 
-    # THE FOLLOWING IS FOR A TRUE NN
-    # def Set_Value(self, robotID, desiredAngle):
-    #
-    #     pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
-    #                                 jointName=self.jointName,
-    #                                 controlMode=p.POSITION_CONTROL,
-    #                                 targetPosition=desiredAngle,
-    #                                 maxForce=c.MAX_FORCE)
 
     # def Save_Values(self):
     #     np.save('data/' + self.jointName + 'MotorValues.npy', self.motorValues)
