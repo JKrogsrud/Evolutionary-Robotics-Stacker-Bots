@@ -87,10 +87,18 @@ class HIVE_MIND:
 
         for bot in self.bots:
             basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['botID'])
-            basePosition = basePositionAndOrientation[0]
-            coords.append(basePosition)
+            basePosition = basePositionAndOrientation[0]  # Cartesian coordinates
+            coords.append(np.array(basePosition))
 
+        # Find the middle
+        sums = np.zeroes(1, c.numBots)
+        for coord in coords:
+            sums += np.array(coord)
 
+        mid = sums / c.numBots
+
+        dist_from_mid = [coord - mid for coord in coords]
+        dist
 
 class ROBOTSWARM:
 
@@ -244,15 +252,20 @@ class ROBOT:
         elif c.BRAIN_TYPE == 'neural_network':
             for neuronName in self.nn.Get_Neuron_Names():
                 if self.nn.Is_Motor_Neuron(neuronName):
+
                     jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
+
                     # Need to change the angles that are allowed per joint
                     # Lets do this by a dictionary in the constants
                     # NOTE: THIS WILL LIMIT NUMBOTS TO 9 BUT DOUBT I CAN GET
                     #       THOSE KIND OF RESULTS ANYWAYS
+
                     jointTypes = str(jointName).split('_')
                     jointType = jointTypes[0][1:] + '_' + jointTypes[1][1:]
+
                     lower_bound = c.motorJointRanges[jointType][0]
                     upper_bound = c.motorJointRanges[jointType][1]
+
                     desiredAngle = ((self.nn.Get_Value_Of(neuronName) + 1) / 2) * (upper_bound - lower_bound) + lower_bound
                     self.motors[jointName].Set_Value_NN(self.robotID, desiredAngle)
 
