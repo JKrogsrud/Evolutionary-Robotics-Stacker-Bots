@@ -1,0 +1,832 @@
+<robot name = "robot2">
+    <link name="2Torso">
+        <inertial>
+            <origin xyz="11.0 0 1" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="11.0 0 1" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 1 0.2" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="11.0 0 1" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 1 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2TopSensor" type="fixed">
+       <parent link="2Torso"/>
+       <child  link="2TopSensor"/>
+       <origin rpy="0 0 0" xyz="11.0 0 1.1" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2TopSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.2" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2BottomSensor" type="fixed">
+       <parent link="2Torso"/>
+       <child  link="2BottomSensor"/>
+       <origin rpy="0 0 0" xyz="11.0 0 0.9" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BottomSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.2" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2FrontFlap" type="revolute">
+       <parent link="2Torso"/>
+       <child  link="2FrontFlap"/>
+       <origin rpy="0 0 0" xyz="11.0 0.5 1" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2FrontFlap">
+        <inertial>
+            <origin xyz="0 0.375 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0.375 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.75 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0.375 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.75 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2FrontFlap_2FrontTopSensor" type="fixed">
+       <parent link="2FrontFlap"/>
+       <child  link="2FrontTopSensor"/>
+       <origin rpy="0 0 0" xyz="0 0.43 0.0625" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2FrontTopSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2FrontFlap_2FrontBottomSensor" type="fixed">
+       <parent link="2FrontFlap"/>
+       <child  link="2FrontBottomSensor"/>
+       <origin rpy="0 0 0" xyz="0 0.5 -0.0625" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2FrontBottomSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2BackFlap" type="revolute">
+       <parent link="2Torso"/>
+       <child  link="2BackFlap"/>
+       <origin rpy="0 0 0" xyz="11.0 -0.5 1" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BackFlap">
+        <inertial>
+            <origin xyz="0 -0.375 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 -0.375 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.75 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 -0.375 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.75 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2BackFlap_2BackTopSensor" type="fixed">
+       <parent link="2BackFlap"/>
+       <child  link="2BackTopSensor"/>
+       <origin rpy="0 0 0" xyz="0 -0.43 0.0625" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BackTopSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2BackFlap_2BackBottomSensor" type="fixed">
+       <parent link="2BackFlap"/>
+       <child  link="2BackBottomSensor"/>
+       <origin rpy="0 0 0" xyz="0 -0.5 -0.0625" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BackBottomSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2RightFlap" type="revolute">
+       <parent link="2Torso"/>
+       <child  link="2RightFlap"/>
+       <origin rpy="0 0 0" xyz="11.5 0 1" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2RightFlap">
+        <inertial>
+            <origin xyz="0.375 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.375 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.75 0.5 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.375 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.75 0.5 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2RightFlap_2RightTopSensor" type="fixed">
+       <parent link="2RightFlap"/>
+       <child  link="2RightTopSensor"/>
+       <origin rpy="0 0 0" xyz="0.43 0 0.0625" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2RightTopSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2RightFlap_2RightBottomSensor" type="fixed">
+       <parent link="2RightFlap"/>
+       <child  link="2RightBottomSensor"/>
+       <origin rpy="0 0 0" xyz="0.5 0 -0.0625" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2RightBottomSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2LeftFlap" type="revolute">
+       <parent link="2Torso"/>
+       <child  link="2LeftFlap"/>
+       <origin rpy="0 0 0" xyz="10.5 0 1" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2LeftFlap">
+        <inertial>
+            <origin xyz="-0.375 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.375 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.75 0.5 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.375 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.75 0.5 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2LeftFlap_2LeftTopSensor" type="fixed">
+       <parent link="2LeftFlap"/>
+       <child  link="2LeftTopSensor"/>
+       <origin rpy="0 0 0" xyz="-0.43 0 0.0625" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2LeftTopSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2LeftFlap_2LeftBottomSensor" type="fixed">
+       <parent link="2LeftFlap"/>
+       <child  link="2LeftBottomSensor"/>
+       <origin rpy="0 0 0" xyz="-0.5 0 -0.0625" />
+       <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2LeftBottomSensor">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.25 0.25 0.125" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2URRotate" type="revolute">
+       <parent link="2Torso"/>
+       <child  link="2URRotate"/>
+       <origin rpy="0 0 0" xyz="10.5 -0.5 1" />
+       <axis xyz="0 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2URRotate">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.2" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2URRotate_2URTopLeg" type="revolute">
+       <parent link="2URRotate"/>
+       <child  link="2URTopLeg"/>
+       <origin rpy="0 0 0" xyz="0 0 0" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2URTopLeg">
+        <inertial>
+            <origin xyz="-0.6 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.6 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1.2 0.2 0.2" />
+            </geometry>
+            <material name="UR">
+                <color rgba=
+            "1.0 0.0 0.0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.6 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1.2 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2URTopLeg_2URBottomLeg" type="revolute">
+       <parent link="2URTopLeg"/>
+       <child  link="2URBottomLeg"/>
+       <origin rpy="0 0 0" xyz="-1.2 0 0" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2URBottomLeg">
+        <inertial>
+            <origin xyz="-0.5 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.5 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 0.2 0.2" />
+            </geometry>
+            <material name="UR">
+                <color rgba=
+            "1.0 0.0 0.0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.5 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2ULRotate" type="revolute">
+       <parent link="2Torso"/>
+       <child  link="2ULRotate"/>
+       <origin rpy="0 0 0" xyz="10.5 0.5 1" />
+       <axis xyz="0 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2ULRotate">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.2" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2ULRotate_2ULTopLeg" type="revolute">
+       <parent link="2ULRotate"/>
+       <child  link="2ULTopLeg"/>
+       <origin rpy="0 0 0" xyz="0 0 0" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2ULTopLeg">
+        <inertial>
+            <origin xyz="-0.6 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.6 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1.2 0.2 0.2" />
+            </geometry>
+            <material name="UL">
+                <color rgba=
+            "0.0 0.0 0.7843137254901961 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.6 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1.2 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2ULTopLeg_2ULBottomLeg" type="revolute">
+       <parent link="2ULTopLeg"/>
+       <child  link="2ULBottomLeg"/>
+       <origin rpy="0 0 0" xyz="-1.2 0 0" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2ULBottomLeg">
+        <inertial>
+            <origin xyz="-0.5 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.5 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 0.2 0.2" />
+            </geometry>
+            <material name="UL">
+                <color rgba=
+            "0.0 0.0 0.7843137254901961 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.5 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2BRRotate" type="revolute">
+       <parent link="2Torso"/>
+       <child  link="2BRRotate"/>
+       <origin rpy="0 0 0" xyz="11.5 0.5 1" />
+       <axis xyz="0 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BRRotate">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.2" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2BRRotate_2BRTopLeg" type="revolute">
+       <parent link="2BRRotate"/>
+       <child  link="2BRTopLeg"/>
+       <origin rpy="0 0 0" xyz="0 0 0" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BRTopLeg">
+        <inertial>
+            <origin xyz="0.6 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.6 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1.2 0.2 0.2" />
+            </geometry>
+            <material name="BR">
+                <color rgba=
+            "1.0 1.0 1.0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.6 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1.2 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2BRTopLeg_2BRBottomLeg" type="revolute">
+       <parent link="2BRTopLeg"/>
+       <child  link="2BRBottomLeg"/>
+       <origin rpy="0 0 0" xyz="1.2 0 0" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BRBottomLeg">
+        <inertial>
+            <origin xyz="0.5 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.5 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 0.2 0.2" />
+            </geometry>
+            <material name="BR">
+                <color rgba=
+            "1.0 1.0 1.0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.5 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2Torso_2BLRotate" type="revolute">
+       <parent link="2Torso"/>
+       <child  link="2BLRotate"/>
+       <origin rpy="0 0 0" xyz="11.5 -0.5 1" />
+       <axis xyz="0 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BLRotate">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.2" />
+            </geometry>
+            <material name="DEFAULT">
+                <color rgba=
+            "0.5 0.5 0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2BLRotate_2BLTopLeg" type="revolute">
+       <parent link="2BLRotate"/>
+       <child  link="2BLTopLeg"/>
+       <origin rpy="0 0 0" xyz="0 0 0" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BLTopLeg">
+        <inertial>
+            <origin xyz="0.6 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.6 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1.2 0.2 0.2" />
+            </geometry>
+            <material name="BL">
+                <color rgba=
+            "0.0 1.0 0.0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.6 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1.2 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="2BLTopLeg_2BLBottomLeg" type="revolute">
+       <parent link="2BLTopLeg"/>
+       <child  link="2BLBottomLeg"/>
+       <origin rpy="0 0 0" xyz="1.2 0 0" />
+       <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="2BLBottomLeg">
+        <inertial>
+            <origin xyz="0.5 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.5 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 0.2 0.2" />
+            </geometry>
+            <material name="BL">
+                <color rgba=
+            "0.0 1.0 0.0 1.0"
+            />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.5 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 0.2 0.2" />
+            </geometry>
+        </collision>
+    </link>
+</robot>
