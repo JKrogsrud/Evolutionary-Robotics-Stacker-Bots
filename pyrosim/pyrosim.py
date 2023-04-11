@@ -144,6 +144,7 @@ def Prepare_To_Simulate(bodyIDList):
 def Send_Cube(name="default", pos=[0, 0, 0], size=[1, 1, 1], color=("DEFAULT", .5, .5, 0, 1.0)):
 
     global availableLinkIndex
+    global linkNamesToIndices
 
     global links
 
@@ -166,6 +167,7 @@ def Send_Cube(name="default", pos=[0, 0, 0], size=[1, 1, 1], color=("DEFAULT", .
         End_Model()
 
     linkNamesToIndices[name] = availableLinkIndex
+    # print(name, availableLinkIndex)
 
     availableLinkIndex = availableLinkIndex + 1
 

@@ -145,27 +145,48 @@ the three robots and allow the neurons to be created randomly so we can see the 
 I will submit a video of this.
 
 Updated goals:
- - Move to a different evolutionary algorithm - done
+ - Move to a different evolutionary algorithm
+ - Create Hive-Mind option
 
- - Create Hive-Mind option - working no this
-
- - Create an info logging function, recording robot's sensor values over time
-   - Similar file for recording what constants were used in the run
- - SMALL CHANGE: Update algorithm to only update one robot at a time
- - BIG CHANGE: Remove the sensor flaps and sensors (maybe keep top and bottom sensors for now)
-   - This should quicken the pace of evolution (and how taxing it is on my PC)
-   - maybe allow for some smaller 
+Extra Goals:
+ - Create an info logging function, recording robot's sensor values over time. 
+This is similar file for recording what constants were used in the run
+ - Update algorithm to only update one robot at a time
+ - Remove the sensor flaps and sensors (maybe keep top and bottom sensors for now)
+This should quicken the pace of evolution (and how taxing it is on my PC)
 
 Notes:
  - Wrapped fileread with in Wait_For_Simulation_To_End with a try except loop as lengthy runs would sometimes
 crash mid-run
  - Created a new evolutionary algorithm called SurviveAndMultiply
+ - currently writing a data.txt file recording some of the evolutionary constants
+
+Video Link: https://youtu.be/z4UC5x4KG_o
+
+Extra For Week 7:
+ - Get the new evolutionary algorithm debugged
+ - Create some more logging functions to see sensor patterns in the bots
+ - Run some experiements to see some progress on both NN's
 
 Week 7:
 
-I will implement a similar evolutionary algorithm and fitness function to that of 
+Initial Goals: I will implement a similar evolutionary algorithm and fitness function to that of 
 the individual stacker bots and allow the bots controlled by a hive mind to evolve and be 
 able to stack on top of each other.
+
+Updated Goals:
+ - Fix evol algorithm
+   - done
+ - Create a logging system that measures sensor inputs, center of mass, motor output, which synapses are dead
+ for a single run for all robots for use in some stats and visualization
+   - TODO: start saving some files as .npy, easier to get some data stuff going later
+   - created something that's logging the sensors and motor values, should log cartesian coords as well
+ - Change the above to record a snapshot every n_generations so that we can try to visualize evolution as we go
+ - Still would really love a way to reward bots for having active bottom / top sensors
+ - CPG
+   - Perhaps A/B/C testing where I have Distributive vrs Distributive (with CPG) vrs Hivemind?
+   - more thought on this to come
+ - Repress more neurons when starting up? i.e. use a different probability distribution when setting up the arrays?
 
 Week 8:
 

@@ -5,7 +5,7 @@ SLEEP_TIME = 1/240
 FRAMES = 1000
 
 """DATA COLLECTION"""
-SIM_LEN = 3000
+SIM_LEN = 1000
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -15,137 +15,86 @@ Z_GRAV = -9.8
 """
 BOT CONSTANTS
 """
-# Frame repetition
+
 MAX_FORCE = 100
 
 """
 Bot Motion
-types: ragdoll, oscillatory, randomNN, neural_network
+types: neural_network, hive_mind
 """
 
-# BRAIN_TYPE = 'oscillatory'
 BRAIN_TYPE = 'neural_network'
 # BRAIN_TYPE = 'hive_mind'
-# BRAIN_TYPE = 'ragdoll'
-# BRAIN_TYPE = 'rigid'
-
-"""
-MOTOR CONSTANTS - Oscillatory
-"""
-# random determines if the values for oscillation should be randomized or not
-RANDOM = True
-# RANDOM = False
-
-# Set true to test bot 1 not behaving at all
-# DIFFERENT_BEHAVIOR = True
-DIFFERENT_BEHAVIOR = False
-
-"""
-MOTOR RANGES 
-"""
-if RANDOM == True and BRAIN_TYPE == 'oscillatory':
-    # Flaps
-    FLAP_AMPS = np.random.random_sample() * 2 * np.pi
-    FLAP_FREQ = np.random.random_sample() * 10.0
-    FLAP_OFFSET = - np.random.random_sample() * np.pi / 3
-    FLAP_TRANSLATION = - np.random.random_sample() * np.pi / 3
-
-    # ROTATORS
-    ROTATOR_AMPS = np.random.random_sample() * np.pi / 2
-    ROTATOR_FREQ = np.random.random_sample() * 10.0
-    ROTATOR_OFFSET = - np.random.random_sample() * np.pi / 2
-    ROTATOR_TRANSLATION = np.random.random_sample() * np.pi / 2
-
-    # LEGS
-    # Upper Leg
-    UPPER_LEG_AMPS = np.random.random_sample() * np.pi / 4
-    UPPER_LEG_FREQ = np.random.random_sample() * 10.0
-    UPPER_LEG_OFFSET = - np.random.random_sample() * np.pi / 3
-    UPPER_LEG_TRANSLATION = np.random.random_sample() * np.pi / 3
-
-    # Lower Leg
-    LOWER_LEG_AMPS = np.random.random_sample() * np.pi / 4
-    LOWER_LEG_FREQ = np.random.random_sample() * 10.0
-    LOWER_LEG_OFFSET = -np.random.random_sample() * np.pi / 3
-    LOWER_LEG_TRANSLATION = np.random.random_sample() * np.pi / 3
-
-    # Motor Force
-    MAX_FORCE = 100
-
-    # Joint Restrictions
-    motorJointRange = np.random.random_sample()
-
-elif RANDOM == False and BRAIN_TYPE == 'oscillatory':
-    # FLAPS
-    FLAP_AMPS = 3 * np.pi / 16
-    FLAP_FREQ = 6.1
-    FLAP_OFFSET = - np.pi / 4
-    FLAP_TRANSLATION = - np.pi / 4
-
-    # ROTATORS
-    ROTATOR_AMPS = np.pi / 4
-    ROTATOR_FREQ = 6.1
-    ROTATOR_OFFSET = - np.pi / 4
-    ROTATOR_TRANSLATION = np.pi /4
-
-    # LEGS
-    # Upper Leg
-    UPPER_LEG_AMPS = np.pi / 6
-    UPPER_LEG_FREQ = 6.1
-    UPPER_LEG_OFFSET = -np.pi / 5
-    UPPER_LEG_TRANSLATION = 0
-
-    # Lower Leg
-    LOWER_LEG_AMPS = np.pi / 4
-    LOWER_LEG_FREQ = 6.1
-    LOWER_LEG_OFFSET = -np.pi / 2
-    LOWER_LEG_TRANSLATION = np.pi / 3
-
-    # Motor Force
-    MAX_FORCE = 100
-
-    # Joint Restrictions
-    motorJointRange = 0.4
-
-elif BRAIN_TYPE == 'rigid':
-
-    TORSO_FLAP_ANGLE = np.pi / 3.5
-
-    ROTATOR_ANGLE = np.pi / 4
-
-    TOP_LEG_ANGLE = np.pi / 7
-
-    BOTTOM_LEG_ANGLE = np.pi / 2.1
-
-    MAX_FORCE = 100
-
-"""
-Neural Network
-"""
-# numSensorNeurons = 23
-numSensorNeurons = 14
-# numHiddenNeurons = 20
-numHiddenNeurons = 14
-numMotorNeurons = 16
-
-totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 
 """
 Evolution Constants
 """
 
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 2
+populationSize = 5
 
 # evolutionaryAlgorithm = 'PHC'
 evolutionaryAlgorithm = 'SAM'
 
 """
+Fitness
+"""
+# fitness = 'gather'
+fitness = 'top_sensor'
+
+# For the top_sensor:
+targetFrames = 10
+
+"""
 Body experimentation
 """
 bodytype = "A"
-numBots = 2  # Limit to 9 - or need to rethink something in Robot - Act
+numBots = 3  # Limit to 9 - or need to rethink something in Robot - Act
 
+motors = [
+        ('Torso', 'URRotate'), ('URRotate', 'URTopLeg'), ('URTopLeg', 'URBottomLeg'),
+        ('Torso', 'ULRotate'), ('ULRotate', 'ULTopLeg'), ('ULTopLeg', 'ULBottomLeg'),
+        ('Torso', 'BRRotate'), ('BRRotate', 'BRTopLeg'), ('BRTopLeg', 'BRBottomLeg'),
+        ('Torso', 'BLRotate'), ('BLRotate', 'BLTopLeg'), ('BLTopLeg', 'BLBottomLeg')]
+
+# Outdated Motors:
+"""
+('Torso', 'FrontFlap'), ('Torso', 'BackFlap'), ('Torso', 'RightFlap'), ('Torso', 'LeftFlap')
+"""
+
+cube_sensors = [
+        'TopSensor', 'BottomSensor',
+        'URBottomLeg', 'ULBottomLeg', 'BRBottomLeg',
+        'BLBottomLeg']
+
+# Outdated Sensors:
+"""
+'FrontTopSensor', 'FrontBottomSensor',
+'BackTopSensor', 'BackBottomSensor', 'RightTopSensor',
+'RightBottomSensor', 'LeftTopSensor', 'LeftBottomSensor',
+"""
+
+
+"""
+Neural Network
+"""
+
+# Central Pattern Generator Parameters
+# CPG_active = True
+# frequency = np.pi / 2
+
+# Neurons
+numSensorNeurons = len(cube_sensors)
+numHiddenNeurons = 10
+numMotorNeurons = len(motors)
+
+totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
+
+"""
+Body Constants
+"""
+
+# First bodytype - probably last too
 if bodytype == 'A':
     topFlapSensorOffset = .43
     bottomFlapSensorOffset = .50
@@ -162,22 +111,18 @@ if bodytype == 'A':
     """
 
     motorJointRanges = {
-        'Torso_FrontFlap': (-np.pi / 4 - 0.1, 0),
-        'Torso_BackFlap': (0, np.pi / 4 + 0.1),
-        'Torso_RightFlap': (0, np.pi / 4 + 0.1),
-        'Torso_LeftFlap': (-np.pi / 4 - 0.1, 0),
         'Torso_URRotate': (0, np.pi / 2),
         'URRotate_URTopLeg': (-np.pi / 3, np.pi / 4),
-        'URTopLeg_URBottomLeg': (-np.pi / 2, 0),
+        'URTopLeg_URBottomLeg': (-np.pi / 2 - np.pi / 16, -np.pi / 4),
         'Torso_ULRotate': (-np.pi / 2, 0),
         'ULRotate_ULTopLeg': (-np.pi / 3, np.pi / 4),
-        'ULTopLeg_ULBottomLeg': (-np.pi / 2, 0),
+        'ULTopLeg_ULBottomLeg': (-np.pi / 2 - np.pi / 16, -np.pi / 4),
         'Torso_BRRotate': (0, np.pi / 2),
         'BRRotate_BRTopLeg': (-np.pi / 4, np.pi / 3),
-        'BRTopLeg_BRBottomLeg': (0, np.pi / 2),
+        'BRTopLeg_BRBottomLeg': (np.pi / 4, np.pi / 2 + np.pi / 16),
         'Torso_BLRotate': (-np.pi / 2, 0),
         'BLRotate_BLTopLeg': (-np.pi / 4, np.pi / 3),
-        'BLTopLeg_BLBottomLeg': (0, np.pi / 2),
+        'BLTopLeg_BLBottomLeg': (np.pi / 4, np.pi / 2 + np.pi / 16),
     }
 
 ### Colors ###

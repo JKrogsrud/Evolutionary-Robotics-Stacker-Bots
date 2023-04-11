@@ -80,18 +80,21 @@ class SOLUTION:
 
     def Mutate(self):
         if c.BRAIN_TYPE == "neural_network":
-            for botNum in range(self.numBots):
-                ## Update synapse in Sensor -> Hidden OR Hidden -> Motor
-                choice = random.randint(0, 1)
 
-                if choice:
-                    randomRow = random.randint(0, c.numSensorNeurons - 1)
-                    randomColumn = random.randint(0, c.numHiddenNeurons - 1)
-                    self.weights[botNum][0][randomRow, randomColumn] = 2 * random.random() - 1
-                else:
-                    randomRow = random.randint(0, c.numHiddenNeurons - 1)
-                    randomColumn = random.randint(0, c.numMotorNeurons - 1)
-                    self.weights[botNum][1][randomRow, randomColumn] = 2 * random.random() - 1
+            # Pick a random bot to update (as opposed to updating each one)
+            botNum = random.randint(0, c.numBots - 1)
+
+            ## Update synapse in Sensor -> Hidden OR Hidden -> Motor
+            choice = random.randint(0, 1)
+
+            if choice:
+                randomRow = random.randint(0, c.numSensorNeurons - 1)
+                randomColumn = random.randint(0, c.numHiddenNeurons - 1)
+                self.weights[botNum][0][randomRow, randomColumn] = 2 * random.random() - 1
+            else:
+                randomRow = random.randint(0, c.numHiddenNeurons - 1)
+                randomColumn = random.randint(0, c.numMotorNeurons - 1)
+                self.weights[botNum][1][randomRow, randomColumn] = 2 * random.random() - 1
 
         if c.BRAIN_TYPE == 'hive_mind':
             choice = random.randint(0, 1)

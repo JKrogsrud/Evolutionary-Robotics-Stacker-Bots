@@ -1,0 +1,13 @@
+Parent 0's fitness:0.03578210179437615, Child: 0.039534996938363
+Parent 1's fitness:0.05915426066337221, Child: 0.0502010700854045
+Parent 2's fitness:0.09787327832071992, Child: 0.09509101557456785
+Parent 3's fitness:0.12853757881615413, Child: 0.10992931185367621
+Parent 4's fitness:0.2510843690526539, Child: 0.21502029539926296
+---
+Number of generations: 200
+Population per generation: 5
+Time:
+12289.066617012024
+
+bodytype = "A"
+numBots = 2

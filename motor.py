@@ -2,6 +2,7 @@ import pybullet as p
 import constants as c
 import pyrosim.pyrosim as pyrosim
 import generate
+import numpy as np
 
 
 class MOTOR:
@@ -9,9 +10,11 @@ class MOTOR:
         self.jointName = jointName
         self.numBots = numBots
         self.Prepare_To_Act()
+        self.value = 0
 
 
     def Prepare_To_Act(self):
+        self.values = np.zeros(c.SIM_LEN)
 
         if c.BRAIN_TYPE == 'oscillatory':
             self.motorValues = generate.Generate_Oscillation(c.bodytype, self.jointName, self.numBots)
@@ -40,11 +43,15 @@ class MOTOR:
                                         maxForce=c.MAX_FORCE)
 
     def Set_Value_NN(self, robotID, desiredAngle):
+        self.value = desiredAngle
         pyrosim.Set_Motor_For_Joint(bodyIndex=robotID,
                                     jointName=self.jointName,
                                     controlMode=p.POSITION_CONTROL,
                                     targetPosition=desiredAngle,
                                     maxForce=c.MAX_FORCE)
+
+    def Record_Value(self, t):
+        self.values[t] = self.value
 
 
     # def Save_Values(self):

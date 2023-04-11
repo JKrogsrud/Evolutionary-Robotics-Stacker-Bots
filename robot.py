@@ -9,7 +9,7 @@ from sensor import SENSOR
 from motor import MOTOR
 
 class HIVE_MIND:
-    def __init__(self, solutionID, bodyType, numBots):
+    def __init__(self, solutionID, bodyType, numBots, best=False):
         self.bodyType = bodyType
         self.numBots = int(numBots)
         self.solutionID = int(solutionID)
@@ -19,10 +19,12 @@ class HIVE_MIND:
         for botNum in range(self.numBots):
             robotID = p.loadURDF("body_" + self.bodyType + str(botNum) + ".urdf")
             botDict = {}
-            botDict['botID'] = robotID
-            self.bots[botNum] = botDict
-
-        self.hiveMind = NEURAL_NETWORK("brain_" + str(self.solutionID) + str(self.bodyType) + ".nndf")
+            botDict['robotID'] = robotID
+            self.bots[robotID] = botDict
+        if best:
+            self.hiveMind = NEURAL_NETWORK("best_brain.nndf")
+        else:
+            self.hiveMind = NEURAL_NETWORK("brain_" + str(self.solutionID) + str(self.bodyType) + ".nndf")
 
         self.linkInfo, self.jointInfo = pyrosim.Prepare_To_Simulate(list(self.bots.keys()))
 
@@ -31,26 +33,31 @@ class HIVE_MIND:
 
     def Prepare_To_Sense(self):
 
-        sensors = {}
-
         for bot in self.bots:
-            robotID = self.bots[bot]['botID']
+            sensors = {}
+            robotID = self.bots[bot]['robotID']
             for linkName in self.linkInfo[bot]:
                 sensors[linkName] = SENSOR(linkName, robotID)
             self.bots[bot]['sensors'] = sensors
 
     def Prepare_To_Act(self):
 
-        motors = {}
-
         for bot in self.bots:
-            robotID = self.bots[bot]['botID']
+            motors = {}
+            robotID = self.bots[bot]['robotID']
             for jointName in self.jointInfo[bot]:
                 motors[jointName] = MOTOR(jointName, robotID)
             self.bots[bot]['motors'] = motors
 
+    # Data Reporting
     def Sense(self, t):
-        pass
+        # Record Sensor data at every sense interval
+        for bot in self.bots:
+            for sensor in self.bots[bot]['sensors']:
+                self.bots[bot]['sensors'][sensor].Record_Value(t)
+
+            for motor in self.bots[bot]['motors']:
+                self.bots[bot]['motors'][motor].Record_Value(t)
 
     def Act(self, time_stamp):
         for neuronName in self.hiveMind.Get_Neuron_Names():
@@ -64,7 +71,7 @@ class HIVE_MIND:
                 #       THOSE KIND OF RESULTS ANYWAYS
 
                 jointTypes = str(jointName).split('_')
-                botNum = int(jointTypes[0][0])
+                botNum = int(jointTypes[0][0]) + 1
                 jointType = jointTypes[0][1:] + '_' + jointTypes[1][1:]
 
                 lower_bound = c.motorJointRanges[jointType][0]
@@ -81,24 +88,30 @@ class HIVE_MIND:
 
     def Get_Fitness(self):
 
-        # TODO: HERE
-
-        coords = []
+        coords = np.empty((c.numBots, 3))
 
         for bot in self.bots:
-            basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['botID'])
+            basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['robotID'])
             basePosition = basePositionAndOrientation[0]  # Cartesian coordinates
-            coords.append(np.array(basePosition))
+            coords[bot-1, :] = np.array(basePosition)
 
         # Find the middle
-        sums = np.zeroes(1, c.numBots)
-        for coord in coords:
-            sums += np.array(coord)
+        sums = np.sum(a=coords, axis=0)
+        midpoint = sums / c.numBots
 
-        mid = sums / c.numBots
+        # Numpy is amazing
+        delta = coords - midpoint
+        dist = np.sqrt(np.sum(delta*delta, 1))
 
-        dist_from_mid = [coord - mid for coord in coords]
-        dist
+        fitness = 1
+        for i in range(c.numBots):
+            fitness *= (1.0 / (dist[i]+1))
+
+        f = open("tmp" + str(self.solutionID) + ".txt", "w")
+        f.write(str(fitness))
+        f.close()
+
+        os.rename("tmp" + str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
 
 class ROBOTSWARM:
 
@@ -169,30 +182,56 @@ class ROBOTSWARM:
 
     def Get_Fitness(self):
 
-        bot_info = []
-        fitness = 1
+        if c.fitness == 'gather':
 
-        for bot in self.bots:
-            bot_info.append(self.bots[bot].Get_Fitness())
+            bot_info = []
+            fitness = 1
 
-        # Higher fitness is awarded to bots that are stacking, so their center of mass should
-        # be close to each other
+            for bot in self.bots:
+                bot_info.append(self.bots[bot].Get_Fitness())
 
-        total_x = 0
-        total_y = 0
-        for bot in bot_info:
-            total_x += bot['position'][0]
-            total_y += bot['position'][1]
+            # Higher fitness is awarded to bots that are stacking, so their center of mass should
+            # be close to each other
 
-        mid_x = total_x / self.numBots
-        mid_y = total_y / self.numBots
+            total_x = 0
+            total_y = 0
+            for bot in bot_info:
+                total_x += bot['position'][0]
+                total_y += bot['position'][1]
 
-        # find the distance each bot is from that center of mass
+            mid_x = total_x / self.numBots
+            mid_y = total_y / self.numBots
 
-        for bot in bot_info:
-            distance_from_mid = np.sqrt((mid_x - bot['position'][0])**2 + (mid_y - bot['position'][1])**2)
-            # print(distance_from_mid)
-            fitness *= 1 / (distance_from_mid + .01)
+            # find the distance each bot is from that center of mass
+
+            for bot in bot_info:
+                distance_from_mid = np.sqrt((mid_x - bot['position'][0])**2 + (mid_y - bot['position'][1])**2)
+                # print(distance_from_mid)
+                fitness *= 1 / (distance_from_mid + .01)
+
+
+        if c.fitness == 'top_sensor':
+
+            # Gather sensor data from each bot
+
+            fitness = 0
+
+            for bot in self.bots:
+                bot_sensor_data = []
+                for sensor in self.bots[bot].sensors:
+                    if self.bots[bot].sensors[sensor].linkName[1:] == 'TopSensor':
+                        bot_sensor_data = self.bots[bot].sensors[sensor].values
+                bot_sensor_data = bot_sensor_data[-int(c.SIM_LEN / c.targetFrames):]
+
+                # Check if it spent most of the last c.SIM_LEN / c.targetFrames frames with it's TopSensor active
+
+                rolling_sum = 0
+                for val in bot_sensor_data:
+                    if val > 0:
+                        rolling_sum += val
+
+                fitness += rolling_sum
+
 
         # changed tmp to fitness
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
@@ -200,6 +239,7 @@ class ROBOTSWARM:
         f.close()
 
         os.rename("tmp" + str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
+
 
 class ROBOT:
 
@@ -221,15 +261,13 @@ class ROBOT:
             self.motors[jointName] = MOTOR(jointName, self.robotID)
 
     def Sense(self, t):
-        # if t % c.senseTiming == 0:
-        #     # print("-")
-        #     pass
-        # for sensor in self.sensors:
-        #     if t % c.senseTiming == 0:
-        #         if self.sensors[sensor].Get_Value() != -1.0:
-        #             # print("Robot: " + str(self.robotID) + ' link: ' + str(sensor) + ' Value: ' + str(self.sensors[sensor].Get_Value()))
-        #             pass
-        pass
+
+        for sensor in self.sensors:
+            self.sensors[sensor].Record_Value(t)
+
+        for motor in self.motors:
+            self.motors[motor].Record_Value(t)
+
     def Act(self, time_stamp):
 
         if c.BRAIN_TYPE == 'oscillatory':

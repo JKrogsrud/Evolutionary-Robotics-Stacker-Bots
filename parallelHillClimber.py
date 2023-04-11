@@ -73,9 +73,14 @@ class PARALLEL_HILLCLIMBER:
         # parent is a solution which is a number of robots, we want to save the brains
         # of the fittest solution:
         IDofFittest = self.parents[fittest_parent].myID
-        for botNum in range(c.numBots):
-            os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + str(botNum) + '.nndf',
-                      'best_brain_' + str(botNum) + '.nndf')
+
+        if c.BRAIN_TYPE == 'hive_mind':
+            os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + '.nndf',
+                      'best_brain.nndf')
+        else:
+            for botNum in range(c.numBots):
+                os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + str(botNum) + '.nndf',
+                        'best_brain_' + str(botNum) + '.nndf')
 
     def Show_Best(self):
         # self.parent.Evaluate('GUI')

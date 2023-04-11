@@ -49,26 +49,45 @@ class SURVIVE_MULTIPLY:
         for child in self.children:
             self.children[child].Mutate()
 
+    # Helper function for Select
+    def find_lowest(self, solutions: dict[int, SOLUTION]) -> int:
+        lowest_key = None
+        lowest_fitness = 999999
+        for sol in solutions:
+            if solutions[sol].fitness < lowest_fitness:
+                lowest_key = sol
+                lowest_fitness = solutions[sol].fitness
+        return lowest_key
+
+
     def Select(self):
-        all_solutions = dict(self.parents.items() | self.children.items())
-        sorted_by_fitness = sorted(all_solutions.items(), key=lambda x: x[1].fitness)
+        lowest_parent = self.find_lowest(self.parents)
+        lowest_fitness = self.parents[lowest_parent].fitness
+        for child in self.children:
+            if self.children[child].fitness > lowest_fitness:
+                self.parents[lowest_parent] = self.children[child]
+            lowest_parent = self.find_lowest(self.parents)
+            lowest_fitness = self.parents[lowest_parent].fitness
 
-        survivors = sorted_by_fitness[-int(c.populationSize):]
 
-        # I now have half the winners
-        # Lets throw them back into
-        parent_tmp = {}
-        for i in range(len(survivors)):
-            parent_tmp[i] = survivors[i][1]
-
-        self.parents = parent_tmp
+        # all_solutions = dict(self.parents.items() | self.children.items())
+        # print(all_solutions)
+        # sorted_by_fitness = sorted(all_solutions.items(), key=lambda x: x[1].fitness)
+        # survivors = sorted_by_fitness[-int(c.populationSize):]
+        #
+        # # I now have half the winners
+        # # Lets throw them back into
+        # parent_tmp = {}
+        # for i in range(len(survivors)):
+        #     parent_tmp[i] = survivors[i][1]
+        #
+        # self.parents = parent_tmp
     def Print(self):
         for parent in self.parents:
             print("Parent " + str(parent) + "'s fitness:" + str(self.parents[parent].fitness) +
                   ", Child: " + str(self.children[parent].fitness))
 
     def Save_Best(self):
-        min_fit = 999
         fittest_parent = None
         for parent in self.parents:
             if fittest_parent is None:
@@ -82,9 +101,17 @@ class SURVIVE_MULTIPLY:
         # parent is a solution which is a number of robots, we want to save the brains
         # of the fittest solution:
         IDofFittest = self.parents[fittest_parent].myID
-        for botNum in range(c.numBots):
-            os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + str(botNum) + '.nndf',
-                      'best_brain_' + str(botNum) + '.nndf')
+        if c.BRAIN_TYPE == 'hive_mind':
+            os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + '.nndf',
+                      'best_brain.nndf')
+        else:
+            for botNum in range(c.numBots):
+                os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + str(botNum) + '.nndf',
+                        'best_brain_' + str(botNum) + '.nndf')
+
+        # create and save a .csv file with helpful info
+
+
 
     def Show_Best(self):
         # self.parent.Evaluate('GUI')
