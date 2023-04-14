@@ -15,7 +15,7 @@ from motor import MOTOR
 
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 
-simlength = 1000
+simlength = 10000
 
 ### Looks for files named brain_* with the given solutionID
 def run_simulation(numBots, solutionID):
@@ -39,7 +39,7 @@ def run_best():
         hive_mind = HIVE_MIND(1, c.bodytype, c.numBots, best=True)
 
         # Run it
-        for t in range(simlength):
+        for t in range(simlength-1):
             p.stepSimulation()
             hive_mind.Sense(t)
             hive_mind.Think()

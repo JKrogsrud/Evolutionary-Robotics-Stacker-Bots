@@ -51,7 +51,10 @@ class MOTOR:
                                     maxForce=c.MAX_FORCE)
 
     def Record_Value(self, t):
-        self.values[t] = self.value
+        if t >= c.SIM_LEN:
+            pass
+        else:
+            self.values[t] = self.value
 
 
     # def Save_Values(self):

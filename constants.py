@@ -23,14 +23,14 @@ Bot Motion
 types: neural_network, hive_mind
 """
 
-BRAIN_TYPE = 'neural_network'
-# BRAIN_TYPE = 'hive_mind'
+# BRAIN_TYPE = 'neural_network'
+BRAIN_TYPE = 'hive_mind'
 
 """
 Evolution Constants
 """
 
-numberOfGenerations = 2
+numberOfGenerations = 1
 populationSize = 5
 
 # evolutionaryAlgorithm = 'PHC'
@@ -43,13 +43,16 @@ Fitness
 fitness = 'top_sensor'
 
 # For the top_sensor:
-targetFrames = 10
+targetFrames = 10  # as a percent at end of run
+sensorFitnessMultiplier = 1
+flipPenalty = 1
+gatherFitnessMultiplier = 1
 
 """
 Body experimentation
 """
 bodytype = "A"
-numBots = 3  # Limit to 9 - or need to rethink something in Robot - Act
+numBots = 1  # Limit to 9 - or need to rethink something in Robot - Act
 
 motors = [
         ('Torso', 'URRotate'), ('URRotate', 'URTopLeg'), ('URTopLeg', 'URBottomLeg'),
@@ -142,8 +145,12 @@ BL = ("BL", 0/255.0, 255.0/255.0, 0.0 / 255.0, 1.0)
 Bot Spawning
 types: horizontal, stacked
 """
-startPos = 'horizontal'
+# startPos = 'horizontal'
 # startPos = 'stacked'
+startPos = 'circle'
+
+if startPos == 'circle':
+    startRadius = 7
 
 if startPos == 'horizontal':
     botSpacing = 5.5

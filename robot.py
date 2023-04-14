@@ -209,12 +209,10 @@ class ROBOTSWARM:
                 # print(distance_from_mid)
                 fitness *= 1 / (distance_from_mid + .01)
 
-
         if c.fitness == 'top_sensor':
 
             # Gather sensor data from each bot
-
-            fitness = 0
+            sensor_fitness = 0
 
             for bot in self.bots:
                 bot_sensor_data = []
@@ -230,8 +228,29 @@ class ROBOTSWARM:
                     if val > 0:
                         rolling_sum += val
 
-                fitness += rolling_sum
+                sensor_fitness += (rolling_sum / (c.SIM_LEN / c.targetFrames))
 
+            bot_positions = []
+            bot_orientations = []
+
+            for bot in self.bots:
+                bot_positions.append(p.getBasePositionAndOrientation(self.bots[bot].robotID)[0])
+                bot_orientations.append(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.bots[bot].robotID)[1]))
+
+            total_flip_penalty = 0
+            # orientation is in terms of roll about X, pitch about Y, yaw about Z
+            for orientation in bot_orientations:
+                # These values range from -pi to pi
+                # so we punish for values greater than pi / 2 or less than -pi / 2
+                if orientation[0] > np.pi /2 or orientation[0] < -np.pi / 2:
+                    total_flip_penalty -= c.flipPenalty
+
+            # Calculate distance from (0, 0)
+            dist_fitness = 1
+            for position in bot_positions:
+                dist_fitness *= 1 / (np.sqrt(position[0]**2 + position[1]**2) + 1)
+
+            fitness = c.gatherFitnessMultiplier * dist_fitness + total_flip_penalty + c.sensorFitnessMultiplier * sensor_fitness
 
         # changed tmp to fitness
         f = open("tmp" + str(self.solutionID) + ".txt", "w")

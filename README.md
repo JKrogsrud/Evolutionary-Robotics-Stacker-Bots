@@ -181,12 +181,15 @@ Updated Goals:
  for a single run for all robots for use in some stats and visualization
    - TODO: start saving some files as .npy, easier to get some data stuff going later
    - created something that's logging the sensors and motor values, should log cartesian coords as well
+     - change this to .npy files
  - Change the above to record a snapshot every n_generations so that we can try to visualize evolution as we go
  - Still would really love a way to reward bots for having active bottom / top sensors
  - CPG
    - Perhaps A/B/C testing where I have Distributive vrs Distributive (with CPG) vrs Hivemind?
    - more thought on this to come
  - Repress more neurons when starting up? i.e. use a different probability distribution when setting up the arrays?
+ - Change Starting positions to be a circle
+   - done
 
 Week 8:
 

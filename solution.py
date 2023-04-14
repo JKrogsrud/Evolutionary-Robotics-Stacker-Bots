@@ -130,6 +130,13 @@ class SOLUTION:
                 yCoord = 0
                 zCoord = 0.5 + botNum * c.botSpacing
                 startingIndex = generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNum)
+        elif c.startPos == 'circle':
+            for botNum in range(self.numBots):
+                xCoord = c.startRadius * np.cos(2 * botNum * np.pi / c.numBots)
+                yCoord = c.startRadius * np.sin(2 * botNum * np.pi / c.numBots)
+                zCoord = 1
+                startingIndex = generate.Generate_Body(self.bodyType, botNum, xCoord, yCoord, zCoord, startingIndex,
+                                                       botNum)
 
     def Create_Brain(self):
 

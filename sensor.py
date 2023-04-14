@@ -13,7 +13,10 @@ class SENSOR:
         self.values = np.zeros(c.SIM_LEN)
 
     def Record_Value(self, t):
-        self.values[t] = self.Get_Value()
+        if t >= c.SIM_LEN:
+            pass
+        else:
+            self.values[t] = self.Get_Value()
 
     def Get_Value(self):
         return pyrosim.Get_Touch_Sensor_Value_For_Link(self.linkName, self.botNum)
