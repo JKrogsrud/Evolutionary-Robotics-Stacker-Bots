@@ -87,25 +87,77 @@ class HIVE_MIND:
         self.hiveMind.Update(0)
 
     def Get_Fitness(self):
+        if c.fitness == 'gather':
+            coords = np.empty((c.numBots, 3))
 
-        coords = np.empty((c.numBots, 3))
+            for bot in self.bots:
+                basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['robotID'])
+                basePosition = basePositionAndOrientation[0]  # Cartesian coordinates
+                coords[bot-1, :] = np.array(basePosition)
 
-        for bot in self.bots:
-            basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['robotID'])
-            basePosition = basePositionAndOrientation[0]  # Cartesian coordinates
-            coords[bot-1, :] = np.array(basePosition)
+            # Find the middle
+            sums = np.sum(a=coords, axis=0)
+            midpoint = sums / c.numBots
 
-        # Find the middle
-        sums = np.sum(a=coords, axis=0)
-        midpoint = sums / c.numBots
+            # Numpy is amazing
+            delta = coords - midpoint
+            dist = np.sqrt(np.sum(delta*delta, 1))
 
-        # Numpy is amazing
-        delta = coords - midpoint
-        dist = np.sqrt(np.sum(delta*delta, 1))
+            fitness = 1
+            for i in range(c.numBots):
+                fitness *= (1.0 / (dist[i]+1))
+        # This fitness function is composite of gathering
+        # staying upright and activating top sensor
+        elif c.fitness == 'top_sensor':
 
-        fitness = 1
-        for i in range(c.numBots):
-            fitness *= (1.0 / (dist[i]+1))
+            # Calculate sensor fitness
+            sensor_fitness = 0
+
+            for bot in self.bots:
+                bot_sensor_data = []
+                for sensor in self.bots[bot]['sensors']:
+                    if self.bots[bot]['sensors'][sensor].linkName[1:] == 'TopSensor':
+                        bot_sensor_data = self.bots[bot]['sensors'][sensor].values
+                bot_sensor_data = bot_sensor_data[-int(c.SIM_LEN / c.targetFrames):]
+
+                # Check if it spent most of the last c.SIM_LEN / c.targetFrames with
+                # topSensor Active
+
+                rolling_sum = 0
+                for val in bot_sensor_data:
+                    if val > 0:
+                        rolling_sum += val
+
+                sensor_fitness += (rolling_sum / (c.SIM_LEN / c.targetFrames))
+
+            # Calculate the Gather fitness with flip penalty
+            bot_positions = []
+            bot_orientations = []
+
+            for bot in self.bots:
+                bot_positions.append(p.getBasePositionAndOrientation(self.bots[bot]['robotID'])[0])
+                bot_orientations.append(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.bots[bot]['robotID'])[1]))
+
+            total_flip_penalty = 0
+            # orientation is in terms of roll about x
+            # pitch about y
+            # yaw about z
+
+            for orientation in bot_orientations:
+                if orientation[0] > np.pi / 2 or orientation[0] < -np.pi / 2:
+                    total_flip_penalty -= c.flipPenalty
+
+            # Calculate distance from (0, 0)
+            dist_fitness = 1
+            for position in bot_positions:
+                dist_fitness *= 1 / (np.sqrt(position[0] ** 2 + position[1] ** 2) + 1)
+
+            fitness = c.gatherFitnessMultiplier * dist_fitness + total_flip_penalty + c.sensorFitnessMultiplier * sensor_fitness
+
+        print("Solution: " + str(self.solutionID) +
+              "\nfitness: \n\t dist_fitness: " + str(c.gatherFitnessMultiplier) + "*" + str(dist_fitness)
+              + "\n\tflip_penalty: " + str(total_flip_penalty) +
+              "\n\tsensor_fitness: " + str(c.sensorFitnessMultiplier) + "*" + str(sensor_fitness))
 
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
         f.write(str(fitness))
@@ -131,8 +183,7 @@ class ROBOTSWARM:
 
         self.linkInfo, self.jointInfo = pyrosim.Prepare_To_Simulate(list(self.bots.keys()))
 
-        #TODO: Double check the necessity of this?
-        #       It appears to be send ALL joint info to each bot
+        # Necessary?
         for bot in self.bots:
             self.bots[bot].Set_Number_links(self.jointInfo["numJoints"])
 
@@ -242,7 +293,7 @@ class ROBOTSWARM:
             for orientation in bot_orientations:
                 # These values range from -pi to pi
                 # so we punish for values greater than pi / 2 or less than -pi / 2
-                if orientation[0] > np.pi /2 or orientation[0] < -np.pi / 2:
+                if orientation[0] > np.pi / 2 or orientation[0] < -np.pi / 2:
                     total_flip_penalty -= c.flipPenalty
 
             # Calculate distance from (0, 0)
@@ -251,6 +302,11 @@ class ROBOTSWARM:
                 dist_fitness *= 1 / (np.sqrt(position[0]**2 + position[1]**2) + 1)
 
             fitness = c.gatherFitnessMultiplier * dist_fitness + total_flip_penalty + c.sensorFitnessMultiplier * sensor_fitness
+
+        print("Solution: " + str(self.solutionID) +
+              "\nfitness: \n\t dist_fitness: " + str(c.gatherFitnessMultiplier) + "*" + str(dist_fitness)
+              + "\n\tflip_penalty: " + str(total_flip_penalty) +
+              "\n\tsensor_fitness: " + str(c.sensorFitnessMultiplier) + "*" + str(sensor_fitness))
 
         # changed tmp to fitness
         f = open("tmp" + str(self.solutionID) + ".txt", "w")

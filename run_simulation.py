@@ -1,6 +1,10 @@
 import pybullet as p
 import pybullet_data
 
+import datetime
+import os
+import numpy as np
+
 import pyrosim.pyrosim as pyrosim
 from simulation import SIMULATION
 import constants as c
@@ -28,6 +32,19 @@ def run_simulation(numBots, solutionID):
     simulation.run()
 
 def run_best():
+
+    # First we prep the directory for data storage in an organized fashion
+    today = datetime.datetime.now()
+    month = today.month
+    day = today.day
+    hour = today.time().hour
+
+    dir_name = str(month) + '_' + str(day) + '_' + str(hour)
+    parent = "D:/Python_Project/CS205/CS206/data/"
+    path = os.path.join(parent, dir_name)
+
+    os.mkdir(path)
+
     if c.BRAIN_TYPE == 'hive_mind':
         physicsClient = p.connect(p.GUI)
 
@@ -45,22 +62,20 @@ def run_best():
             hive_mind.Think()
             hive_mind.Act(t)
 
-        # Print motor and sensor values to a csv
-        f = open('run_data.txt', 'w')
+            # TODO: Record position and orientation of each bot
 
         for bot in hive_mind.bots:
             for sensor in hive_mind.bots[bot]['sensors']:
-                f.write(hive_mind.bots[bot]['sensors'][sensor].linkName)
-                f.write(str(hive_mind.bots[bot]['sensors'][sensor].values))
-                f.write('\n')
+                sensor_name = hive_mind.bots[bot]['sensors'][sensor].linkName
+                sensor_values = hive_mind.bots[bot]['sensors'][sensor].values
+                np.save('data/' + dir_name + '/' + sensor_name, sensor_values)
             for motor in hive_mind.bots[bot]['motors']:
-                f.write(hive_mind.bots[bot]['motors'][motor].jointName)
-                f.write(str(hive_mind.bots[bot]['motors'][motor].values))
-                f.write('\n')
+                motor_name = hive_mind.bots[bot]['motors'][motor].jointName
+                motor_values = hive_mind.bots[bot]['motors'][motor].values
+                np.save('data/' + dir_name + '/' + motor_name, motor_values)
+
 
         # TODO: Here we will print the neural network into f as well
-
-        f.close()
 
     else:
         physicsClient = p.connect(p.GUI)
@@ -97,19 +112,21 @@ def run_best():
                 bots[bot].Think()
                 bots[bot].Act(t)
 
-        # Save Values to a doc
-        f = open('run_data.txt', 'w')
+            # TODO: Collect bot positions and orientations
 
+        # Save data
         for bot in bots:
             for sensor in bots[bot].sensors:
-                f.write(bots[bot].sensors[sensor].linkName)
-                f.write(str(bots[bot].sensors[sensor].values))
+                sensor_name = bots[bot].sensors[sensor].linkName
+                sensor_values = bots[bot].sensors[sensor].values
+                np.save('data/' + dir_name + '/' + sensor_name, sensor_values)
+
             for motor in bots[bot].motors:
-                f.write(bots[bot].motors[motor].jointName)
-                f.write(str(bots[bot].motors[motor].values))
+                motor_name = bots[bot].motors.jointName
+                motor_values = bots[bot].motors[motor].values
+                np.save('data/' + dir_name + '/' + motor_name, motor_values)
 
         # TODO: Print the NN to the run_data.txt file
 
-        f.close()
 
 run_best()
