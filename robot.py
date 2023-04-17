@@ -86,6 +86,17 @@ class HIVE_MIND:
         # Updated Update to not need bot info
         self.hiveMind.Update(0)
 
+    # returns an array of each bots cartesian coordinates and orientation
+    def Report(self):
+        bot_data = np.zeros((c.numBots, 6))
+        for bot in self.bots:
+            basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['robotID'])
+            basePosition = basePositionAndOrientation[0]
+            baseOrientation = p.getEulerFromQuaternion(basePositionAndOrientation[1])
+            basePosition.extend(baseOrientation)
+            bot_data[bot, :] = np.array(basePosition)
+        return bot_data
+
     def Get_Fitness(self):
         if c.fitness == 'gather':
             coords = np.empty((c.numBots, 3))

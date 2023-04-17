@@ -55,27 +55,46 @@ def run_best():
 
         hive_mind = HIVE_MIND(1, c.bodytype, c.numBots, best=True)
 
+        # Position Data:
+        """
+        bot:
+           | 0 | 1 | 2 |  ....  | c.SIM_LEN
+         x |
+         y |
+         z |
+         p |
+         t |
+         ya|
+         
+        array_size should be (c.numBots, 6, c.SIM_LEN)
+        """
+
+        position_data = np.zeros((c.numBots, 6, c.SIM_LEN))
+
         # Run it
+        #TODO: Change simlength to c.SIM_LEN once we get started
         for t in range(simlength-1):
             p.stepSimulation()
             hive_mind.Sense(t)
             hive_mind.Think()
             hive_mind.Act(t)
+            positionAndOrientation = hive_mind.Report()
+            for botNum in c.numBots:
+                position_data[botNum, :, t] = positionAndOrientation[0, :]
 
-            # TODO: Record position and orientation of each bot
+        np.save('data/' + dir_name + '/positions.npy', position_data)
 
         for bot in hive_mind.bots:
             for sensor in hive_mind.bots[bot]['sensors']:
                 sensor_name = hive_mind.bots[bot]['sensors'][sensor].linkName
                 sensor_values = hive_mind.bots[bot]['sensors'][sensor].values
-                np.save('data/' + dir_name + '/' + sensor_name, sensor_values)
+                np.save('data/' + dir_name + '/' + sensor_name + '.npy', sensor_values)
             for motor in hive_mind.bots[bot]['motors']:
                 motor_name = hive_mind.bots[bot]['motors'][motor].jointName
                 motor_values = hive_mind.bots[bot]['motors'][motor].values
-                np.save('data/' + dir_name + '/' + motor_name, motor_values)
+                np.save('data/' + dir_name + '/' + motor_name + '.npy', motor_values)
 
-
-        # TODO: Here we will print the neural network into f as well
+        # Save the neural network for data analysis as well
 
     else:
         physicsClient = p.connect(p.GUI)
