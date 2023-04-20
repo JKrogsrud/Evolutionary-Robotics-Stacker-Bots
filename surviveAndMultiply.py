@@ -102,8 +102,7 @@ class SURVIVE_MULTIPLY:
         # of the fittest solution:
         IDofFittest = self.parents[fittest_parent].myID
         if c.BRAIN_TYPE == 'hive_mind':
-            os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + '.nndf',
-                      'best_brain.nndf')
+            os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + '.nndf', 'best_brain.nndf')
         else:
             for botNum in range(c.numBots):
                 os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + str(botNum) + '.nndf',

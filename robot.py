@@ -21,6 +21,8 @@ class HIVE_MIND:
             botDict = {}
             botDict['robotID'] = robotID
             self.bots[robotID] = botDict
+            # Set up bots to not be dormant. This will be set to true
+            botDict['dormant'] = False
         if best:
             self.hiveMind = NEURAL_NETWORK("best_brain.nndf")
         else:
@@ -65,13 +67,12 @@ class HIVE_MIND:
 
                 jointName = self.hiveMind.Get_Motor_Neurons_Joint(neuronName)
 
-                # Need to change the angles that are allowed per joint
-                # Lets do this by a dictionary in the constants
-                # NOTE: THIS WILL LIMIT NUMBOTS TO 9 BUT DOUBT I CAN GET
-                #       THOSE KIND OF RESULTS ANYWAYS
-
                 jointTypes = str(jointName).split('_')
                 botNum = int(jointTypes[0][0]) + 1
+
+                #TODO: Check if bot is dormant or not. If it is we will update motors in a very specific way
+                #      They will lay down on their bottom sensor with legs straight out
+
                 jointType = jointTypes[0][1:] + '_' + jointTypes[1][1:]
 
                 lower_bound = c.motorJointRanges[jointType][0]
@@ -82,19 +83,28 @@ class HIVE_MIND:
                 self.bots[botNum]['motors'][jointName].Set_Value_NN(botNum, desiredAngle)
 
     def Think(self):
-
         # Updated Update to not need bot info
         self.hiveMind.Update(0)
+
+        # Update dormancy here
+        for bot in self.bots:
+            robotID = self.bots[bot]['robotID']
+            location_of_bot = p.getBasePositionAndOrientation(robotID)[0]
+            distance = np.sqrt(location_of_bot[0]**2 + location_of_bot[1]*2)
+            if distance < c.goalDistance:
+                self.bots[bot]['dormant'] = True
+
+
 
     # returns an array of each bots cartesian coordinates and orientation
     def Report(self):
         bot_data = np.zeros((c.numBots, 6))
         for bot in self.bots:
             basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['robotID'])
-            basePosition = basePositionAndOrientation[0]
-            baseOrientation = p.getEulerFromQuaternion(basePositionAndOrientation[1])
+            basePosition = list(basePositionAndOrientation[0])
+            baseOrientation = list(p.getEulerFromQuaternion(basePositionAndOrientation[1]))
             basePosition.extend(baseOrientation)
-            bot_data[bot, :] = np.array(basePosition)
+            bot_data[bot-1, :] = np.array(basePosition)
         return bot_data
 
     def Get_Fitness(self):
@@ -332,6 +342,7 @@ class ROBOT:
     def __init__(self, robotID, robotNN):
         self.robotID = robotID
         self.nn = robotNN
+        self.dormant = False
 
     def Set_Number_links(self, numLinks):
         self.numLinks = numLinks

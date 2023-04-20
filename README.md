@@ -175,17 +175,14 @@ the individual stacker bots and allow the bots controlled by a hive mind to evol
 able to stack on top of each other.
 
 Updated Goals:
+
 Complete:
  - Fix evol algorithm
  - new fitness function that rewards topSensor being active and penalizes upside down orientation
-
-Needs Work:
  - Create a logging system that measures sensor inputs, center of mass, motor output, which synapses are dead
  for a single run for all robots for use in some stats and visualization
-   - Is executed in the run_simulation function
-   - Not being saved as .npy files
-   - not logging cartesian coords / orientations
- 
+
+Needs Work:
  - Bots now spawn in a circle but not rotating to all have some chance finding (0, 0)
 
 Incomplete:
@@ -198,12 +195,24 @@ Thoughts:
  - Repress more neurons when starting up? i.e. use a different probability distribution when setting up the arrays?
  - Have bots that lay dormant after having their topSensor pushed?
 
+Video: https://youtu.be/HM0ujDOm-7w
+
 Week 8:
 
 This week is primarily planned for overflow as I think the previous weeks plans
 are going to be challenging. If everything is going smoothly I will start testing 
 how well each neural network (or set of networks) adapts to having more than three bots. 
 Perhaps achieving a good metric on how well each does within a certain amount of generations.
+
+Updated Goals:
+ - Logging function:
+   - Keep track of evolution: n = c.surveyGenerations
+     - Best fitness every n gens
+     - How many solutions are above a certain threshhold
+ - Have bots "laydown" after getting within a certain distance of (0, 0), they are currently moving there slowly as not
+    to pass by middle - a little malicious compliance there - the best walkers were probably walking right by the middle
+   - adding a boolean state to each bot as "dormant" which should ahnbdle this
+     - I should change the fitness function to reward "num bots dormant" - add this to logging function
 
 Week 9:
 

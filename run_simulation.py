@@ -19,7 +19,7 @@ from motor import MOTOR
 
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 
-simlength = 10000
+simlength = c.SIM_LEN
 
 ### Looks for files named brain_* with the given solutionID
 def run_simulation(numBots, solutionID):
@@ -38,10 +38,12 @@ def run_best():
     month = today.month
     day = today.day
     hour = today.time().hour
+    minute = today.time().minute
 
-    dir_name = str(month) + '_' + str(day) + '_' + str(hour)
-    parent = "D:/Python_Project/CS205/CS206/data/"
-    path = os.path.join(parent, dir_name)
+    # Creating Directory
+    dir_name = 'data/' + str(month) + '_' + str(day) + '_' + str(hour) + '_' + str(minute)
+    current_dir = os.getcwd()
+    path = os.path.join(current_dir, dir_name)
 
     os.mkdir(path)
 
@@ -79,22 +81,20 @@ def run_best():
             hive_mind.Think()
             hive_mind.Act(t)
             positionAndOrientation = hive_mind.Report()
-            for botNum in c.numBots:
+            for botNum in range(c.numBots):
                 position_data[botNum, :, t] = positionAndOrientation[0, :]
 
-        np.save('data/' + dir_name + '/positions.npy', position_data)
+        np.save(dir_name + '/positions', position_data)
 
         for bot in hive_mind.bots:
             for sensor in hive_mind.bots[bot]['sensors']:
                 sensor_name = hive_mind.bots[bot]['sensors'][sensor].linkName
                 sensor_values = hive_mind.bots[bot]['sensors'][sensor].values
-                np.save('data/' + dir_name + '/' + sensor_name + '.npy', sensor_values)
+                np.save(dir_name + '/' + sensor_name + '.npy', sensor_values)
             for motor in hive_mind.bots[bot]['motors']:
                 motor_name = hive_mind.bots[bot]['motors'][motor].jointName
                 motor_values = hive_mind.bots[bot]['motors'][motor].values
-                np.save('data/' + dir_name + '/' + motor_name + '.npy', motor_values)
-
-        # Save the neural network for data analysis as well
+                np.save(dir_name + '/' + motor_name + '.npy', motor_values)
 
     else:
         physicsClient = p.connect(p.GUI)
@@ -115,13 +115,15 @@ def run_best():
         linkInfo, jointInfo = pyrosim.Prepare_To_Simulate(bots.keys())
 
         for bot in bots:
-            bots[bot].Set_Number_links(jointInfo["numJoints"])
+            bots[bot].Set_Number_links(jointInfo['numJoints'])
 
         for bot in bots:
             bots[bot].Prepare_To_Sense(linkInfo[bot])
 
         for bot in bots:
             bots[bot].Prepare_To_Act(jointInfo[bot])
+
+        position_data = np.zeros((c.numBots, 6, c.SIM_LEN))
 
         # Run it
         for t in range(simlength):
@@ -131,21 +133,25 @@ def run_best():
                 bots[bot].Think()
                 bots[bot].Act(t)
 
-            # TODO: Collect bot positions and orientations
+                bot_info = p.getBasePositionAndOrientation(bots[bot].robotID)
+                bot_pos = list(bot_info[0])
+                bot_orientations = list(p.getEulerFromQuaternion(bot_info[1]))
+                bot_pos.extend(bot_orientations)
+                position_data[bot-1, :, t] = np.array(bot_pos)
+
+        np.save(dir_name + '/positions.npy', position_data)
 
         # Save data
         for bot in bots:
             for sensor in bots[bot].sensors:
                 sensor_name = bots[bot].sensors[sensor].linkName
                 sensor_values = bots[bot].sensors[sensor].values
-                np.save('data/' + dir_name + '/' + sensor_name, sensor_values)
+                np.save(dir_name + '/' + sensor_name + '.npy', sensor_values)
 
             for motor in bots[bot].motors:
-                motor_name = bots[bot].motors.jointName
+                motor_name = bots[bot].motors[motor].jointName
                 motor_values = bots[bot].motors[motor].values
-                np.save('data/' + dir_name + '/' + motor_name, motor_values)
-
-        # TODO: Print the NN to the run_data.txt file
+                np.save(dir_name + '/' + motor_name + '.npy', motor_values)
 
 
 run_best()

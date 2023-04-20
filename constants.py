@@ -5,7 +5,7 @@ SLEEP_TIME = 1/240
 FRAMES = 1000
 
 """DATA COLLECTION"""
-SIM_LEN = 1000
+SIM_LEN = 5000
 
 """GRAVITY CONSTANTS"""
 X_GRAV = 0
@@ -30,7 +30,7 @@ BRAIN_TYPE = 'hive_mind'
 Evolution Constants
 """
 
-numberOfGenerations = 1
+numberOfGenerations = 800
 populationSize = 5
 
 # evolutionaryAlgorithm = 'PHC'
@@ -43,6 +43,9 @@ Fitness
 fitness = 'top_sensor'
 
 # For the top_sensor:
+
+goalDistance = 2
+
 targetFrames = 10  # as a percent at end of run
 sensorFitnessMultiplier = 1
 flipPenalty = 1
@@ -52,7 +55,7 @@ gatherFitnessMultiplier = 1
 Body experimentation
 """
 bodytype = "A"
-numBots = 1  # Limit to 9 - or need to rethink something in Robot - Act
+numBots = 3  # Limit to 9 - or need to rethink something in Robot - Act
 
 motors = [
         ('Torso', 'URRotate'), ('URRotate', 'URTopLeg'), ('URTopLeg', 'URBottomLeg'),
