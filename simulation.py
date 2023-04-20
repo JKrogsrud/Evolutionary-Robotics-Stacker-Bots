@@ -40,8 +40,13 @@ class SIMULATION:
             p.stepSimulation()
             if self.directOrGui == "GUI":
                 time.sleep(c.SLEEP_TIME)
+
+            # This is currently commented out because I've added recording to run_simulation
+            # probably could be done a little bit more nicely
+
             # self.robots.Sense(t)
-            self.robots.Think()
+
+            self.robots.Think(t)
             self.robots.Act(t)
 
     def __del__(self):

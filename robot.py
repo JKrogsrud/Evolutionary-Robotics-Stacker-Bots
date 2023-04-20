@@ -70,19 +70,21 @@ class HIVE_MIND:
                 jointTypes = str(jointName).split('_')
                 botNum = int(jointTypes[0][0]) + 1
 
-                #TODO: Check if bot is dormant or not. If it is we will update motors in a very specific way
-                #      They will lay down on their bottom sensor with legs straight out
-
                 jointType = jointTypes[0][1:] + '_' + jointTypes[1][1:]
 
-                lower_bound = c.motorJointRanges[jointType][0]
-                upper_bound = c.motorJointRanges[jointType][1]
+                # Check if bot is dormant
+                if self.bots[botNum]['dormant']:
+                    # Use lookup for various joints for the correct position
+                    desiredAngle = c.dormantMotorJointValues[jointType]
+                else:
+                    lower_bound = c.motorJointRanges[jointType][0]
+                    upper_bound = c.motorJointRanges[jointType][1]
 
-                desiredAngle = ((self.hiveMind.Get_Value_Of(neuronName) + 1) / 2) * (upper_bound - lower_bound) + lower_bound
+                    desiredAngle = ((self.hiveMind.Get_Value_Of(neuronName) + 1) / 2) * (upper_bound - lower_bound) + lower_bound
 
                 self.bots[botNum]['motors'][jointName].Set_Value_NN(botNum, desiredAngle)
 
-    def Think(self):
+    def Think(self, time_stamp):
         # Updated Update to not need bot info
         self.hiveMind.Update(0)
 
@@ -90,46 +92,26 @@ class HIVE_MIND:
         for bot in self.bots:
             robotID = self.bots[bot]['robotID']
             location_of_bot = p.getBasePositionAndOrientation(robotID)[0]
-            distance = np.sqrt(location_of_bot[0]**2 + location_of_bot[1]*2)
-            if distance < c.goalDistance:
+            distance = np.sqrt((location_of_bot[0] - c.goal[0])**2 + (location_of_bot[1]- c.goal[1])**2)
+            if distance < c.goalDistance and not self.bots[bot]['dormant']:
                 self.bots[bot]['dormant'] = True
-
-
+                self.bots[bot]['dormantTime'] = time_stamp
 
     # returns an array of each bots cartesian coordinates and orientation
     def Report(self):
         bot_data = np.zeros((c.numBots, 6))
+
         for bot in self.bots:
             basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['robotID'])
             basePosition = list(basePositionAndOrientation[0])
             baseOrientation = list(p.getEulerFromQuaternion(basePositionAndOrientation[1]))
             basePosition.extend(baseOrientation)
             bot_data[bot-1, :] = np.array(basePosition)
+
         return bot_data
 
     def Get_Fitness(self):
-        if c.fitness == 'gather':
-            coords = np.empty((c.numBots, 3))
-
-            for bot in self.bots:
-                basePositionAndOrientation = p.getBasePositionAndOrientation(self.bots[bot]['robotID'])
-                basePosition = basePositionAndOrientation[0]  # Cartesian coordinates
-                coords[bot-1, :] = np.array(basePosition)
-
-            # Find the middle
-            sums = np.sum(a=coords, axis=0)
-            midpoint = sums / c.numBots
-
-            # Numpy is amazing
-            delta = coords - midpoint
-            dist = np.sqrt(np.sum(delta*delta, 1))
-
-            fitness = 1
-            for i in range(c.numBots):
-                fitness *= (1.0 / (dist[i]+1))
-        # This fitness function is composite of gathering
-        # staying upright and activating top sensor
-        elif c.fitness == 'top_sensor':
+        if c.fitness == 'top_sensor_1':
 
             # Calculate sensor fitness
             sensor_fitness = 0
@@ -171,14 +153,69 @@ class HIVE_MIND:
             # Calculate distance from (0, 0)
             dist_fitness = 1
             for position in bot_positions:
-                dist_fitness *= 1 / (np.sqrt(position[0] ** 2 + position[1] ** 2) + 1)
+                dist_fitness *= 1 / (np.sqrt((position[0] - c.goal[0]) ** 2 + (position[1] - c.goal[1]) ** 2) + 1)
 
             fitness = c.gatherFitnessMultiplier * dist_fitness + total_flip_penalty + c.sensorFitnessMultiplier * sensor_fitness
 
-        print("Solution: " + str(self.solutionID) +
-              "\nfitness: \n\t dist_fitness: " + str(c.gatherFitnessMultiplier) + "*" + str(dist_fitness)
-              + "\n\tflip_penalty: " + str(total_flip_penalty) +
-              "\n\tsensor_fitness: " + str(c.sensorFitnessMultiplier) + "*" + str(sensor_fitness))
+        if c.fitness == 'gather_and_stack':
+            # Repository for all bot fitness's
+            allFitness = []
+            for bot in self.bots:
+                for sensor in self.bots[bot]['sensors']:
+                    if self.bots[bot]['sensors'][sensor].linkName[1:] == 'TopSensor':
+                        topSensorData = self.bots[bot]['sensors'][sensor].values
+
+                # Total frames where top sensor is active
+                topSum = 0
+                for val in topSensorData:
+                    if val > 0:
+                        topSum += val
+
+                sensorFitness = topSum / c.SIM_LEN
+
+                # Calculate distance fitness
+                robotID = self.bots[bot]['robotID']
+                locationOfBot = p.getBasePositionAndOrientation(robotID)[0]
+                distanceToGoal = np.sqrt((locationOfBot[0] - c.goal[0]) ** 2 + (locationOfBot[1] - c.goal[1]) ** 2)
+
+                distanceFitness = 1 / (distanceToGoal + 1)
+
+                # Calculate dormancy fitness
+                if self.bots[bot]['dormant']:
+                    dormancyFitness = (c.SIM_LEN - self.bots[bot]['dormantTime']) / c.SIM_LEN
+                else:
+                    dormancyFitness = 0
+
+
+                # Calculate Flip Penalty
+                botOrientation = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.bots[bot]['robotID'])[1])
+                if botOrientation[0] > np.pi / 2 or botOrientation[0] < -np.pi / 2:
+                    flipPenalty = 0
+                else:
+                    flipPenalty = 1
+
+                # robotFitness = flipPenalty * (c.distanceFitnessWeight * distanceFitness +
+                #                               c.sensorFitnessWeight * sensorFitness
+                #                               + c.dormancyFitnessWeight * dormancyFitness)
+
+                botFitness = [sensorFitness, distanceFitness, dormancyFitness, flipPenalty]
+                allFitness.append(botFitness)
+
+            fitness = 0
+            # Display the individual bot fitness's
+            print("Bot Fitness's for solution: " + str(self.solutionID))
+            for i in range(len(allFitness)):
+                print(" Bot " + str(i+1) + ":")
+                print("\tSensor Fitness:" + str(allFitness[i][0]))
+                print("\tDistance Fitness:" + str(allFitness[i][1]))
+                print("\tDormancy Fitness:" + str(allFitness[i][2]))
+                print("\tFlip Penalty:" + str(allFitness[i][3]))
+                robotFitness = allFitness[i][3] * (c.sensorFitnessWeight * allFitness[i][0] +
+                                                   c.distanceFitnessWeight * allFitness[i][1] +
+                                                   c.dormancyFitnessWeight * allFitness[i][2])
+                print("\t\tTotal Fitness = " + str(robotFitness))
+                fitness += robotFitness
+            print("\t\t\tTotal Fitness for Solution: " + str(fitness))
 
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
         f.write(str(fitness))
@@ -227,21 +264,12 @@ class ROBOTSWARM:
         for bot in self.bots:
             self.bots[bot].Prepare_To_Act(self.jointInfo[bot])
 
-    def Think(self):
+    def Think(self, time_stamp):
         for bot in self.bots:
-            self.bots[bot].Think()
+            self.bots[bot].Think(time_stamp)
 
     def Act(self, time_stamp):
-
-        if c.BRAIN_TYPE == 'ragdoll':
-            pass
-        elif c.BRAIN_TYPE == 'oscillatory':
-            for bot in self.bots:
-                self.bots[bot].Act(time_stamp)
-        elif c.BRAIN_TYPE == 'rigid':
-            for bot in self.bots:
-                self.bots[bot].Act(time_stamp)
-        elif c.BRAIN_TYPE == 'neural_network':
+        if c.BRAIN_TYPE == 'neural_network':
             for bot in self.bots:
                 self.bots[bot].Act(time_stamp)
 
@@ -253,35 +281,7 @@ class ROBOTSWARM:
             self.motors[motor].Save_Values()
 
     def Get_Fitness(self):
-
-        if c.fitness == 'gather':
-
-            bot_info = []
-            fitness = 1
-
-            for bot in self.bots:
-                bot_info.append(self.bots[bot].Get_Fitness())
-
-            # Higher fitness is awarded to bots that are stacking, so their center of mass should
-            # be close to each other
-
-            total_x = 0
-            total_y = 0
-            for bot in bot_info:
-                total_x += bot['position'][0]
-                total_y += bot['position'][1]
-
-            mid_x = total_x / self.numBots
-            mid_y = total_y / self.numBots
-
-            # find the distance each bot is from that center of mass
-
-            for bot in bot_info:
-                distance_from_mid = np.sqrt((mid_x - bot['position'][0])**2 + (mid_y - bot['position'][1])**2)
-                # print(distance_from_mid)
-                fitness *= 1 / (distance_from_mid + .01)
-
-        if c.fitness == 'top_sensor':
+        if c.fitness == 'top_sensor_1':
 
             # Gather sensor data from each bot
             sensor_fitness = 0
@@ -320,7 +320,7 @@ class ROBOTSWARM:
             # Calculate distance from (0, 0)
             dist_fitness = 1
             for position in bot_positions:
-                dist_fitness *= 1 / (np.sqrt(position[0]**2 + position[1]**2) + 1)
+                dist_fitness *= 1 / (np.sqrt((position[0] - c.goal[0])**2 + (position[1] - c.goal[1])**2) + 1)
 
             fitness = c.gatherFitnessMultiplier * dist_fitness + total_flip_penalty + c.sensorFitnessMultiplier * sensor_fitness
 
@@ -367,45 +367,35 @@ class ROBOT:
 
     def Act(self, time_stamp):
 
-        if c.BRAIN_TYPE == 'oscillatory':
-
-            for neuronName in self.nn.Get_Neuron_Names():
-                if self.nn.Is_Motor_Neuron(neuronName):
-                    jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
-                    self.motors[jointName].Set_Value(self.robotID, time_stamp)
-
-        elif c.BRAIN_TYPE == 'ragdoll':
-            pass
-
-        elif c.BRAIN_TYPE == 'rigid':
-
-            for neuronName in self.nn.Get_Neuron_Names():
-                if self.nn.Is_Motor_Neuron(neuronName):
-                    jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
-                    self.motors[jointName].Set_Value(self.robotID, time_stamp)
-
-        elif c.BRAIN_TYPE == 'neural_network':
+        if c.BRAIN_TYPE == 'neural_network':
             for neuronName in self.nn.Get_Neuron_Names():
                 if self.nn.Is_Motor_Neuron(neuronName):
 
                     jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
-
-                    # Need to change the angles that are allowed per joint
-                    # Lets do this by a dictionary in the constants
-                    # NOTE: THIS WILL LIMIT NUMBOTS TO 9 BUT DOUBT I CAN GET
-                    #       THOSE KIND OF RESULTS ANYWAYS
 
                     jointTypes = str(jointName).split('_')
                     jointType = jointTypes[0][1:] + '_' + jointTypes[1][1:]
 
-                    lower_bound = c.motorJointRanges[jointType][0]
-                    upper_bound = c.motorJointRanges[jointType][1]
+                    if self.dormant:
+                        desiredAngle = c.dormantMotorJointValues[jointType]
+                    else:
+                        lower_bound = c.motorJointRanges[jointType][0]
+                        upper_bound = c.motorJointRanges[jointType][1]
+                        desiredAngle = ((self.nn.Get_Value_Of(neuronName) + 1) / 2) * (upper_bound - lower_bound) + lower_bound
 
-                    desiredAngle = ((self.nn.Get_Value_Of(neuronName) + 1) / 2) * (upper_bound - lower_bound) + lower_bound
                     self.motors[jointName].Set_Value_NN(self.robotID, desiredAngle)
 
-    def Think(self):
+    def Think(self, time_stamp):
         self.nn.Update(self.robotID)
+
+        # Determine if bot should be dormant
+        bot_position = p.getBasePositionAndOrientation(self.robotID)[0]
+        distance = np.sqrt((bot_position[0] - c.goal[0])**2 + (bot_position[1] - c.goal[1])**2)
+        if distance < c.goalDistance and not self.dormant:
+            self.dormant = True
+            self.dormantTime = time_stamp
+
+
 
     def Get_Fitness(self):
         # This will likely change over time but I want the evolutionary algorithm

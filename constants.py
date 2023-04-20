@@ -30,8 +30,8 @@ BRAIN_TYPE = 'hive_mind'
 Evolution Constants
 """
 
-numberOfGenerations = 800
-populationSize = 5
+numberOfGenerations = 2
+populationSize = 1
 
 # evolutionaryAlgorithm = 'PHC'
 evolutionaryAlgorithm = 'SAM'
@@ -39,17 +39,27 @@ evolutionaryAlgorithm = 'SAM'
 """
 Fitness
 """
-# fitness = 'gather'
-fitness = 'top_sensor'
+
+# fitness = 'top_sensor_1'
+fitness = 'gather_and_stack'
 
 # For the top_sensor:
+if fitness == 'top_sensor_1':
+    goal = (0, 0)
+    goalDistance = 2
+    targetFrames = 10  # as a percent at end of run
+    sensorFitnessMultiplier = 1
+    flipPenalty = 1
+    gatherFitnessMultiplier = 1
 
-goalDistance = 2
+if fitness == 'gather_and_stack':
+    goal = (0, 0)
+    goalDistance = 1
 
-targetFrames = 10  # as a percent at end of run
-sensorFitnessMultiplier = 1
-flipPenalty = 1
-gatherFitnessMultiplier = 1
+    distanceFitnessWeight = 3
+    sensorFitnessWeight = 1
+    dormancyFitnessWeight = 1
+
 
 """
 Body experimentation
@@ -84,10 +94,6 @@ cube_sensors = [
 """
 Neural Network
 """
-
-# Central Pattern Generator Parameters
-# CPG_active = True
-# frequency = np.pi / 2
 
 # Neurons
 numSensorNeurons = len(cube_sensors)
@@ -129,6 +135,24 @@ if bodytype == 'A':
         'Torso_BLRotate': (-np.pi / 2, 0),
         'BLRotate_BLTopLeg': (-np.pi / 4, np.pi / 3),
         'BLTopLeg_BLBottomLeg': (np.pi / 4, np.pi / 2 + np.pi / 16),
+    }
+
+    """
+    Dormant output
+    """
+    dormantMotorJointValues = {
+        'Torso_URRotate': np.pi / 4,
+        'URRotate_URTopLeg': 0,
+        'URTopLeg_URBottomLeg': np.pi / 2,
+        'Torso_ULRotate': -np.pi / 4,
+        'ULRotate_ULTopLeg': 0,
+        'ULTopLeg_ULBottomLeg': np.pi / 2,
+        'Torso_BRRotate': np.pi / 4,
+        'BRRotate_BRTopLeg': 0,
+        'BRTopLeg_BRBottomLeg': -np.pi / 2,
+        'Torso_BLRotate': -np.pi / 4,
+        'BLRotate_BLTopLeg': 0,
+        'BLTopLeg_BLBottomLeg': -np.pi / 2,
     }
 
 ### Colors ###
