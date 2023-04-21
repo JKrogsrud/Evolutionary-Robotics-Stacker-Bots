@@ -78,7 +78,7 @@ def run_best():
         for t in range(simlength-1):
             p.stepSimulation()
             hive_mind.Sense(t)
-            hive_mind.Think()
+            hive_mind.Think(t)
             hive_mind.Act(t)
             positionAndOrientation = hive_mind.Report()
             for botNum in range(c.numBots):
@@ -130,7 +130,7 @@ def run_best():
             p.stepSimulation()
             for bot in bots:
                 bots[bot].Sense(t)
-                bots[bot].Think()
+                bots[bot].Think(t)
                 bots[bot].Act(t)
 
                 bot_info = p.getBasePositionAndOrientation(bots[bot].robotID)

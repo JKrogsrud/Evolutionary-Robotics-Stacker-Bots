@@ -23,15 +23,15 @@ Bot Motion
 types: neural_network, hive_mind
 """
 
-# BRAIN_TYPE = 'neural_network'
-BRAIN_TYPE = 'hive_mind'
+BRAIN_TYPE = 'neural_network'
+# BRAIN_TYPE = 'hive_mind'
 
 """
 Evolution Constants
 """
 
-numberOfGenerations = 2
-populationSize = 1
+numberOfGenerations = 1
+populationSize = 2
 
 # evolutionaryAlgorithm = 'PHC'
 evolutionaryAlgorithm = 'SAM'
@@ -102,6 +102,10 @@ numMotorNeurons = len(motors)
 
 totalNeurons = numSensorNeurons + numHiddenNeurons + numMotorNeurons
 
+# Synaptic weight intialization
+mu = 0
+sigma = 1/3
+
 """
 Body Constants
 """
@@ -143,16 +147,16 @@ if bodytype == 'A':
     dormantMotorJointValues = {
         'Torso_URRotate': np.pi / 4,
         'URRotate_URTopLeg': 0,
-        'URTopLeg_URBottomLeg': np.pi / 2,
+        'URTopLeg_URBottomLeg': np.pi / 12,
         'Torso_ULRotate': -np.pi / 4,
         'ULRotate_ULTopLeg': 0,
-        'ULTopLeg_ULBottomLeg': np.pi / 2,
+        'ULTopLeg_ULBottomLeg': np.pi / 12,
         'Torso_BRRotate': np.pi / 4,
         'BRRotate_BRTopLeg': 0,
-        'BRTopLeg_BRBottomLeg': -np.pi / 2,
+        'BRTopLeg_BRBottomLeg': -np.pi / 12,
         'Torso_BLRotate': -np.pi / 4,
         'BLRotate_BLTopLeg': 0,
-        'BLTopLeg_BLBottomLeg': -np.pi / 2,
+        'BLTopLeg_BLBottomLeg': -np.pi / 12,
     }
 
 ### Colors ###

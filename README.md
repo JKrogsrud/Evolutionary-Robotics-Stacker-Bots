@@ -212,9 +212,13 @@ Updated Goals:
 
  - Have bots "laydown" after getting within a certain distance of (0, 0), they are currently moving there slowly as not
     to pass by middle - a little malicious compliance there - the best walkers were probably walking right by the middle
-   - adding a boolean state to each bot as "dormant" which should ahnbdle this
+   - adding a boolean state to each bot as "dormant" which should handle this
      - I should change the fitness function to reward "num bots dormant" - add this to logging function
-        - also reward bots that get there fast, maybe time spent there?
+        - ended up rewarding for time spent dormant per bot
+ 
+ - Dampen the initialization of synapses
+   - DONE
+
  - Neural network: Reduce hidden neurons but add in recurrant connections. Maybe bots could communicate over
    a long period of time by "tapping out" a signal with their touch sensors
 

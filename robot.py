@@ -186,10 +186,9 @@ class HIVE_MIND:
                 else:
                     dormancyFitness = 0
 
-
                 # Calculate Flip Penalty
                 botOrientation = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.bots[bot]['robotID'])[1])
-                if botOrientation[0] > np.pi / 2 or botOrientation[0] < -np.pi / 2:
+                if botOrientation[0] > np.pi / 2 or botOrientation[0] < -np.pi / 2 or botOrientation[1] > np.pi /2 or botOrientation[1] < -np.pi / 2:
                     flipPenalty = 0
                 else:
                     flipPenalty = 1
@@ -324,10 +323,27 @@ class ROBOTSWARM:
 
             fitness = c.gatherFitnessMultiplier * dist_fitness + total_flip_penalty + c.sensorFitnessMultiplier * sensor_fitness
 
-        print("Solution: " + str(self.solutionID) +
-              "\nfitness: \n\t dist_fitness: " + str(c.gatherFitnessMultiplier) + "*" + str(dist_fitness)
-              + "\n\tflip_penalty: " + str(total_flip_penalty) +
-              "\n\tsensor_fitness: " + str(c.sensorFitnessMultiplier) + "*" + str(sensor_fitness))
+        if c.fitness == "gather_and_stack":
+            print("Bot Fitness's for solution: " + str(self.solutionID) + "\n")
+
+            # Gather fitness of all bots
+            fitness = 0
+            for bot in self.bots:
+                botID = self.bots[bot].robotID
+                botFitness = self.bots[bot].Get_Fitness()
+                print(" Bot " + str(botID) + ":")
+                print("\tSensor Fitness:" + str(botFitness[0]))
+                print("\tDistance Fitness:" + str(botFitness[1]))
+                print("\tDormancy Fitness:" + str(botFitness[2]))
+                print("\tFlip Penalty:" + str(botFitness[3]))
+
+                robotFitness = botFitness[3] * (c.sensorFitnessWeight * botFitness[0] +
+                                                c.distanceFitnessWeight * botFitness[1] +
+                                                c.dormancyFitnessWeight * botFitness[2])
+
+                print("\t\tTotal Fitness = " + str(robotFitness))
+                fitness += robotFitness
+            print("\t\t\tTotal Fitness for Solution: " + str(fitness))
 
         # changed tmp to fitness
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
@@ -398,20 +414,54 @@ class ROBOT:
 
 
     def Get_Fitness(self):
-        # This will likely change over time but I want the evolutionary algorithm
-        # working before working on finding the right fitness
+        # # This will likely change over time but I want the evolutionary algorithm
+        # # working before working on finding the right fitness
+        #
+        # bot_info = {}
+        #
+        # # Get x and y position of bot
+        # basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotID)
+        # basePosition = basePositionAndOrientation[0]
+        # xPosition = basePosition[0]
+        # yPosition = basePosition[1]
+        #
+        # bot_info['position'] = (xPosition, yPosition)
+        #
+        # # Get which torso sensors are active at the end
+        # # Don't exactly know how to do this part
 
-        bot_info = {}
+        # Get Top Sensor Fitness
+        for sensor in self.sensors:
+            print()
+            if self.sensors[sensor].linkName[1:] == 'TopSensor':
+                topSensorData = self.sensors[sensor].values
 
-        # Get x and y position of bot
-        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotID)
-        basePosition = basePositionAndOrientation[0]
-        xPosition = basePosition[0]
-        yPosition = basePosition[1]
+        topSum = 0
+        for val in topSensorData:
+            if val > 0:
+                topSum += val
 
-        bot_info['position'] = (xPosition, yPosition)
+        sensorFitness = topSum / c.SIM_LEN
 
-        # Get which torso sensors are active at the end
-        # Don't exactly know how to do this part
+        # Distance fitness:
+        locationOfBot = p.getBasePositionAndOrientation(self.robotID)[0]
+        distanceToGoal = np.sqrt((locationOfBot[0] - c.goal[0])**2 + (locationOfBot[1] - c.goal[1]) ** 2)
 
-        return bot_info
+        distanceFitness = 1/ (distanceToGoal + 1)
+
+        # Dormancy Fitness:
+        if self.dormant:
+            dormancyFitness = (c.SIM_LEN - self.dormantTime) / c.SIM_LEN
+        else:
+            dormancyFitness = 0
+
+        # Calculate Flip Penalty
+        botOrientation = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.robotID)[1])
+        if botOrientation[0] > np.pi / 2 or botOrientation[0] < - np.pi / 2 or botOrientation[1] > np.pi /2 or botOrientation[1] < -np.pi / 2:
+            flipPenalty = 0
+        else:
+            flipPenalty = 1
+
+        botFitness = [sensorFitness, distanceFitness, dormancyFitness, flipPenalty]
+
+        return botFitness

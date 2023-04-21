@@ -20,8 +20,10 @@ class SOLUTION:
         if c.BRAIN_TYPE == "neural_network":
             self.weights = {}
             for botNum in range(numBots):
-                SensorHidden = 2*np.random.rand(c.numSensorNeurons, c.numHiddenNeurons)-1
-                HiddenMotor = 2*np.random.rand(c.numHiddenNeurons, c.numMotorNeurons)-1
+                # SensorHidden = 2*np.random.rand(c.numSensorNeurons, c.numHiddenNeurons)-1
+                SensorHidden = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons, c.numHiddenNeurons))
+                # HiddenMotor = 2*np.random.rand(c.numHiddenNeurons, c.numMotorNeurons)-1
+                HiddenMotor = np.random.normal(c.mu, c.sigma, (c.numHiddenNeurons, c.numMotorNeurons))
                 self.weights[botNum] = [SensorHidden, HiddenMotor]
 
         if c.BRAIN_TYPE == "hive_mind":
@@ -30,8 +32,10 @@ class SOLUTION:
             # of each bot. So self.weights doesn't actually change much but instead breaking it
             # up by botNum we will send one massive array because of how generate_hive_mind
             # is currently set up
-            SensorHidden = 2 * np.random.rand(c.numSensorNeurons * c.numBots, c.numHiddenNeurons) - 1
-            HiddenMotor = 2 * np.random.rand(c.numHiddenNeurons, c.numBots * c.numMotorNeurons) - 1
+            # SensorHidden = 2 * np.random.rand(c.numSensorNeurons * c.numBots, c.numHiddenNeurons) - 1
+            SensorHidden = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons * c.numBots, c.numHiddenNeurons))
+            # HiddenMotor = 2 * np.random.rand(c.numHiddenNeurons, c.numBots * c.numMotorNeurons) - 1
+            HiddenMotor = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons * c.numBots, c.numHiddenNeurons))
             self.weights = [SensorHidden, HiddenMotor]
 
 
