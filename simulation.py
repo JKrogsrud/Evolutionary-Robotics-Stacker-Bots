@@ -29,7 +29,8 @@ class SIMULATION:
         self.world = WORLD()
 
         # Creating robots all in one file to fix sensor issues
-        if c.BRAIN_TYPE == 'hive_mind' or c.BRAIN_TYPE == 'hive_mind_recurrant':
+        if c.BRAIN_TYPE in {'hive_mind', 'hive_mind_recurrant', 'hive_mind_recurrant_hybrid_A',
+                            'hive_mind_recurrant_hybrid_B'}:
             self.robots = HIVE_MIND(solutionID, bodyType, self.numBots)
         else:
             self.robots = ROBOTSWARM(solutionID, bodyType, self.numBots)

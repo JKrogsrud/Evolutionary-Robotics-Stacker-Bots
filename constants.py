@@ -24,9 +24,10 @@ types: neural_network, hive_mind
 """
 
 # BRAIN_TYPE = 'neural_network'
-BRAIN_TYPE = 'neural_network_recurrant'
+# BRAIN_TYPE = 'neural_network_recurrant'
 # BRAIN_TYPE = 'hive_mind'
 # BRAIN_TYPE = 'hive_mind_recurrant'
+BRAIN_TYPE = 'hive_mind_recurrant_hybrid_A'
 
 """
 Evolution Constants

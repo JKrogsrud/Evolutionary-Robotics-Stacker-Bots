@@ -46,8 +46,8 @@ def run_best():
     path = os.path.join(current_dir, dir_name)
 
     os.mkdir(path)
-
-    if c.BRAIN_TYPE == 'hive_mind' or c.BRAIN_TYPE == 'hive_mind_recurrant':
+    if c.BRAIN_TYPE in {'hive_mind', 'hive_mind_recurrant', 'hive_mind_recurrant_hybrid_A',
+                        'hive_mind_recurrant_hybrid_B'}:
         physicsClient = p.connect(p.GUI)
 
         p.setAdditionalSearchPath(pybullet_data.getDataPath())

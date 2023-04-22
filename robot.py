@@ -268,7 +268,7 @@ class ROBOTSWARM:
             self.bots[bot].Think(time_stamp)
 
     def Act(self, time_stamp):
-        if c.BRAIN_TYPE == 'neural_network':
+        if c.BRAIN_TYPE == 'neural_network' or c.BRAIN_TYPE == 'neural_network_recurrant':
             for bot in self.bots:
                 self.bots[bot].Act(time_stamp)
 
@@ -383,7 +383,7 @@ class ROBOT:
 
     def Act(self, time_stamp):
 
-        if c.BRAIN_TYPE == 'neural_network':
+        if c.BRAIN_TYPE == 'neural_network' or c.BRAIN_TYPE == 'neural_network_recurrant':
             for neuronName in self.nn.Get_Neuron_Names():
                 if self.nn.Is_Motor_Neuron(neuronName):
 

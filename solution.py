@@ -24,6 +24,14 @@ class SOLUTION:
                 HiddenMotor = np.random.normal(c.mu, c.sigma, (c.numHiddenNeurons, c.numMotorNeurons))
                 self.weights[botNum] = [SensorHidden, HiddenMotor]
 
+        if c.BRAIN_TYPE == 'neural_network_recurrant':
+            self.weights = {}
+            for botNum in range(numBots):
+                SensorHidden = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons, c.numHiddenNeurons))
+                HiddenMotor = np.random.normal(c.mu, c.sigma, (c.numHiddenNeurons, c.numMotorNeurons))
+                HiddenHidden = np.random.normal(c.mu, c.sigma, (1, c.numHiddenNeurons))
+                self.weights[botNum] = [SensorHidden, HiddenMotor, HiddenHidden]
+
         if c.BRAIN_TYPE == "hive_mind":
 
             # For each bot we will connect all sensors to the Hidden neurons
@@ -42,6 +50,26 @@ class SOLUTION:
             RecurrantHidden = np.random.normal(c.mu, c.sigma, (1, c.numHiddenNeurons))
             self.weights = [SensorHidden, HiddenMotor, RecurrantHidden]
 
+        if c.BRAIN_TYPE == "hive_mind_recurrant_hybrid_A":
+            # SensorHiddenHive
+            SensorHiddenHive = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons * c.numBots, int(c.numHiddenNeurons / 2)))
+
+            # SensorHiddenLocal
+            SensorHiddenLocal = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons * c.numBots, int(c.numHiddenNeurons / 2)))
+
+            # HiddenHiveMotors
+            HiddenHiveMotor = np.random.normal(c.mu, c.sigma, (int(c.numHiddenNeurons / 2), c.numBots * c.numMotorNeurons))
+
+            # HiddenLocalMotors
+            HiddenLocalMotor = np.random.normal(c.mu, c.sigma, (int(c.numHiddenNeurons / 2), c.numBots * c.numMotorNeurons))
+
+            # RecurrantHiddenHive
+            RecurrantHidden = np.random.normal(c.mu, c.sigma, (1, int(c.numHiddenNeurons / 2)))
+
+            # RecurrantHiddenLocal
+            RecurrantLocal = np.random.normal(c.mu, c.sigma, (c.numBots, int(c.numHiddenNeurons / 2)))
+
+            self.weights = [SensorHiddenHive, SensorHiddenLocal, HiddenHiveMotor, HiddenLocalMotor, RecurrantHidden, RecurrantLocal]
 
 
     def Start_Simulation(self, DirectOrGUI):
@@ -105,6 +133,26 @@ class SOLUTION:
                 randomColumn = random.randint(0, c.numMotorNeurons - 1)
                 self.weights[botNum][1][randomRow, randomColumn] = 2 * random.random() - 1
 
+        if c.BRAIN_TYPE == 'neural_network_recurrant':
+
+            # Pick a random bot to update (as opposed to updating each one)
+            botNum = random.randint(0, c.numBots - 1)
+
+            ## Update synapse in Sensor -> Hidden OR Hidden -> Motor
+            choice = random.randint(0, 1)
+
+            if choice == 0:
+                randomRow = random.randint(0, c.numSensorNeurons - 1)
+                randomColumn = random.randint(0, c.numHiddenNeurons - 1)
+                self.weights[botNum][0][randomRow, randomColumn] = 2 * random.random() - 1
+            elif choice == 1:
+                randomRow = random.randint(0, c.numHiddenNeurons - 1)
+                randomColumn = random.randint(0, c.numMotorNeurons - 1)
+                self.weights[botNum][1][randomRow, randomColumn] = 2 * random.random() - 1
+            else:
+                randomColumn = random.randint(0, c.numHiddenNeurons - 1)
+                self.weights[botNum][2][0, randomColumn] = 2 * random.random() - 1
+
         if c.BRAIN_TYPE == 'hive_mind':
             choice = random.randint(0, 1)
 
@@ -132,6 +180,38 @@ class SOLUTION:
                 randomColumn = random.randint(0, c.numHiddenNeurons - 1)
                 self.weights[2][0][randomColumn] = 2 * random.random() - 1
 
+        if c.BRAIN_TYPE == 'hive_mind_recurrant_hybrid_A':
+            choice = random.randint(0, 6)
+
+            if choice == 0:
+                # Sensor HiddenHive
+                randomRow = random.randint(0, c.numBots * c.numSensorNeurons - 1)
+                randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
+                self.weights[0][randomRow][randomColumn] = 2 * random.random() - 1
+
+            elif choice == 1:
+                randomRow = random.randint(0, c.numBots * c.numSensorNeurons - 1)
+                randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
+                self.weights[1][randomRow][randomColumn] = 2 * random.random() - 1
+
+            elif choice == 2:
+                randomRow = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
+                randomColumn = random.randint(0, c.numBots * c.numMotorNeurons - 1)
+                self.weights[2][randomRow][randomColumn] = 2 * random.random() - 1
+
+            elif choice == 3:
+                randomRow = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
+                randomColumn = random.randint(0, c.numBots * c.numMotorNeurons - 1)
+                self.weights[3][randomRow][randomColumn] = 2 * random.random() - 1
+
+            elif choice == 4:
+                randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
+                self.weights[4][0][randomColumn] = 2 * random.random() - 1
+
+            elif choice == 5:
+                randomRow = random.randint(0, c.numBots - 1)
+                randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
+                self.weights[5][randomRow][randomColumn] = 2 * random.random() -1
 
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf", 0)  # Creates file where world info will be stored
@@ -164,16 +244,13 @@ class SOLUTION:
 
     def Create_Brain(self):
 
-        if c.BRAIN_TYPE == 'neural_network':
+        if c.BRAIN_TYPE == 'neural_network' or c.BRAIN_TYPE == 'neural_network_recurrant':
             for botNum in range(self.numBots):
                 generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum])
-        if c.BRAIN_TYPE == 'neural_network_recurrant':
-            for botNum in range(self.numBots):
-                generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum])
-        elif c.BRAIN_TYPE == 'hive_mind':
+        elif c.BRAIN_TYPE in {'hive_mind', 'hive_mind_recurrant', 'hive_mind_recurrant_hybrid_A',
+                        'hive_mind_recurrant_hybrid_B'}:
             generate.Generate_Hive_Mind(self.myID, self.bodyType, self.weights)
-        elif c.BRAIN_TYPE == 'hive_mind_recurrant':
-            generate.Generate_Hive_Mind(self.myID, self.bodyType, self.weights)
+
 
 
     def Set_ID(self, newID):

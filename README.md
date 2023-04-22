@@ -221,7 +221,10 @@ Updated Goals:
 
  - Neural network: Reduce hidden neurons but add in recurrant connections. Maybe bots could communicate over
    a long period of time by "tapping out" a signal with their touch sensors
-   - Added Recurrant connections to Hive_mind
+   - Added Recurrant connections to Hive_mind and NN
+   - Added an entirely new Hive Mind architecture the hybrid-hive mind with local hidden layers
+ 
+- Choosing Random Synapse to modify: I need to weight the choices (recurrant connections more likely to be hit)
 
 Week 9:
 

@@ -213,6 +213,14 @@ def Generate_Brain(solutionID, bodyType, botNum, weight):
                                  targetNeuronName=targetNeuron,
                                  weight=HiddenMotorWeight[currentRow][currentColumn])
 
+    # Attach Recurrant connections if needed
+    if c.BRAIN_TYPE == 'neural_network_recurrant':
+        for currentColumn in range(c.numHiddenNeurons):
+            hiddenNeuron = neuronDict['Hidden']['startIndex'] + currentColumn
+            pyrosim.Send_Synapse(sourceNeuronName=hiddenNeuron,
+                                 targetNeuronName=hiddenNeuron,
+                                 weight=HiddenHiddenWeight[0][currentColumn])
+
     endingIndex = pyrosim.End()
 
 def Generate_Hive_Mind(solutionID, bodyType, weights):
@@ -220,646 +228,165 @@ def Generate_Hive_Mind(solutionID, bodyType, weights):
 
     cubes = c.cube_sensors
 
-    neuronIndex = 0
+    if c.BRAIN_TYPE in {'hive_mind', 'hive_mind_recurrant'}:
 
-    neuronDict = {}
-    neuronDict['Sensor'] = {}
-    neuronDict['Hidden'] = {}
-    neuronDict['Motor'] = {}
+        neuronIndex = 0
 
-    # Attach Sensors to cubes
-    neuronDict['Sensor']['startIndex'] = neuronIndex
-    for botNum in range(c.numBots):
-        for cube in cubes:
-            pyrosim.Send_Sensor_Neuron(name=neuronIndex, linkName=str(botNum) + str(cube))
+        neuronDict = {}
+        neuronDict['Sensor'] = {}
+        neuronDict['Hidden'] = {}
+        neuronDict['Motor'] = {}
+
+        # Attach Sensors to cubes
+        neuronDict['Sensor']['startIndex'] = neuronIndex
+        for botNum in range(c.numBots):
+            for cube in cubes:
+                pyrosim.Send_Sensor_Neuron(name=neuronIndex, linkName=str(botNum) + str(cube))
+                neuronIndex += 1
+        neuronDict['Sensor']['endIndex'] = neuronIndex
+
+        # Create a Hidden Layer
+        neuronDict['Hidden']['startIndex'] = neuronIndex
+        for i in range(c.numHiddenNeurons):
+            pyrosim.Send_Hidden_Neuron(name=neuronIndex)
             neuronIndex += 1
-    neuronDict['Sensor']['endIndex'] = neuronIndex
+        neuronDict['Hidden']['endIndex'] = neuronIndex
 
-    # Create a Hidden Layer
-    neuronDict['Hidden']['startIndex'] = neuronIndex
-    for i in range(c.numHiddenNeurons):
-        pyrosim.Send_Hidden_Neuron(name=neuronIndex)
-        neuronIndex += 1
-    neuronDict['Hidden']['endIndex'] = neuronIndex
+        # Attach motors
+        motors = c.motors
 
-    # Attach motors
-    motors = c.motors
+        neuronDict['Motor']['startIndex'] = neuronIndex
+        for botNum in range(c.numBots):
+            for motor in motors:
+                pyrosim.Send_Motor_Neuron(name=neuronIndex,
+                                          jointName=str(botNum) + str(motor[0]) + '_' + str(botNum) + str(motor[1]))
+                neuronIndex += 1
+        neuronDict['Motor']['endIndex'] = neuronIndex
 
-    neuronDict['Motor']['startIndex'] = neuronIndex
-    for botNum in range(c.numBots):
-        for motor in motors:
-            pyrosim.Send_Motor_Neuron(name=neuronIndex,
-                                      jointName=str(botNum) + str(motor[0]) + '_' + str(botNum) + str(motor[1]))
+        # Attaching Synapses
+        # We need a c.numSensorNeurons * c.numBots by c.numHiddenNeurons array
+
+        # Sensors to Hidden
+        for currentRow in range(c.numSensorNeurons * c.numBots):
+            for currentColumn in range(c.numHiddenNeurons):
+                sourceNeuron = neuronDict['Sensor']['startIndex'] + currentRow
+                targetNeuron = neuronDict['Hidden']['startIndex'] + currentColumn
+                pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                     targetNeuronName=targetNeuron,
+                                     weight=weights[0][currentRow][currentColumn])
+        # Hidden to Motors
+        for currentRow in range(c.numHiddenNeurons):
+            for currentColumn in range(c.numBots * c.numMotorNeurons):
+                sourceNeuron = neuronDict['Hidden']['startIndex'] + currentRow
+                targetNeuron = neuronDict['Motor']['startIndex'] + currentColumn
+                pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                     targetNeuronName=targetNeuron,
+                                     weight=weights[1][currentRow][currentColumn])
+
+        # Connect recurrant connections
+        if c.BRAIN_TYPE == 'hive_mind_recurrant':
+            for currentColumn in range(c.numHiddenNeurons):
+                neuron = neuronDict['Hidden']['startIndex'] + currentColumn
+                pyrosim.Send_Synapse(sourceNeuronName=neuron,
+                                     targetNeuronName=neuron,
+                                     weight=weights[2][0][currentColumn])
+
+    if c.BRAIN_TYPE == 'hive_mind_recurrant_hybrid_A':
+
+        neuronIndex = 0
+
+        neuronDict = {}
+        neuronDict['Sensor'] = {}
+        neuronDict['HiddenHive'] = {}
+        neuronDict['HiddenLocal'] = {}
+        neuronDict['Motor'] = {}
+
+        # Attach Sensors to cubes
+        neuronDict['Sensor']['startIndex'] = neuronIndex
+        for botNum in range(c.numBots):
+            for cube in cubes:
+                pyrosim.Send_Sensor_Neuron(name=neuronIndex, linkName=str(botNum) + str(cube))
+                neuronIndex += 1
+        neuronDict['Sensor']['endIndex'] = neuronIndex
+
+        # Create a Hidden Hive Layer
+        neuronDict['HiddenHive']['startIndex'] = neuronIndex
+        for i in range(int(c.numHiddenNeurons / 2)):
+            pyrosim.Send_Hidden_Neuron(name=neuronIndex)
             neuronIndex += 1
-    neuronDict['Motor']['endIndex'] = neuronIndex
+        neuronDict['HiddenHive']['endIndex'] = neuronIndex
 
-    # Attaching Synapses
-    # We need a c.numSensorNeurons * c.numBots by c.numHiddenNeurons array
+        # Create a Hidden Local Layer
+        neuronDict['HiddenLocal']['startIndex'] = neuronIndex
+        for i in range(int(c.numHiddenNeurons / 2)):
+            pyrosim.Send_Hidden_Neuron(name=neuronIndex)
+            neuronIndex += 1
+        neuronDict['HiddenLocal']['endIndex'] = neuronIndex
 
-    # Sensors to Hidden
-    for currentRow in range(c.numSensorNeurons * c.numBots):
-        for currentColumn in range(c.numHiddenNeurons):
-            sourceNeuron = neuronDict['Sensor']['startIndex'] + currentRow
-            targetNeuron = neuronDict['Hidden']['startIndex'] + currentColumn
-            pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
-                                 targetNeuronName=targetNeuron,
-                                 weight=weights[0][currentRow][currentColumn])
-    # Hidden to Motors
-    for currentRow in range(c.numHiddenNeurons):
-        for currentColumn in range(c.numBots * c.numMotorNeurons):
-            sourceNeuron = neuronDict['Hidden']['startIndex'] + currentRow
-            targetNeuron = neuronDict['Motor']['startIndex'] + currentColumn
-            pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
-                                 targetNeuronName=targetNeuron,
-                                 weight=weights[1][currentRow][currentColumn])
+        # Attach Motors
 
-    # Connect recurrant connections
-    if c.BRAIN_TYPE == 'hive_mind_recurrant':
-        for currentColumn in range(c.numHiddenNeurons):
-            neuron = neuronDict['Hidden']['startIndex'] + currentColumn
+        motors = c.motors
+
+        neuronDict['Motor']['startIndex'] = neuronIndex
+        for botNum in range(c.numBots):
+            for motor in motors:
+                pyrosim.Send_Motor_Neuron(name=neuronIndex,
+                                          jointName=str(botNum) + str(motor[0]) + '_' + str(botNum) + str(motor[1]))
+                neuronIndex += 1
+        neuronDict['Motor']['endIndex'] = neuronIndex
+
+        ## Attaching Synapses ##
+        [sensorHiddenHive, sensorHiddenLocal, hiddenHiveMotor, hiddenLocalMotor, recurrantHive, recurrantLocal] = weights
+
+        # Sensors to HiddenHive
+        for currentRow in range(c.numSensorNeurons * c.numBots):
+            for currentColumn in range(int(c.numHiddenNeurons / 2)):
+                sourceNeuron = neuronDict['Sensor']['startIndex'] + currentRow
+                targetNeuron = neuronDict['HiddenHive']['startIndex'] + currentColumn
+                pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                     targetNeuronName=targetNeuron,
+                                     weight=sensorHiddenHive[currentRow][currentColumn])
+
+        # Sensors to HiddenLocal
+        for currentRow in range(c.numSensorNeurons * c.numBots):
+            for currentColumn in range(int(c.numHiddenNeurons / 2)):
+                sourceNeuron = neuronDict['Sensor']['startIndex'] + currentRow
+                targetNeuron = neuronDict['HiddenLocal']['startIndex'] + currentColumn
+                pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                     targetNeuronName=targetNeuron,
+                                     weight=sensorHiddenLocal[currentRow][currentColumn])
+
+        # HiddenHive to Motors
+        for currentRow in range(int(c.numHiddenNeurons / 2)):
+            for currentColumn in range(c.numBots * c.numMotorNeurons):
+                sourceNeuron = neuronDict['HiddenHive']['startIndex'] + currentRow
+                targetNeuron = neuronDict['Motor']['startIndex'] + currentColumn
+                pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                     targetNeuronName=targetNeuron,
+                                     weight=hiddenHiveMotor[currentRow][currentColumn])
+
+        # HiddenLocal to Motors
+        for currentRow in range(int(c.numHiddenNeurons / 2)):
+            for currentColumn in range(c.numBots * c.numMotorNeurons):
+                sourceNeuron = neuronDict['HiddenLocal']['startIndex'] + currentRow
+                targetNeuron = neuronDict['Motor']['startIndex'] + currentColumn
+                pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
+                                     targetNeuronName=targetNeuron,
+                                     weight=hiddenLocalMotor[currentRow][currentColumn])
+
+        # Recurrant Hive connections
+        for currentColumn in range(int(c.numHiddenNeurons / 2)):
+            neuron = neuronDict['HiddenHive']['startIndex'] + currentColumn
             pyrosim.Send_Synapse(sourceNeuronName=neuron,
                                  targetNeuronName=neuron,
-                                 weight=weights[2][0][currentColumn])
+                                 weight=recurrantHive[0][currentColumn])
 
+        # Recurrant Local connections
+        for currentRow in range(c.numBots):
+            for currentColumn in range(int(c.numHiddenNeurons / 2)):
+                neuron = neuronDict['HiddenLocal']['startIndex'] + currentColumn
+                pyrosim.Send_Synapse(sourceNeuronName=neuron,
+                                     targetNeuronName=neuron,
+                                     weight=recurrantLocal[currentRow][currentColumn])
 
     endingIndex = pyrosim.End()
-
-#### OUTDATED #####
-"""
-def Generate_Rigidity(bodyType, jointName, numBots):
-    if bodyType == 'A':
-        for botNum in range(numBots):
-            if jointName == str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap':
-
-                return -c.TORSO_FLAP_ANGLE
-
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BackFlap':
-
-                return c.TORSO_FLAP_ANGLE
-
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'RightFlap':
-
-                return c.TORSO_FLAP_ANGLE
-
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap':
-
-                return -c.TORSO_FLAP_ANGLE
-
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'URRotate':
-
-                return c.ROTATOR_ANGLE
-
-            elif jointName == str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg':
-
-                return c.TOP_LEG_ANGLE
-
-            elif jointName == str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg':
-
-                return -c.BOTTOM_LEG_ANGLE
-
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'ULRotate':
-
-                return -c.ROTATOR_ANGLE
-
-            elif jointName == str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg':
-
-                return c.TOP_LEG_ANGLE
-
-            elif jointName == str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg':
-
-                return -c.BOTTOM_LEG_ANGLE
-
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BRRotate':
-
-                return c.ROTATOR_ANGLE
-
-            elif jointName == str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg':
-
-                return -c.TOP_LEG_ANGLE
-
-            elif jointName == str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg':
-
-                return c.BOTTOM_LEG_ANGLE
-
-            elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BLRotate':
-
-                return -c.ROTATOR_ANGLE
-
-            elif jointName == str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg':
-
-                return -c.TOP_LEG_ANGLE
-
-            elif jointName == str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg':
-
-                return c.BOTTOM_LEG_ANGLE
-
-
-def Generate_Oscillation(bodyType, jointName, numBots):
-    if bodyType == 'A':
-        if c.RANDOM == True:
-
-            amplitude = np.random.random_sample() * 2 * np.pi - np.pi
-            frequency = np.random.random_sample() * 2 * np.pi - np.pi
-            offset = np.random.random_sample() * 2 * np.pi - np.pi
-
-            x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-            motorValues = np.sin(x) * amplitude
-
-            return motorValues
-
-        for botNum in range(numBots):
-            # TESTING 1 different bot
-            if c.DIFFERENT_BEHAVIOR:
-                if botNum == 1:
-                    # Testing that the bots can move differently
-                    if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
-                                     str(botNum) + 'Torso_' + str(botNum) + 'BackFlap',
-                                     str(botNum) + 'Torso_' + str(botNum) + 'RightFlap',
-                                     str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap']:
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
-                                         str(botNum) + 'Torso_' + str(botNum) + 'RightFlap']:
-                            motorValues = np.sin(x) * amplitude - c.FLAP_TRANSLATION
-                        else:
-                            motorValues = np.sin(x) * amplitude + c.FLAP_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'URRotate':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude + c.ROTATOR_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'ULRotate':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0 + 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BRRotate':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0 + 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BLRotate':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg':
-
-                        amplitude = 0
-                        frequency = 0
-                        offset = 0
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
-
-                        return motorValues
-                else:
-                    if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
-                                     str(botNum) + 'Torso_' + str(botNum) + 'BackFlap',
-                                     str(botNum) + 'Torso_' + str(botNum) + 'RightFlap',
-                                     str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap']:
-
-                        amplitude = c.FLAP_AMPS
-                        frequency = c.FLAP_FREQ
-                        offset = c.FLAP_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
-                                         str(botNum) + 'Torso_' + str(botNum) + 'RightFlap']:
-                            motorValues = np.sin(x) * amplitude - c.FLAP_TRANSLATION
-                        else:
-                            motorValues = np.sin(x) * amplitude + c.FLAP_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'URRotate':
-
-                        amplitude = c.ROTATOR_AMPS
-                        frequency = c.ROTATOR_FREQ
-                        offset = c.ROTATOR_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude + c.ROTATOR_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg':
-
-                        amplitude = c.UPPER_LEG_AMPS
-                        frequency = c.UPPER_LEG_FREQ
-                        offset = c.UPPER_LEG_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg':
-
-                        amplitude = c.LOWER_LEG_AMPS
-                        frequency = c.LOWER_LEG_FREQ
-                        offset = c.LOWER_LEG_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'ULRotate':
-
-                        amplitude = c.ROTATOR_AMPS
-                        frequency = c.ROTATOR_FREQ
-                        offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg':
-
-                        amplitude = c.UPPER_LEG_AMPS
-                        frequency = c.UPPER_LEG_FREQ
-                        offset = c.UPPER_LEG_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg':
-
-                        amplitude = c.LOWER_LEG_AMPS
-                        frequency = c.LOWER_LEG_FREQ
-                        offset = c.LOWER_LEG_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BRRotate':
-
-                        amplitude = c.ROTATOR_AMPS
-                        frequency = c.ROTATOR_FREQ
-                        offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg':
-
-                        amplitude = c.UPPER_LEG_AMPS
-                        frequency = c.UPPER_LEG_FREQ
-                        offset = c.UPPER_LEG_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg':
-
-                        amplitude = c.LOWER_LEG_AMPS
-                        frequency = c.LOWER_LEG_FREQ
-                        offset = c.LOWER_LEG_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BLRotate':
-
-                        amplitude = c.ROTATOR_AMPS
-                        frequency = c.ROTATOR_FREQ
-                        offset = c.ROTATOR_OFFSET - c.ROTATOR_TRANSLATION
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg':
-
-                        amplitude = c.UPPER_LEG_AMPS
-                        frequency = c.UPPER_LEG_FREQ
-                        offset = c.UPPER_LEG_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude
-
-                        return motorValues
-
-                    elif jointName == str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg':
-
-                        amplitude = c.LOWER_LEG_AMPS
-                        frequency = c.LOWER_LEG_FREQ
-                        offset = c.LOWER_LEG_OFFSET
-
-                        x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                        motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
-
-                        return motorValues
-            # Regular
-            else:
-                if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
-                                 str(botNum) + 'Torso_' + str(botNum) + 'BackFlap',
-                                 str(botNum) + 'Torso_' + str(botNum) + 'RightFlap',
-                                 str(botNum) + 'Torso_' + str(botNum) + 'LeftFlap']:
-
-                    amplitude = c.FLAP_AMPS
-                    frequency = c.FLAP_FREQ
-                    offset = c.FLAP_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    if jointName in [str(botNum) + 'Torso_' + str(botNum) + 'FrontFlap',
-                                     str(botNum) + 'Torso_' + str(botNum) + 'RightFlap']:
-                        motorValues = np.sin(x) * amplitude - c.FLAP_TRANSLATION
-                    else:
-                        motorValues = np.sin(x) * amplitude + c.FLAP_TRANSLATION
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'URRotate':
-
-                    amplitude = c.ROTATOR_AMPS
-                    frequency = c.ROTATOR_FREQ
-                    offset = c.ROTATOR_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude + c.ROTATOR_TRANSLATION
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'URRotate_' + str(botNum) + 'URTopLeg':
-
-                    amplitude = c.UPPER_LEG_AMPS
-                    frequency = c.UPPER_LEG_FREQ
-                    offset = c.UPPER_LEG_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'URTopLeg_' + str(botNum) + 'URBottomLeg':
-
-                    amplitude = c.LOWER_LEG_AMPS
-                    frequency = c.LOWER_LEG_FREQ
-                    offset = c.LOWER_LEG_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'ULRotate':
-
-                    amplitude = c.ROTATOR_AMPS
-                    frequency = c.ROTATOR_FREQ
-                    offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'ULRotate_' + str(botNum) + 'ULTopLeg':
-
-                    amplitude = c.UPPER_LEG_AMPS
-                    frequency = c.UPPER_LEG_FREQ
-                    offset = c.UPPER_LEG_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'ULTopLeg_' + str(botNum) + 'ULBottomLeg':
-
-                    amplitude = c.LOWER_LEG_AMPS
-                    frequency = c.LOWER_LEG_FREQ
-                    offset = c.LOWER_LEG_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude - c.LOWER_LEG_TRANSLATION
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BRRotate':
-
-                    amplitude = c.ROTATOR_AMPS
-                    frequency = c.ROTATOR_FREQ
-                    offset = c.ROTATOR_OFFSET + c.ROTATOR_TRANSLATION
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'BRRotate_' + str(botNum) + 'BRTopLeg':
-
-                    amplitude = c.UPPER_LEG_AMPS
-                    frequency = c.UPPER_LEG_FREQ
-                    offset = c.UPPER_LEG_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'BRTopLeg_' + str(botNum) + 'BRBottomLeg':
-
-                    amplitude = c.LOWER_LEG_AMPS
-                    frequency = c.LOWER_LEG_FREQ
-                    offset = c.LOWER_LEG_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'Torso_' + str(botNum) + 'BLRotate':
-
-                    amplitude = c.ROTATOR_AMPS
-                    frequency = c.ROTATOR_FREQ
-                    offset = c.ROTATOR_OFFSET - c.ROTATOR_TRANSLATION
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'BLRotate_' + str(botNum) + 'BLTopLeg':
-
-                    amplitude = c.UPPER_LEG_AMPS
-                    frequency = c.UPPER_LEG_FREQ
-                    offset = c.UPPER_LEG_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude
-
-                    return motorValues
-
-                elif jointName == str(botNum) + 'BLTopLeg_' + str(botNum) + 'BLBottomLeg':
-
-                    amplitude = c.LOWER_LEG_AMPS
-                    frequency = c.LOWER_LEG_FREQ
-                    offset = c.LOWER_LEG_OFFSET
-
-                    x = np.linspace(start=0 - offset, stop=2 * np.pi - offset, num=c.FRAMES) * frequency
-
-                    motorValues = np.sin(x) * amplitude + c.LOWER_LEG_TRANSLATION
-
-                    return motorValues
-"""

@@ -101,7 +101,8 @@ class SURVIVE_MULTIPLY:
         # parent is a solution which is a number of robots, we want to save the brains
         # of the fittest solution:
         IDofFittest = self.parents[fittest_parent].myID
-        if c.BRAIN_TYPE == 'hive_mind' or c.BRAIN_TYPE == 'hive_mind_recurrant':
+        if c.BRAIN_TYPE in {'hive_mind', 'hive_mind_recurrant', 'hive_mind_recurrant_hybrid_A',
+                            'hive_mind_recurrant_hybrid_B'}:
             os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + '.nndf', 'best_brain.nndf')
         else:
             for botNum in range(c.numBots):
