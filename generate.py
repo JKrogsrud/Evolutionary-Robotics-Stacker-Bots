@@ -152,8 +152,14 @@ def Generate_Body(bodyType, botNum, xCoord, yCoord, zCoord, startingIndex, botNa
         return currentIndex
 
 
-def Generate_Brain(solutionID, bodyType, botNum, SensorHiddenWeight, HiddenMotorWeight):
+def Generate_Brain(solutionID, bodyType, botNum, weight):
     pyrosim.Start_NeuralNetwork('brain_' + str(solutionID) + str(bodyType) + str(botNum) + '.nndf')
+
+    SensorHiddenWeight = weight[0]
+    HiddenMotorWeight = weight[1]
+
+    if c.BRAIN_TYPE == 'neural_network_recurrant':
+        HiddenHiddenWeight = weight[2]
 
     cubes = c.cube_sensors
 
@@ -266,6 +272,15 @@ def Generate_Hive_Mind(solutionID, bodyType, weights):
             pyrosim.Send_Synapse(sourceNeuronName=sourceNeuron,
                                  targetNeuronName=targetNeuron,
                                  weight=weights[1][currentRow][currentColumn])
+
+    # Connect recurrant connections
+    if c.BRAIN_TYPE == 'hive_mind_recurrant':
+        for currentColumn in range(c.numHiddenNeurons):
+            neuron = neuronDict['Hidden']['startIndex'] + currentColumn
+            pyrosim.Send_Synapse(sourceNeuronName=neuron,
+                                 targetNeuronName=neuron,
+                                 weight=weights[2][0][currentColumn])
+
 
     endingIndex = pyrosim.End()
 

@@ -214,13 +214,14 @@ Updated Goals:
     to pass by middle - a little malicious compliance there - the best walkers were probably walking right by the middle
    - adding a boolean state to each bot as "dormant" which should handle this
      - I should change the fitness function to reward "num bots dormant" - add this to logging function
-        - ended up rewarding for time spent dormant per bot
+        - DONE
  
  - Dampen the initialization of synapses
    - DONE
 
  - Neural network: Reduce hidden neurons but add in recurrant connections. Maybe bots could communicate over
    a long period of time by "tapping out" a signal with their touch sensors
+   - Added Recurrant connections to Hive_mind
 
 Week 9:
 

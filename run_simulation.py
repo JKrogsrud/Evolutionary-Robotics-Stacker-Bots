@@ -47,7 +47,7 @@ def run_best():
 
     os.mkdir(path)
 
-    if c.BRAIN_TYPE == 'hive_mind':
+    if c.BRAIN_TYPE == 'hive_mind' or c.BRAIN_TYPE == 'hive_mind_recurrant':
         physicsClient = p.connect(p.GUI)
 
         p.setAdditionalSearchPath(pybullet_data.getDataPath())

@@ -20,23 +20,28 @@ class SOLUTION:
         if c.BRAIN_TYPE == "neural_network":
             self.weights = {}
             for botNum in range(numBots):
-                # SensorHidden = 2*np.random.rand(c.numSensorNeurons, c.numHiddenNeurons)-1
                 SensorHidden = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons, c.numHiddenNeurons))
-                # HiddenMotor = 2*np.random.rand(c.numHiddenNeurons, c.numMotorNeurons)-1
                 HiddenMotor = np.random.normal(c.mu, c.sigma, (c.numHiddenNeurons, c.numMotorNeurons))
                 self.weights[botNum] = [SensorHidden, HiddenMotor]
 
         if c.BRAIN_TYPE == "hive_mind":
+
             # For each bot we will connect all sensors to the Hidden neurons
             # and the shared hidden neurons will each in turn attach to all of the motors
             # of each bot. So self.weights doesn't actually change much but instead breaking it
             # up by botNum we will send one massive array because of how generate_hive_mind
             # is currently set up
-            # SensorHidden = 2 * np.random.rand(c.numSensorNeurons * c.numBots, c.numHiddenNeurons) - 1
+
             SensorHidden = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons * c.numBots, c.numHiddenNeurons))
-            # HiddenMotor = 2 * np.random.rand(c.numHiddenNeurons, c.numBots * c.numMotorNeurons) - 1
-            HiddenMotor = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons * c.numBots, c.numHiddenNeurons))
+            HiddenMotor = np.random.normal(c.mu, c.sigma, (c.numHiddenNeurons, c.numMotorNeurons * c.numBots))
             self.weights = [SensorHidden, HiddenMotor]
+
+        if c.BRAIN_TYPE == "hive_mind_recurrant":
+            SensorHidden = np.random.normal(c.mu, c.sigma, (c.numSensorNeurons * c.numBots, c.numHiddenNeurons))
+            HiddenMotor = np.random.normal(c.mu, c.sigma, (c.numHiddenNeurons, c.numMotorNeurons * c.numBots))
+            RecurrantHidden = np.random.normal(c.mu, c.sigma, (1, c.numHiddenNeurons))
+            self.weights = [SensorHidden, HiddenMotor, RecurrantHidden]
+
 
 
     def Start_Simulation(self, DirectOrGUI):
@@ -112,6 +117,21 @@ class SOLUTION:
                 randomColumn = random.randint(0, c.numBots * c.numMotorNeurons - 1)
                 self.weights[1][randomRow][randomColumn] = 2 * random.random() - 1
 
+        if c.BRAIN_TYPE == 'hive_mind_recurrant':
+            choice = random.randint(0, 2)
+
+            if choice == 0:
+                randomRow = random.randint(0, c.numBots * c.numSensorNeurons - 1)
+                randomColumn = random.randint(0, c.numHiddenNeurons - 1)
+                self.weights[0][randomRow][randomColumn] = 2 * random.random() - 1
+            elif choice == 1:
+                randomRow = random.randint(0, c.numHiddenNeurons - 1)
+                randomColumn = random.randint(0, c.numBots * c.numMotorNeurons - 1)
+                self.weights[1][randomRow][randomColumn] = 2 * random.random() - 1
+            else:
+                randomColumn = random.randint(0, c.numHiddenNeurons - 1)
+                self.weights[2][0][randomColumn] = 2 * random.random() - 1
+
 
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf", 0)  # Creates file where world info will be stored
@@ -146,8 +166,13 @@ class SOLUTION:
 
         if c.BRAIN_TYPE == 'neural_network':
             for botNum in range(self.numBots):
-                generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum][0], self.weights[botNum][1])
+                generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum])
+        if c.BRAIN_TYPE == 'neural_network_recurrant':
+            for botNum in range(self.numBots):
+                generate.Generate_Brain(self.myID, self.bodyType, botNum, self.weights[botNum])
         elif c.BRAIN_TYPE == 'hive_mind':
+            generate.Generate_Hive_Mind(self.myID, self.bodyType, self.weights)
+        elif c.BRAIN_TYPE == 'hive_mind_recurrant':
             generate.Generate_Hive_Mind(self.myID, self.bodyType, self.weights)
 
 
