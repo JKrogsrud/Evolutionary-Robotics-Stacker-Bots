@@ -111,7 +111,12 @@ class SOLUTION:
             except:
                 time.sleep(0.1)
 
-        self.fitness = float(file.read())
+
+        # Gather the fitness of solution and each robot
+        self.fitness = float(file.readline())
+        self.subFitness = []
+        for num in range(c.numBots):
+            self.subFitness.append(float(file.readline()))
         file.close()
         os.system("del fitness" + str(self.myID) + ".txt")
 
@@ -179,7 +184,7 @@ class SOLUTION:
             else:
                 randomColumn = random.randint(0, c.numHiddenNeurons - 1)
                 self.weights[2][0][randomColumn] = 2 * random.random() - 1
-        #TODO: change chance values here
+        #TODO: OUT OF SCOPE FOR NOW
         if c.BRAIN_TYPE == 'hive_mind_recurrant_hybrid_A':
             choice = random.randint(0, 6)
 
@@ -208,12 +213,12 @@ class SOLUTION:
                 self.weights[3][randomRow][randomColumn] = 2 * random.random() - 1
 
             elif choice == 4:
-                # Red Hive
+                # Rec Hive
                 randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
                 self.weights[4][0][randomColumn] = 2 * random.random() - 1
 
             elif choice == 5:
-                # REc Local
+                # Rec Local
                 randomRow = random.randint(0, c.numBots - 1)
                 randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
                 self.weights[5][randomRow][randomColumn] = 2 * random.random() -1

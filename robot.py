@@ -200,7 +200,8 @@ class HIVE_MIND:
                 botFitness = [sensorFitness, distanceFitness, dormancyFitness, flipPenalty]
                 allFitness.append(botFitness)
 
-            fitness = 0
+            fitness = 1
+            subFitness = []
             # Display the individual bot fitness's
             print("Bot Fitness's for solution: " + str(self.solutionID))
             for i in range(len(allFitness)):
@@ -212,12 +213,15 @@ class HIVE_MIND:
                 robotFitness = allFitness[i][3] * (c.sensorFitnessWeight * allFitness[i][0] +
                                                    c.distanceFitnessWeight * allFitness[i][1] +
                                                    c.dormancyFitnessWeight * allFitness[i][2])
+                subFitness.append(robotFitness)
                 print("\t\tTotal Fitness = " + str(robotFitness))
-                fitness += robotFitness
+                fitness *= robotFitness
             print("\t\t\tTotal Fitness for Solution: " + str(fitness))
 
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
-        f.write(str(fitness))
+        f.write(str(fitness) + '\n')
+        for bot in subFitness:
+            f.write(str(bot) + '\n')
         f.close()
 
         os.rename("tmp" + str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")
@@ -327,7 +331,8 @@ class ROBOTSWARM:
             print("Bot Fitness's for solution: " + str(self.solutionID) + "\n")
 
             # Gather fitness of all bots
-            fitness = 0
+            fitness = 1
+            subFitness = []
             for bot in self.bots:
                 botID = self.bots[bot].robotID
                 botFitness = self.bots[bot].Get_Fitness()
@@ -342,12 +347,15 @@ class ROBOTSWARM:
                                                 c.dormancyFitnessWeight * botFitness[2])
 
                 print("\t\tTotal Fitness = " + str(robotFitness))
-                fitness += robotFitness
+                subFitness.append(robotFitness)
+                fitness *= robotFitness
             print("\t\t\tTotal Fitness for Solution: " + str(fitness))
 
         # changed tmp to fitness
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
-        f.write(str(fitness))
+        f.write(str(fitness) + '\n')
+        for botFit in subFitness:
+            f.write(str(botFit) + '\n')
         f.close()
 
         os.rename("tmp" + str(self.solutionID) + ".txt", "fitness" + str(self.solutionID) + ".txt")

@@ -1,4 +1,7 @@
 import os
+
+import numpy as np
+
 from solution import SOLUTION
 import constants as c
 import copy as cp
@@ -10,6 +13,8 @@ class PARALLEL_HILLCLIMBER:
         os.system("del fitness*.nndf")
         os.system("del best*.nndf")
 
+        self.fitnesses = np.zeros((c.populationSize, c.numberOfGenerations, c.numBots))
+        self.currentGeneration = 0
         self.parents = {}
 
         self.nextAvailableID = 0
@@ -24,6 +29,7 @@ class PARALLEL_HILLCLIMBER:
 
         for currentGeneration in range(c.numberOfGenerations):
             self.Evolve_For_One_Generation()
+            self.currentGeneration += 1
 
     def Evolve_For_One_Generation(self):
         self.Spawn()
@@ -48,10 +54,13 @@ class PARALLEL_HILLCLIMBER:
             self.children[child].Mutate()
 
     def Select(self):
-
+        parentNum = 0
         for parent in self.parents:
+            # Here we can gather some data:
+            self.fitnesses[parentNum][self.currentGeneration][:] = self.parents[parent].subFitness
             if self.parents[parent].fitness < self.children[parent].fitness:
                 self.parents[parent] = self.children[parent]
+            parentNum += 1
 
     def Print(self):
         for parent in self.parents:
@@ -74,13 +83,16 @@ class PARALLEL_HILLCLIMBER:
         # of the fittest solution:
         IDofFittest = self.parents[fittest_parent].myID
 
-        if c.BRAIN_TYPE == 'hive_mind':
+        if c.BRAIN_TYPE == 'hive_mind_recurrant':
             os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + '.nndf',
                       'best_brain.nndf')
         else:
             for botNum in range(c.numBots):
                 os.rename('brain_' + str(IDofFittest) + str(c.bodytype) + str(botNum) + '.nndf',
                         'best_brain_' + str(botNum) + '.nndf')
+
+        # Save the fitnesses
+        np.save('all_fitness', self.fitnesses)
 
     def Show_Best(self):
         # self.parent.Evaluate('GUI')
@@ -102,3 +114,5 @@ class PARALLEL_HILLCLIMBER:
             solutions[solution].Start_Simulation('DIRECT')
         for solution in solutions:
             solutions[solution].Wait_For_Simulation_To_End()
+
+

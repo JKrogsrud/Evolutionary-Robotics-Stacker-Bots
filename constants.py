@@ -26,18 +26,18 @@ types: neural_network, hive_mind
 # BRAIN_TYPE = 'neural_network'
 # BRAIN_TYPE = 'neural_network_recurrant'
 # BRAIN_TYPE = 'hive_mind'
-# BRAIN_TYPE = 'hive_mind_recurrant'
-BRAIN_TYPE = 'hive_mind_recurrant_hybrid_A'
+BRAIN_TYPE = 'hive_mind_recurrant'
+# BRAIN_TYPE = 'hive_mind_recurrant_hybrid_A'
 
 """
 Evolution Constants
 """
 
-numberOfGenerations = 1
-populationSize = 2
+numberOfGenerations = 3
+populationSize = 10
 
-# evolutionaryAlgorithm = 'PHC'
-evolutionaryAlgorithm = 'SAM'
+evolutionaryAlgorithm = 'PHC'
+# evolutionaryAlgorithm = 'SAM'
 
 """
 Fitness
@@ -184,7 +184,7 @@ types: horizontal, stacked
 startPos = 'circle'
 
 if startPos == 'circle':
-    startRadius = 7
+    startRadius = 4
 
 if startPos == 'horizontal':
     botSpacing = 5.5
