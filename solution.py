@@ -190,25 +190,30 @@ class SOLUTION:
                 self.weights[0][randomRow][randomColumn] = 2 * random.random() - 1
 
             elif choice == 1:
+                # Sensor -> Local
                 randomRow = random.randint(0, c.numBots * c.numSensorNeurons - 1)
                 randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
                 self.weights[1][randomRow][randomColumn] = 2 * random.random() - 1
 
             elif choice == 2:
+                # HiddenHive -> Motor
                 randomRow = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
                 randomColumn = random.randint(0, c.numBots * c.numMotorNeurons - 1)
                 self.weights[2][randomRow][randomColumn] = 2 * random.random() - 1
 
             elif choice == 3:
+                # HiddenLocal -> Motor
                 randomRow = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
                 randomColumn = random.randint(0, c.numBots * c.numMotorNeurons - 1)
                 self.weights[3][randomRow][randomColumn] = 2 * random.random() - 1
 
             elif choice == 4:
+                # Red Hive
                 randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
                 self.weights[4][0][randomColumn] = 2 * random.random() - 1
 
             elif choice == 5:
+                # REc Local
                 randomRow = random.randint(0, c.numBots - 1)
                 randomColumn = random.randint(0, int(c.numHiddenNeurons / 2) - 1)
                 self.weights[5][randomRow][randomColumn] = 2 * random.random() -1
