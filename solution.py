@@ -139,13 +139,13 @@ class SOLUTION:
             botNum = random.randint(0, c.numBots - 1)
 
             ## Update synapse in Sensor -> Hidden OR Hidden -> Motor
-            choice = random.randint(0, 1)
+            choice = random.randint(0, 190)
 
-            if choice == 0:
+            if choice >= 0 and choice < 60:
                 randomRow = random.randint(0, c.numSensorNeurons - 1)
                 randomColumn = random.randint(0, c.numHiddenNeurons - 1)
                 self.weights[botNum][0][randomRow, randomColumn] = 2 * random.random() - 1
-            elif choice == 1:
+            elif choice >= 60 and choice < 180:
                 randomRow = random.randint(0, c.numHiddenNeurons - 1)
                 randomColumn = random.randint(0, c.numMotorNeurons - 1)
                 self.weights[botNum][1][randomRow, randomColumn] = 2 * random.random() - 1
@@ -166,20 +166,20 @@ class SOLUTION:
                 self.weights[1][randomRow][randomColumn] = 2 * random.random() - 1
 
         if c.BRAIN_TYPE == 'hive_mind_recurrant':
-            choice = random.randint(0, 2)
+            choice = random.randint(0, c.numBots*(180) + 10)
 
-            if choice == 0:
+            if choice >= 0 and choice < (60 * c.numBots):
                 randomRow = random.randint(0, c.numBots * c.numSensorNeurons - 1)
                 randomColumn = random.randint(0, c.numHiddenNeurons - 1)
                 self.weights[0][randomRow][randomColumn] = 2 * random.random() - 1
-            elif choice == 1:
+            elif choice >= (60 * c.numBots) and choice < (c.numBots * 180):
                 randomRow = random.randint(0, c.numHiddenNeurons - 1)
                 randomColumn = random.randint(0, c.numBots * c.numMotorNeurons - 1)
                 self.weights[1][randomRow][randomColumn] = 2 * random.random() - 1
             else:
                 randomColumn = random.randint(0, c.numHiddenNeurons - 1)
                 self.weights[2][0][randomColumn] = 2 * random.random() - 1
-
+        #TODO: change chance values here
         if c.BRAIN_TYPE == 'hive_mind_recurrant_hybrid_A':
             choice = random.randint(0, 6)
 
