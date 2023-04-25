@@ -14,6 +14,7 @@ class PARALLEL_HILLCLIMBER:
         os.system("del best*.nndf")
 
         self.fitnesses = np.zeros((c.populationSize, c.numberOfGenerations, c.numBots))
+        self.fitnessPieces = np.zeros((c.populationSize, c.numberOfGenerations, c.numBots, 5))
         self.currentGeneration = 0
         self.parents = {}
 
@@ -57,7 +58,15 @@ class PARALLEL_HILLCLIMBER:
         parentNum = 0
         for parent in self.parents:
             # Here we can gather some data:
-            self.fitnesses[parentNum][self.currentGeneration][:] = self.parents[parent].subFitness
+            botFitnesses = [fit[0] for fit in self.parents[parent].subFitness]
+
+            # Individual bot fitnesses storage
+            botNum = 0
+            for vals in self.parents[parent].subFitness:
+                self.fitnessPieces[parentNum][self.currentGeneration][botNum][:] = vals
+                botNum += 1
+
+            self.fitnesses[parentNum][self.currentGeneration][:] = botFitnesses
             if self.parents[parent].fitness < self.children[parent].fitness:
                 self.parents[parent] = self.children[parent]
             parentNum += 1
@@ -93,6 +102,9 @@ class PARALLEL_HILLCLIMBER:
 
         # Save the fitnesses
         np.save('all_fitness', self.fitnesses)
+
+        # Save the fitness pieces
+        np.save('all_fitness_pieces', self.fitnessPieces)
 
     def Show_Best(self):
         # self.parent.Evaluate('GUI')

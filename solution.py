@@ -113,10 +113,15 @@ class SOLUTION:
 
 
         # Gather the fitness of solution and each robot
-        self.fitness = float(file.readline())
-        self.subFitness = []
+        self.fitness = float(file.readline())  # This returns the total fitness
+        self.subFitness = []  # to hold individual bot fitnesses
+
         for num in range(c.numBots):
-            self.subFitness.append(float(file.readline()))
+            botVals = []
+            for i in range(5):
+                botVals.append(float(file.readline()))
+            self.subFitness.append(botVals)
+
         file.close()
         os.system("del fitness" + str(self.myID) + ".txt")
 

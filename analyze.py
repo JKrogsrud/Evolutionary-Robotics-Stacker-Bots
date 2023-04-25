@@ -10,9 +10,12 @@ import matplotlib.pyplot as plt
 # plt.legend()
 # plt.show()
 
-targetAnglesBack = np.load('data/targetAnglesBack.npy')
-targetAnglesFront = np.load('data/targetAnglesFront.npy')
+# targetAnglesBack = np.load('data/targetAnglesBack.npy')
+# targetAnglesFront = np.load('data/targetAnglesFront.npy')
+#
+# plt.plot(targetAnglesBack, label='Back Leg motor values', linewidth=5)
+# plt.plot(targetAnglesFront, label='Front Leg motor values', linewidth=2)
+# plt.show()
 
-plt.plot(targetAnglesBack, label='Back Leg motor values', linewidth=5)
-plt.plot(targetAnglesFront, label='Front Leg motor values', linewidth=2)
-plt.show()
+all_fitness_data = np.load('all_fitness.npy')
+
