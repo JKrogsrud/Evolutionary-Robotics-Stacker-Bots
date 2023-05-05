@@ -1,0 +1,11 @@
+SIM_LEN:5000
+BRAIN_TYPE:neural_network_recurrant
+SIM_LEN:5000
+numSensorNeurons:6
+numHiddenNeurons:10
+numMotorNeurons:12
+numberOfGenerations:500
+populationSize:10
+evolutionaryAlogrithm:PHC
+numbots:3
+timeTaken:25017.019313812256

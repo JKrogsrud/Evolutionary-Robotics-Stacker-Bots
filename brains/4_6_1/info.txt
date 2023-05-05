@@ -1,8 +1,0 @@
-numberOfGenerations = 120
-populationSize = 10
-bodytype = "A"
-numBots = 3
-BRAIN_TYPE = 'neural_network'
-numSensorNeurons = 14
-numHiddenNeurons = 14
-numMotorNeurons = 16

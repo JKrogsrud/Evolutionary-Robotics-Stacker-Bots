@@ -199,16 +199,15 @@ Video: https://youtu.be/HM0ujDOm-7w
 
 Week 8:
 
-This week is primarily planned for overflow as I think the previous weeks plans
+Original Goal: This week is primarily planned for overflow as I think the previous weeks plans
 are going to be challenging. If everything is going smoothly I will start testing 
 how well each neural network (or set of networks) adapts to having more than three bots. 
 Perhaps achieving a good metric on how well each does within a certain amount of generations.
 
 Updated Goals:
  - Logging function:
-   - Keep track of evolution: n = c.surveyGenerations
-     - Best fitness every n gens
-     - How many solutions are above a certain threshhold
+   - Keeping track of individual and group fitnesses every generation and saving it as a .npy
+     - DONE
 
  - Have bots "laydown" after getting within a certain distance of (0, 0), they are currently moving there slowly as not
     to pass by middle - a little malicious compliance there - the best walkers were probably walking right by the middle
@@ -222,11 +221,26 @@ Updated Goals:
  - Neural network: Reduce hidden neurons but add in recurrant connections. Maybe bots could communicate over
    a long period of time by "tapping out" a signal with their touch sensors
    - Added Recurrant connections to Hive_mind and NN
-   - Added an entirely new Hive Mind architecture the hybrid-hive mind with local hidden layers
+     - DONE
  
 - Choosing Random Synapse to modify: I need to weight the choices (recurrant connections more likely to be hit)
+    - DONE
+
+- TODO: Find a way to log a bit more info?
+  - Perhaps logging the factors that went into the runs as well as the fitnesses?
+
+Video: https://youtu.be/Zr-vIs9UX48
+
+Next week:
+ - Run simulations every night!
 
 Week 9:
 
 I’ll submit videos showing the results of the A/B testing as to what worked 
 best: the individuals working together or the hive mind.
+
+Best of the Distributive Minds:
+https://youtu.be/mWuRHsRRrPs
+
+Best of the Hive Minds:
+https://youtu.be/jsY3wCGkDNU

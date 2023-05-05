@@ -23,18 +23,17 @@ Bot Motion
 types: neural_network, hive_mind
 """
 
-# BRAIN_TYPE = 'neural_network'
 BRAIN_TYPE = 'neural_network_recurrant'
-# BRAIN_TYPE = 'hive_mind'
+# BRAIN_TYPE = 'neural_network_random'
 # BRAIN_TYPE = 'hive_mind_recurrant'
-# BRAIN_TYPE = 'hive_mind_recurrant_hybrid_A'
+# BRAIN_TYPE = 'hive_mind_random'
 
 """
 Evolution Constants
 """
 
-numberOfGenerations = 2
-populationSize = 3
+numberOfGenerations = 500
+populationSize = 10
 
 evolutionaryAlgorithm = 'PHC'
 # evolutionaryAlgorithm = 'SAM'
