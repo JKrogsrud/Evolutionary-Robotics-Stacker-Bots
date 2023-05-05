@@ -24,9 +24,7 @@ types: neural_network, hive_mind
 """
 
 BRAIN_TYPE = 'neural_network_recurrant'
-# BRAIN_TYPE = 'neural_network_random'
 # BRAIN_TYPE = 'hive_mind_recurrant'
-# BRAIN_TYPE = 'hive_mind_random'
 
 """
 Evolution Constants
@@ -35,8 +33,14 @@ Evolution Constants
 numberOfGenerations = 500
 populationSize = 10
 
-evolutionaryAlgorithm = 'PHC'
+"""
+No Evolution Constants
+"""
+numGens = 2
+
+# evolutionaryAlgorithm = 'PHC'
 # evolutionaryAlgorithm = 'SAM'
+evolutionaryAlgorithm = 'NONE'
 
 """
 Fitness

@@ -2,6 +2,7 @@ import os
 from hillclimber import HILLCLIMBER
 from parallelHillClimber import PARALLEL_HILLCLIMBER
 from surviveAndMultiply import SURVIVE_MULTIPLY
+from noEvolution import RANDOM_NETWORKS
 import constants as c
 import time
 
@@ -28,7 +29,6 @@ if c.evolutionaryAlgorithm == 'PHC':
 
     end_time = time.time()
 
-    # phc.Show_Best()
     phc.Save_Best()
     Save_Parameters(end_time - start_time)
 
@@ -40,13 +40,20 @@ elif c.evolutionaryAlgorithm == 'SAM':
 
     end_time = time.time()
 
-    # phc.Show_Best()
     sam.Save_Best()
     Save_Parameters(end_time - start_time)
 
-# save an info document relaying some information about this run
+elif c.evolutionaryAlgorithm == 'NONE':
+    no_evol = RANDOM_NETWORKS(c.bodytype, c.numBots)
+    no_evol.Evolve()
+    no_evol.Save()
 
-print("Number of generations: " + str(c.numberOfGenerations))
-print("Population per generation: " + str(c.populationSize))
-print("Time:")
-print(end_time - start_time)
+
+# save an info document relaying some information about this run
+if c.evolutionaryAlgorithm == 'PHC' or c.evolutionaryAlgorithm == 'SAM':
+    print("Number of generations: " + str(c.numberOfGenerations))
+    print("Population per generation: " + str(c.populationSize))
+    print("Time:")
+    print(end_time - start_time)
+else:
+    print('DONE')
