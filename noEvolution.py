@@ -47,8 +47,9 @@ class RANDOM_NETWORKS:
         botNum = 0
         for vals in self.currentSolution.subFitness:
             self.fitnessPieces[self.currentGeneration][botNum][:] = vals
+            self.fitnesses[self.currentGeneration][botNum] = vals[0]
             botNum += 1
-        print(self.fitnessPieces)
+        print(self.fitnesses)
 
     def Save(self):
         pass

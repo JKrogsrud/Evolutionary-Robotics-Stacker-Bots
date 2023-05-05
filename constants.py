@@ -36,7 +36,7 @@ populationSize = 10
 """
 No Evolution Constants
 """
-numGens = 2
+numGens = 3
 
 # evolutionaryAlgorithm = 'PHC'
 # evolutionaryAlgorithm = 'SAM'
