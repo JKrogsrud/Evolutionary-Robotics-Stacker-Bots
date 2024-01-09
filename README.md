@@ -1,6 +1,9 @@
 # Cooperative Stacking: Distributive versus Hive Mind
 ## CS206: Final Project
 
+This project was an ongoing project for a class in Evolutionary Robotics. The original codebase was
+provided by Professor Josh Bongard.
+
 ### Goal
 
 Many organisms have learned to work together to better survive or achieve goals that an individual 
